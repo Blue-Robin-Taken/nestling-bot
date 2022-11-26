@@ -19,9 +19,9 @@ def DecryptBoard(boardList):
             try:
                 if type(int(e)) is int:
                     eLen = len(str(e)) / 2
-                    finalString += f"‖{e}‖"
+                    finalString += f"‖{e:2}‖"
             except ValueError:
-                finalString += f"{e}"
+                finalString += f"{e:2}"
     return finalString
 
 
