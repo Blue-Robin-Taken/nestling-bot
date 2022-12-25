@@ -1,4 +1,5 @@
 import discord
+from discord import commands
 import requests
 from discord.ui import Button, View, Select
 import random
@@ -11,9 +12,24 @@ import random
 from random import choice
 from bs4 import BeautifulSoup
 import re
+from asgiref.sync import sync_to_async
+
+# Bot cogs
+import moderation
 
 bot = discord.Bot()
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
+
+
+# testing_servers = [1044711937956651089]
+
+@bot.event
+async def on_connect():
+    bot.add_cog(moderation.warncommand(bot))
+    bot.add_cog(moderation.warnscommand(bot))
+    bot.add_cog(moderation.ban(bot))
+    bot.add_cog(moderation.bans(bot))
+    print("Connected!")
 
 
 @bot.event
@@ -103,6 +119,8 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
     if not error:
         await ctx.respond("Sending message!", ephemeral=True)
         message = await channel.send(embed=embed)
+        await message.add_reaction("⬆")
+        await message.add_reaction("⬇")
         view = View()
         view.add_item(approvebutton(0, "✅", message))
         view.add_item(approvebutton(0, "❌", message))
@@ -171,6 +189,7 @@ class TwentyFortyEightButton(Button):
 
     async def callback(self, interaction):
         if self.user == interaction.user:
+            await interaction.response.defer()
             if self.emoji.name == "▶":
                 self.game.Right()
             elif self.emoji.name == "◀":
@@ -188,7 +207,7 @@ class TwentyFortyEightButton(Button):
             embed.set_footer(text=f"Score: {self.game.score}")
             await interaction.message.edit(
                 embed=embed)
-            await interaction.response.defer()
+
         else:
             await interaction.response.send_message("This is not your game!", ephemeral=True)
 
@@ -215,107 +234,23 @@ async def twentyfortyeightcommand(ctx):
     await message.edit_original_response(view=view)
 
 
-@bot.slash_command(name="ban", description="Banning is fun!")
-async def ban(ctx, user: discord.Option(discord.Member), reason: discord.Option(str)):
-    if user == bot.user:
-        await ctx.respond("Hey! You can't do that...")
-    elif ctx.user.guild_permissions.ban_members:
-        await user.ban(reason=reason)
-        await ctx.respond(f"Banned {user.name} from {ctx.guild}!")
-    else:
-        await ctx.respond("You don't have the permissions to do that.", ephemeral=True)
-
-
-@ban.error
-async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
-    await ctx.respond(f"I couldn't ban that user. Check permissions. \n > ||ERROR: {error} ||", ephemeral=True)
-
-
-class unbanButton(Button):
-    def __init__(self, row, emoji, user, users, message):
-        super().__init__(style=discord.ButtonStyle.blurple, emoji=emoji, row=row)
-        self.users = users
-        self.user = user
-        self.message = message
-
-    async def callback(self, interaction):
-        if self.user == interaction.user:
-            self.view.disable_all_items()
-            await self.message.edit_original_response(view=self.view)
-            await interaction.response.send_message(f"Unbanning...")
-            for user in self.users:
-                await interaction.guild.unban(user)
-                await interaction.channel.send(f"Unbanned {user.name} from {interaction.guild.name}!")
-        else:
-            await interaction.response.send_message(f"Not your command. Try /bans")
-
-
-@bot.slash_command(name="bans", description="Let's take a look!")
-async def bans(ctx):
-    bansList = ""
-    index = 0
-    optionsList = []
-    banList2 = []
-    async for i in ctx.guild.bans():
-        index += 1
-        bansList += f"{index}: {i.user.name}"
-        bansList += "\n"
-        banList2.append(i.user)
-        optionsList.append(discord.SelectOption(label=i.user.name, description="Unban this user.", emoji="🔨"))
-
-    async def callback(interaction):
-        if interaction.user.guild_permissions.ban_members:
-
-            index = 0
-            selectValues = ""
-            for i in select.values:
-                index += 1
-                selectValues += f"{index}: {i}"
-                selectValues += "\n"
-            embed = discord.Embed(
-                title=f"Are you sure you want to unban these users?",
-                description=selectValues
-            )
-            message = await interaction.response.send_message(embed=embed)
-            view = View()
-            view.add_item(unbanButton(0, "✅", user=interaction.user, users=banList2, message=interaction))
-            await message.edit_original_response(view=view)
-        else:
-            await interaction.response.send_message("You don't have permission to do that!", ephemeral=True)
-
-    select = Select(min_values=1, max_values=len(optionsList), options=optionsList)
-    view = View()
-    view.add_item(select)
-    embed = discord.Embed(
-        title="Bans",
-        description=bansList,
-        color=discord.Color.random()
-    )
-    select.callback = callback
-    message = await ctx.respond(embed=embed)
-    await message.edit_original_response(view=view)
-
-
-@bans.error
-async def on_application_command_error(ctx: discord.ApplicationContext, error):
-    await ctx.respond(f"There are no bans, or I don't have permission. \n > ||ERROR: {error} ||", ephemeral=True)
-
-
 class settingsButton(Button):
-    def __init__(self, row, label, default, key, user):
+    def __init__(self, row, label, default, key, user, message):
         super().__init__(style=discord.ButtonStyle.blurple, label=label, row=row)
         self.default = default
         self.key = key
         self.user = user
+        self.message = message
 
     async def callback(self, interaction):
+        await interaction.response.defer()
         if interaction.user == self.user:
-            message = await interaction.response.send_message(self.key)
+            message = await interaction.channel.send(self.key)
             categories = interaction.guild.categories
             options_list = []
             selects = []
             index = 0
-            selects.append(Select(options=options_list))
+
             for category in categories:
                 for channel in category.channels:
                     index += 1
@@ -326,9 +261,11 @@ class settingsButton(Button):
                     else:
                         if str(channel.type) == "text":
                             options_list.append(discord.SelectOption(label=channel.name, emoji="📜"))
+            selects.append(Select(options=options_list))
             view = View()
 
             async def callback_select(i):
+                await i.response.defer()
                 if i.user == self.user:
                     selection = None
                     for select in selects:
@@ -342,7 +279,7 @@ class settingsButton(Button):
                         color=discord.Color.random()
                     )
                     await i.message.edit(content=None, view=None, embed=embed)
-                    await message.message.edit(view=self.view)
+                    await self.message.edit_original_response(view=None)
 
                     with open("settings.json", 'r') as file:
                         settings = json.load(file)
@@ -361,7 +298,7 @@ class settingsButton(Button):
             for select in selects:
                 select.callback = callback_select
                 view.add_item(select)
-            await message.edit_original_response(view=view)
+            await message.edit(view=view)
         else:
             await interaction.response.send_message("You don't have permission to do that!", ephemeral=True)
 
@@ -385,7 +322,7 @@ async def settings(ctx):
         index = 0
         for i in defaultSettingsList.keys():  # Create buttons for all settings
             index += 1
-            view.add_item(settingsButton(0, str(index), defaultSettingsList, i, ctx.user))
+            view.add_item(settingsButton(0, str(index), defaultSettingsList, i, ctx.user, message))
         await message.edit_original_response(view=view)  # Edit view into message
     else:
         await ctx.respond("You need administrator privileges to access this.", ephemeral=True)
@@ -423,14 +360,17 @@ async def randombobross(ctx):
 @bot.slash_command(name="randomvideofromchannel",
                    description="Get a random video from a channel!")
 async def randomvideofromchannel(ctx, url: discord.Option(str, description="Use a link to the channel!")):
-    soup = BeautifulSoup(requests.get(url).content, "html.parser")
-    data = json.loads(re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(
+    request = await sync_to_async(requests.get)(url)
+    soup = await sync_to_async(BeautifulSoup)(request.content, "html.parser")
+    soup_pretty = await sync_to_async(soup.prettify)()
+    re_search = await sync_to_async(re.search)(r"var ytInitialData = ({.*});", str(soup_pretty))
+    data = await sync_to_async(json.loads)(await sync_to_async(re_search.group)(
         1))  # https://www.youtube.com/watch?v=KcPimbou-kI
     channelUrl = str(data['header']['c4TabbedHeaderRenderer']['channelId'])
     channelName = str(data['header']['c4TabbedHeaderRenderer']['title'])
-    channel_url = feedparser.parse(
+    channel_url = await sync_to_async(feedparser.parse)(
         f"https://www.youtube.com/feeds/videos.xml?channel_id={channelUrl}")  # Get all the videos from bob ross from XML request
-    video = choice(
+    video = await sync_to_async(choice)(
         channel_url.entries)
     # The above comment is what I used to generate a random link
     embed = discord.Embed(
@@ -465,6 +405,7 @@ async def account_creation_date(ctx, member: discord.Member):
 
 @bot.slash_command(name="flip", description="Flip a coin!")
 async def flip(ctx):
+    await ctx.defer()
     randomNum = random.randint(0, 1)
     if randomNum == 0:
         results = "Heads!"
@@ -475,13 +416,15 @@ async def flip(ctx):
         colour=discord.Colour.random(),
         description=f"Results! \n {results}"
     )
-    await ctx.respond(embed=embed)
+    await ctx.channel.send(embed=embed)
+    await ctx.respond("Sent!")
 
 
 @bot.slash_command(name="dog", description="Random dog picture")
 async def dog(ctx):
+    await ctx.defer()
     dogList = []
-    breedTypeList = ["samoyed", "rottweiler", "golden", "pug", "schnauzer", "husky", "bernese", "hound", "terrier"]
+    breedTypeList = ["samoyed", "rottweiler", "golden", "pug", "schnauzer", "husky", "hound", "terrier", "mountain"]
     notWorkingList = ["https://images.dog.ceo/breeds/golden/caps.jpg", ")", "o"]
     for breed in breedTypeList:
         dogList.append(requests.get(f"https://dog.ceo/api/breed/{breed}/images").json()["message"])
@@ -489,6 +432,7 @@ async def dog(ctx):
     image = breedList[random.randint(0, len(breedList) - 1)]
     while (image in notWorkingList) or (not image.startswith("htt")):
         image = breedList[random.randint(0, len(breedList) - 1)]
+        print(image, breedList)
     print(image)
     for item in image.split("/"):
         if item in breedTypeList:
@@ -499,7 +443,78 @@ async def dog(ctx):
         description=f"[Cool dog image!]({image}) \n The dog is of the {breed} breed.",
     )
     embed.set_image(url=image)
+    await ctx.channel.send(embed=embed)
+    await ctx.respond("Sent!")
 
+
+@bot.slash_command(name="bible", description="Put in a bible verse!")
+async def bible(ctx, passage: discord.Option(str, description="Choose a passage or verse!")):
+    api = requests.get(f"https://bible-api.com/{passage}?translation=kjv&verse_numbers=true").json()
+    end_text = ""
+    SUP = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+    try:
+        for verse in api["verses"]:
+            end_text += str(verse["verse"]).translate(SUP) + verse["text"]
+        reference = api["reference"]
+        embed = discord.Embed(
+            title=f"Bible verse: {reference} KJV",
+            colour=discord.Colour.random(),
+            description=end_text
+        )
+        embed.set_author(name="Sent by: " + ctx.author.name)
+    except KeyError:
+        await ctx.respond(
+            "Invalid request. If you think this is a mistake, please contact us in the bot's discord server.",
+            ephemeral=True)
+    try:
+        await ctx.respond(embed=embed)
+    except discord.errors.HTTPException:
+        await ctx.respond(
+            "Sorry, this passage is too long to print. The max length is 4096 characters. OR, there is an unknown error. If you think this is a mistake, please contact us in the bot's discord server.",
+            ephemeral=True)
+
+
+@bot.slash_command(name="invite",
+                   description="Get the link to invite the bot to your server!")
+async def invite(ctx):
+    embed = discord.Embed(
+        title="Invite the bot!",
+        colour=discord.Colour.random(),
+        description=f"Thanks!",
+        url="https://discord.com/api/oauth2/authorize?client_id=1044320506943377439&permissions=3843929668855&scope=bot")
+    embed.set_image(url=bot.user.avatar.url)
+    await ctx.defer()
+    await ctx.channel.send(embed=embed)
+
+
+@bot.slash_command(name="bung", description="bung...")
+async def bung(ctx):
+    text = """
+```
+BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNGBUNG            BUNG    BUNGBUNGBUNG
+BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNG BUNG           BUNG    BUNG
+BUNG            BUNG    BUNG        BUNG    BUNG   BUNG         BUNG    BUNG
+BUNG            BUNG    BUNG        BUNG    BUNG      BUNG      BUNG    BUNG    BUNG
+BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNG        BUNG    BUNG    BUNG        BUNG
+BUNG            BUNG    BUNG        BUNG    BUNG          BUNG  BUNG    BUNG        BUNG
+BUNG            BUNG    BUNG        BUNG    BUNG            BUNGBUNG    BUNG        BUNG
+BUNGBUNGBUNGBUNG            BUNGBUNG        BUNG                BUNG    BUNGBUNGBUNGBUNG
+```
+    
+    """
+    await ctx.respond(text)
+
+
+@bot.slash_command(name="info", description="Get bot info!", guild_ids=testing_servers)
+async def info(ctx):
+    amount = 0
+    for i in bot.guilds:
+        amount += 1
+        print(i, i.member_count)
+    embed = discord.Embed(
+        description=f"I'm in {amount} servers!",
+        color=discord.Color.random()
+    )
     await ctx.respond(embed=embed)
 
 
