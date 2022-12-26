@@ -74,7 +74,7 @@ class TwentyFortyEight:
         if consoleOn:
             self.Start()
 
-    def Start(self):  # This is the main game loop function
+    async def Start(self):  # This is the main game loop function
         invalidAnswer = False
         controlFunctions = {"down": self.Down, "up": self.Up, "left": self.Left, "right": self.Right}
         while not self.dead and not invalidAnswer:
@@ -85,31 +85,31 @@ class TwentyFortyEight:
                 invalidAnswer = True
             else:
                 answerFunction = controlFunctions.get(answer.lower())
-                answerFunction()
+                await answerFunction()
             print(DecryptBoard(self.boardList))
             print(f"Score: {self.score}")
-            self.CheckDead()
+            await self.CheckDead()
         if invalidAnswer:
-            self.Start()
+            await self.Start()
         if self.dead:
             print(f"Game over! Final score: {self.score}")
 
-    def Down(self):
-        self.MoveTile((1, 0),
+    async def Down(self):
+        await self.MoveTile((1, 0),
                       self.boardList, True)
         # Moves tile down (note: tuple order is (y,x)) (Also note: down is 1 and up is -1)
 
-    def Right(self):
-        self.MoveTile((0, 1), self.boardList, True)
+    async def Right(self):
+        await self.MoveTile((0, 1), self.boardList, True)
         # Note that right is 1 and left is -1
 
-    def Left(self):
-        self.MoveTile((0, -1), self.boardList, True)
+    async def Left(self):
+        await self.MoveTile((0, -1), self.boardList, True)
 
-    def Up(self):
-        self.MoveTile((-1, 0), self.boardList, True)
+    async def Up(self):
+        await self.MoveTile((-1, 0), self.boardList, True)
 
-    def MoveTile(self, direction, boardList,
+    async def MoveTile(self, direction, boardList,
                  mainBoard: bool):  # main board is to check if the board is the main board. This is to check the scoring
         movedItems = 0  # calculated to create new tiles
         if direction[0] > 0 or direction[1] > 0:
@@ -195,22 +195,22 @@ class TwentyFortyEight:
             randomEmptyTile = GetEmptyTiles(boardList)[random.randrange(0, len(GetEmptyTiles(boardList)))]
             boardList[randomEmptyTile[0]][randomEmptyTile[1]] = "2"
 
-    def CheckDead(self):
+    async def CheckDead(self):
         newBoard = copy.deepcopy(self.boardList)  # copy of board to check if game is dead
         check = 0
-        self.MoveTile((1, 0), newBoard, False)  # check down
+        await self.MoveTile((1, 0), newBoard, False)  # check down
         if newBoard == self.boardList:
             check += 1
         newBoard = copy.deepcopy(self.boardList)  # copy of board to check if game is dead
-        self.MoveTile((0, 1), newBoard, False)  # check right
+        await self.MoveTile((0, 1), newBoard, False)  # check right
         if newBoard == self.boardList:
             check += 1
         newBoard = copy.deepcopy(self.boardList)  # copy of board to check if game is dead
-        self.MoveTile((-1, 0), newBoard, False)  # check up
+        await self.MoveTile((-1, 0), newBoard, False)  # check up
         if newBoard == self.boardList:
             check += 1
         newBoard = copy.deepcopy(self.boardList)  # copy of board to check if game is dead
-        self.MoveTile((0, -1), newBoard, False)  # check left
+        await self.MoveTile((0, -1), newBoard, False)  # check left
         if newBoard == self.boardList:
             check += 1
         if check == 4:

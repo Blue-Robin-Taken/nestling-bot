@@ -1,12 +1,7 @@
 import discord
-from discord import commands
 import requests
 from discord.ui import Button, View, Select
-import random
-import asyncio
-import twentyfortyeight
 import feedparser
-from discord.ext import commands
 import json
 import random
 from random import choice
@@ -16,6 +11,7 @@ from asgiref.sync import sync_to_async
 
 # Bot cogs
 import moderation
+from Fun import games
 
 bot = discord.Bot()
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -29,6 +25,8 @@ async def on_connect():
     bot.add_cog(moderation.warnscommand(bot))
     bot.add_cog(moderation.ban(bot))
     bot.add_cog(moderation.bans(bot))
+    bot.add_cog(games.twentyfortyeightcommand(bot))
+    bot.add_cog(games.eightball(bot))
     print("Connected!")
 
 
@@ -40,29 +38,6 @@ async def on_ready():
 @bot.slash_command(name='ping', description='Test if the bot is online!')
 async def ping(ctx):
     await ctx.respond('Pong!')
-
-
-@bot.slash_command(name="eightball", description="Fun 8ball command!")
-async def eightball(ctx, question: discord.Option(str, description="Ask me anything!")):
-    random.seed(str(ctx.user.id) + question)
-    responses = ["Maybe.", "I have no idea.", "I think so.", "Yes.", "Why would you ask that?", "No.", "Yes.",
-                 "Probably.", "Funny.", "Who are you again?", "When is lunch?", "Yes 1+1 is two. So, yes.",
-                 "Maybe go see a therapist.", "Lol.", "I wish.", "Imagine."]
-    random_self = random.randint(0, len(responses) - 1)
-
-    embed = discord.Embed(
-        color=discord.Color.red(),
-        title="Eightball",
-        description=f"""
-    **My answer**:
-    {responses[random_self]}
-
-    **You asked**:
-    {str(question)}
-
-    """
-    )
-    await ctx.respond(embed=embed)
 
 
 class approvebutton(Button):
@@ -178,60 +153,6 @@ async def announce(ctx, channel: discord.Option(str,
     view.add_item(AnnounceButton(0, "✅", channel, embed_check, message))
     view.add_item(AnnounceButton(0, "❌", channel, embed_check, message))
     await message.edit(view=view)
-
-
-class TwentyFortyEightButton(Button):
-    def __init__(self, row, emoji, game, user, color):
-        super().__init__(style=discord.ButtonStyle.blurple, emoji=emoji, row=row)
-        self.game = game
-        self.user = user
-        self.color = color
-
-    async def callback(self, interaction):
-        if self.user == interaction.user:
-            await interaction.response.defer()
-            if self.emoji.name == "▶":
-                self.game.Right()
-            elif self.emoji.name == "◀":
-                self.game.Left()
-            elif self.emoji.name == "🔼":
-                self.game.Up()
-            elif self.emoji.name == "🔽":
-                self.game.Down()
-            embed = discord.Embed(
-                title="2048",
-                description=twentyfortyeight.DecryptBoard(self.game.boardList),
-                colour=discord.Colour.random()
-            )
-            embed.set_author(name=self.user, icon_url=self.user.avatar.url)
-            embed.set_footer(text=f"Score: {self.game.score}")
-            await interaction.message.edit(
-                embed=embed)
-
-        else:
-            await interaction.response.send_message("This is not your game!", ephemeral=True)
-
-
-@bot.slash_command(name="2048", description="Play 2048 on Discord!")
-async def twentyfortyeightcommand(ctx):
-    game = twentyfortyeight.TwentyFortyEight(False)
-    string = twentyfortyeight.DecryptBoard(game.boardList)
-    embed = discord.Embed(
-        title="2048",
-        description=string,
-        colour=discord.Colour.random()
-    )
-    embed.set_author(name=ctx.user, icon_url=ctx.user.avatar.url)
-    embed.set_footer(text=f"Score: {game.score}")
-
-    message = await ctx.respond(embed=embed)
-    view = View(timeout=None)
-    view.add_item(TwentyFortyEightButton(0, "🔼", game, ctx.user, False))
-    view.add_item(TwentyFortyEightButton(0, "🔽", game, ctx.user, False))
-    view.add_item(TwentyFortyEightButton(0, "◀", game, ctx.user, False))
-    view.add_item(TwentyFortyEightButton(0, "▶", game, ctx.user, False))
-
-    await message.edit_original_response(view=view)
 
 
 class settingsButton(Button):
@@ -505,7 +426,7 @@ BUNGBUNGBUNGBUNG            BUNGBUNG        BUNG                BUNG    BUNGBUNG
     await ctx.respond(text)
 
 
-@bot.slash_command(name="info", description="Get bot info!", guild_ids=testing_servers)
+@bot.slash_command(name="info", description="Get bot info!")
 async def info(ctx):
     amount = 0
     for i in bot.guilds:
