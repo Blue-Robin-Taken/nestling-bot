@@ -12,22 +12,29 @@ from asgiref.sync import sync_to_async
 # Bot cogs
 import moderation
 from Fun import games
+from Fun import randomgames
+from Other import other
 
 bot = discord.Bot()
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
-
 # testing_servers = [1044711937956651089]
+async_thread_sense = False
+cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
+        games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo)
+
+
+def load_cogs():
+    for cog in cogs:
+        bot.add_cog(cog(bot))
+        print(cog)
+    print("Loaded cogs")
+
 
 @bot.event
 async def on_connect():
-    bot.add_cog(moderation.warncommand(bot))
-    bot.add_cog(moderation.warnscommand(bot))
-    bot.add_cog(moderation.ban(bot))
-    bot.add_cog(moderation.bans(bot))
-    bot.add_cog(games.twentyfortyeightcommand(bot))
-    bot.add_cog(games.eightball(bot))
     print("Connected!")
+    await bot.sync_commands()
 
 
 @bot.event
@@ -37,7 +44,7 @@ async def on_ready():
 
 @bot.slash_command(name='ping', description='Test if the bot is online!')
 async def ping(ctx):
-    await ctx.respond('Pong!')
+    await ctx.respond('Pong! (Run /botinfo for ping)')
 
 
 class approvebutton(Button):
@@ -76,7 +83,7 @@ class approvebutton(Button):
 
 
 @bot.slash_command(name="suggest",
-                   description="Suggest something in the art-suggestion channel!")
+                   description="Suggest something in the set suggestion channel!")
 async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!")):
     error = False
     embed = discord.Embed(
@@ -263,35 +270,34 @@ async def purge(ctx, limit: discord.Option(int)):
 
 @bot.slash_command(name="randombobross", description="Random bob ross video")
 async def randombobross(ctx):
-    channel_url = feedparser.parse(
+    channel_url = await sync_to_async(feedparser.parse, async_thread_sense)(
         "https://www.youtube.com/feeds/videos.xml?channel_id=UCxcnsr1R5Ge_fbTu5ajt8DQ")  # Get all the videos from bob ross from XML request
-    video = choice(
+    video = await sync_to_async(choice, async_thread_sense)(
         channel_url.entries)  # https://www.reddit.com/r/Python/comments/ccbswi/i_wrote_a_small_script_that_opens_a_random_video/
     # The above comment is what I used to generate a random link
     embed = discord.Embed(
         title="Random Bob Ross",
-        description=video.link,
+        # description=video.link,
         color=discord.Color.random()
     )
-
-    await ctx.respond(video.link)
-    await ctx.channel.send(embed=embed)
+    await ctx.channel.send(f"**Here's your link!** \n {video.link}")
+    # await ctx.respond(embed=embed)
 
 
 @bot.slash_command(name="randomvideofromchannel",
                    description="Get a random video from a channel!")
 async def randomvideofromchannel(ctx, url: discord.Option(str, description="Use a link to the channel!")):
-    request = await sync_to_async(requests.get)(url)
-    soup = await sync_to_async(BeautifulSoup)(request.content, "html.parser")
-    soup_pretty = await sync_to_async(soup.prettify)()
-    re_search = await sync_to_async(re.search)(r"var ytInitialData = ({.*});", str(soup_pretty))
-    data = await sync_to_async(json.loads)(await sync_to_async(re_search.group)(
+    request = await sync_to_async(requests.get, async_thread_sense)(url)
+    soup = await sync_to_async(BeautifulSoup, async_thread_sense)(request.content, "html.parser")
+    soup_pretty = await sync_to_async(soup.prettify, async_thread_sense)()
+    re_search = await sync_to_async(re.search, async_thread_sense)(r"var ytInitialData = ({.*});", str(soup_pretty))
+    data = await sync_to_async(json.loads, async_thread_sense)(await sync_to_async(re_search.group)(
         1))  # https://www.youtube.com/watch?v=KcPimbou-kI
     channelUrl = str(data['header']['c4TabbedHeaderRenderer']['channelId'])
     channelName = str(data['header']['c4TabbedHeaderRenderer']['title'])
-    channel_url = await sync_to_async(feedparser.parse)(
+    channel_url = await sync_to_async(feedparser.parse, async_thread_sense)(
         f"https://www.youtube.com/feeds/videos.xml?channel_id={channelUrl}")  # Get all the videos from bob ross from XML request
-    video = await sync_to_async(choice)(
+    video = await sync_to_async(choice, async_thread_sense)(
         channel_url.entries)
     # The above comment is what I used to generate a random link
     embed = discord.Embed(
@@ -346,9 +352,11 @@ async def dog(ctx):
     await ctx.defer()
     dogList = []
     breedTypeList = ["samoyed", "rottweiler", "golden", "pug", "schnauzer", "husky", "hound", "terrier", "mountain"]
-    notWorkingList = ["https://images.dog.ceo/breeds/golden/caps.jpg", ")", "o"]
+    notWorkingList = ["https://images.dog.ceo/breeds/golden/caps.jpg", ")", "a", "b", "c", "d", "e", "f", "g", "h", "i",
+                      "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "x", "y", "z"]
     for breed in breedTypeList:
-        dogList.append(requests.get(f"https://dog.ceo/api/breed/{breed}/images").json()["message"])
+        request = await sync_to_async(requests.get, False)(f"https://dog.ceo/api/breed/{breed}/images")
+        dogList.append(request.json()["message"])
     breedList = dogList[random.randint(0, len(dogList) - 1)]
     image = breedList[random.randint(0, len(breedList) - 1)]
     while (image in notWorkingList) or (not image.startswith("htt")):
@@ -408,35 +416,5 @@ async def invite(ctx):
     await ctx.channel.send(embed=embed)
 
 
-@bot.slash_command(name="bung", description="bung...")
-async def bung(ctx):
-    text = """
-```
-BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNGBUNG            BUNG    BUNGBUNGBUNG
-BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNG BUNG           BUNG    BUNG
-BUNG            BUNG    BUNG        BUNG    BUNG   BUNG         BUNG    BUNG
-BUNG            BUNG    BUNG        BUNG    BUNG      BUNG      BUNG    BUNG    BUNG
-BUNGBUNGBUNGBUNG        BUNG        BUNG    BUNG        BUNG    BUNG    BUNG        BUNG
-BUNG            BUNG    BUNG        BUNG    BUNG          BUNG  BUNG    BUNG        BUNG
-BUNG            BUNG    BUNG        BUNG    BUNG            BUNGBUNG    BUNG        BUNG
-BUNGBUNGBUNGBUNG            BUNGBUNG        BUNG                BUNG    BUNGBUNGBUNGBUNG
-```
-    
-    """
-    await ctx.respond(text)
-
-
-@bot.slash_command(name="info", description="Get bot info!")
-async def info(ctx):
-    amount = 0
-    for i in bot.guilds:
-        amount += 1
-        print(i, i.member_count)
-    embed = discord.Embed(
-        description=f"I'm in {amount} servers!",
-        color=discord.Color.random()
-    )
-    await ctx.respond(embed=embed)
-
-
-bot.run("MTA0NDMyMDUwNjk0MzM3NzQzOQ.GKrhD8.P2ggiWUov9lY9DHv6Gxc4scuyUtC6UeAIH09q8")
+load_cogs()  # Load all cogs into the bot
+bot.run("MTA0NDMyMDUwNjk0MzM3NzQzOQ.GKrhD8.P2ggiWUov9lY9DHv6Gxc4scuyUtC6UeAIH09q8")  # Run the bot and connect to discord

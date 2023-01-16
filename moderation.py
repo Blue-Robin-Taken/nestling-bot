@@ -10,7 +10,7 @@ class warncommand(discord.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(guild_ids=testing_servers, name="warn", description="Warn a user.")
+    @commands.slash_command(name="warn", description="Warn a user.")
     async def warn(self, ctx, member: discord.Option(discord.Member, description="What member do you want to warn?"),
                    reason: str):
         if ctx.author.guild_permissions.manage_guild:
@@ -46,7 +46,7 @@ class warnscommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(guild_ids=testing_servers, name="warns", description="See all warns")
+    @commands.slash_command(name="warns", description="See all warns")
     async def warns(self, ctx):
         with open("warns.json", "r") as f:
             text = json.load(f)
