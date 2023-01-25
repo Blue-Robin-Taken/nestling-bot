@@ -14,6 +14,7 @@ import moderation
 from Fun import games
 from Fun import randomgames
 from Other import other
+from Other import maths
 
 bot = discord.Bot()
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -21,7 +22,7 @@ testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 # testing_servers = [1044711937956651089]
 async_thread_sense = False
 cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
-        games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo)
+        games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote, maths.quadratic_formula)
 
 
 def load_cogs():
@@ -270,6 +271,7 @@ async def purge(ctx, limit: discord.Option(int)):
 
 @bot.slash_command(name="randombobross", description="Random bob ross video")
 async def randombobross(ctx):
+    await ctx.defer()
     channel_url = await sync_to_async(feedparser.parse, async_thread_sense)(
         "https://www.youtube.com/feeds/videos.xml?channel_id=UCxcnsr1R5Ge_fbTu5ajt8DQ")  # Get all the videos from bob ross from XML request
     video = await sync_to_async(choice, async_thread_sense)(
@@ -280,7 +282,7 @@ async def randombobross(ctx):
         # description=video.link,
         color=discord.Color.random()
     )
-    await ctx.channel.send(f"**Here's your link!** \n {video.link}")
+    await ctx.respond(f"**Here's your link!** \n {video.link}")
     # await ctx.respond(embed=embed)
 
 
@@ -347,18 +349,33 @@ async def flip(ctx):
     await ctx.respond("Sent!")
 
 
+@bot.slash_command(name="largetest",
+                   description="(Sorry, but only the owner of this bot can use this command (That's me))",
+                   guild_ids=testing_servers)
+async def largetest(ctx):
+    if ctx.author.id == 497930397985013781:
+        await ctx.respond("Lol you didn't set anything. ")
+    else:
+        await ctx.respond("Sorry, but only the owner of this bot can use this command (That's me!)")
+
+
 @bot.slash_command(name="dog", description="Random dog picture")
 async def dog(ctx):
     await ctx.defer()
     dogList = []
-    breedTypeList = ["samoyed", "rottweiler", "golden", "pug", "schnauzer", "husky", "hound", "terrier", "mountain"]
-    notWorkingList = ["https://images.dog.ceo/breeds/golden/caps.jpg", ")", "a", "b", "c", "d", "e", "f", "g", "h", "i",
+    breedList = None
+    breedTypeList = ["samoyed", "rottweiler", "pug", "schnauzer", "husky", "hound", "terrier", "mountain"]
+    notWorkingList = [")", "a", "b", "c", "d", "e", "f", "g", "h", "i",
                       "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "x", "y", "z"]
     for breed in breedTypeList:
         request = await sync_to_async(requests.get, False)(f"https://dog.ceo/api/breed/{breed}/images")
         dogList.append(request.json()["message"])
-    breedList = dogList[random.randint(0, len(dogList) - 1)]
-    image = breedList[random.randint(0, len(breedList) - 1)]
+    try:
+        breedList = dogList[random.randint(0, len(dogList) - 1)]
+        image = breedList[random.randint(0, len(breedList) - 1)]
+    except ValueError:
+        await ctx.channel.send(f"ERROR")
+        print(dogList)
     while (image in notWorkingList) or (not image.startswith("htt")):
         image = breedList[random.randint(0, len(breedList) - 1)]
         print(image, breedList)
@@ -413,8 +430,9 @@ async def invite(ctx):
         url="https://discord.com/api/oauth2/authorize?client_id=1044320506943377439&permissions=3843929668855&scope=bot")
     embed.set_image(url=bot.user.avatar.url)
     await ctx.defer()
-    await ctx.channel.send(embed=embed)
+    await ctx.respond(embed=embed)
 
 
 load_cogs()  # Load all cogs into the bot
-bot.run("MTA0NDMyMDUwNjk0MzM3NzQzOQ.GKrhD8.P2ggiWUov9lY9DHv6Gxc4scuyUtC6UeAIH09q8")  # Run the bot and connect to discord
+bot.run(
+    "MTA0NDMyMDUwNjk0MzM3NzQzOQ.GKrhD8.P2ggiWUov9lY9DHv6Gxc4scuyUtC6UeAIH09q8")  # Run the bot and connect to discord
