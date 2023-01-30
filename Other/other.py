@@ -60,8 +60,7 @@ class redbook(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name="hymn_redbook", description="Get a hymn from the redbook!",
-                            guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
+    @commands.slash_command(name="hymn_redbook", description="Get a hymn from the redbook!")
     async def random_hymn_redbook(self, ctx, number: int):
         song = None
         for i in os.listdir(os.path.relpath("Other/Song Lyrics")):
