@@ -55,6 +55,33 @@ class random_hymn_redbook(commands.Cog):
 
         await ctx.respond(embed=embed)
 
+
 class redbook(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.slash_command(name="hymn_redbook", description="Get a hymn from the redbook!",
+                            guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
+    async def random_hymn_redbook(self, ctx, number: int):
+        song = None
+        for i in os.listdir(os.path.relpath("Other/Song Lyrics")):
+            if i.startswith("#" + str(number) + " "):
+                song = i
+        if song is None:
+            embed = discord.Embed(
+                title = "Hymn not found!",
+                description="No song found! If you believe this is a mistake, please ask in our support server. [Here!](https://discord.gg/m4j6eEmSQA)",
+                color=discord.Color.random()
+            )
+            await ctx.respond(embed=embed)
+            return
+        with open(os.path.abspath("Other/Song Lyrics/" + song), "r", encoding="utf-8") as f:
+            title = song.replace(".txt", "")
+            content = f.read()
+        embed = discord.Embed(
+            title=title,
+            description=content,
+            color=discord.Color.random()
+        )
+
+        await ctx.respond(embed=embed)
