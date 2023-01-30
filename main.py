@@ -22,7 +22,7 @@ testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 # testing_servers = [1044711937956651089]
 async_thread_sense = False
 cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
-        games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote, maths.quadratic_formula)
+        games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote, maths.quadratic_formula, other.random_hymn_redbook)
 
 
 def load_cogs():

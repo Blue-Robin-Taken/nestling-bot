@@ -54,7 +54,7 @@ class twentyfortyeightcommand(commands.Cog):
         embed.set_footer(text=f"Score: {game.score}")
 
         message = await ctx.respond(embed=embed)
-        view = View(timeout=None)
+        view = View(timeout=300)
         view.add_item(TwentyFortyEightButton(0, "🔼", game, ctx.user, False))
         view.add_item(TwentyFortyEightButton(0, "🔽", game, ctx.user, False))
         view.add_item(TwentyFortyEightButton(0, "◀", game, ctx.user, False))
