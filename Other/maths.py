@@ -10,7 +10,7 @@ class quadratic_formula(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="quadratic_equation",
-                       description="Does the quadratic equation for you, instead of spending 5 mins with a calculator!")
+                            description="Does the quadratic equation for you, instead of spending 5 mins with a calculator!")
     async def quadratic_equation(self, ctx, a: int, b: int, c: int):
         def quadratic_formula(a, b, c):
             discriminant = ((b) ** 2) - (4 * a * c)
@@ -69,4 +69,21 @@ class quadratic_formula(commands.Cog):
                               Answer subtract: {quadratic_formula["answer_2"]}""")
 
         embed.add_field(name="Quadratic equation formula:", value="**ax^2 + bx + c = 0**")
+        await ctx.respond(embed=embed)
+
+
+class standard_to_slope(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.slash_command(name="standard_to_slope", description="Converts standard form to slope form (graphs)",
+                            guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
+    async def standard_to_slope(self, ctx, a: int, b: int, c: int):
+        steps = []
+        steps.append(f"{b}y = {a}x + ({c}) \n")
+        steps.append(f"y = ({a}x + ({c})) / {b} \n")
+        steps.append(f"y = ({a}x) / {b} + ({c}) / {b} \n")
+        steps.append(f"y = {a / b}x + ({c / b})")
+        embed = discord.Embed(color=discord.Color.random(), title="Standard to Slope",
+                              description="```" + "".join(steps) + "```")
         await ctx.respond(embed=embed)
