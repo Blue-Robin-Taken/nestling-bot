@@ -6,7 +6,10 @@ import random
 import math
 
 
-class superscript(commands.Cog):
+class other(commands.Cog):
+    other = SlashCommandGroup("other", "Commands that are of the other")
+    text_changing = other.create_subgroup("text_changing", "Changes the text of the inputted string")
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -18,15 +21,10 @@ class superscript(commands.Cog):
         res = x.maketrans(''.join(normal), ''.join(super_s))
         return x.translate(res)
 
-    @commands.slash_command(name="superscript", description="Convert a number or text to superscript.")
+    @text_changing.command(name="superscript", description="Convert a number or text to superscript.")
     async def superscript(self, ctx, text: str):
         embed = discord.Embed(title="Superscript", color=discord.Color.random(), description=self.get_super(text))
         await ctx.respond(embed=embed)
-
-
-class subscript(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
 
     @staticmethod
     def get_sub(
@@ -36,7 +34,7 @@ class subscript(commands.Cog):
         res = x.maketrans(''.join(normal), ''.join(sub_s))
         return x.translate(res)
 
-    @commands.slash_command(name="subscript", description="Convert a number or text")
+    @text_changing.command(name="subscript", description="Convert a number or text")
     async def subscript(self, ctx, text: str):
         embed = discord.Embed(title="Subscript", color=discord.Color.random(), description=self.get_sub(text))
         await ctx.respond(embed=embed)
@@ -146,7 +144,7 @@ class area_perimeter(commands.Cog):
     geometry_perimeter = geometry.create_subgroup("perimeter", "Get the perimeter of almost any shape!")
 
     @geometry_area.command(name="trapezoid_area", description="Calculate the area of a trapezoid",
-                            guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
+                           guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
     async def trapezoid_area(self, ctx, b1: int, b2: int, height: int):
         embed = discord.Embed(color=discord.Color.random(), title="Trapezoid Area", description=f"""The area of the trapezoid is 
         ```go\n {.5 * ((b1 + b2) * height)}```

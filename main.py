@@ -25,7 +25,7 @@ async_thread_sense = False
 cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.quadratic_formula, other.random_hymn_redbook, other.redbook, settings.Settings, maths.standard_to_slope,
-        maths.area_perimeter, maths.superscript, maths.subscript)
+        maths.area_perimeter, maths.other)
 
 
 def load_cogs():
@@ -295,7 +295,7 @@ async def dog(ctx):
     embed = discord.Embed(
         title="Random dog picture",
         colour=discord.Colour.random(),
-        description=f"[Cool dog image!]({image}) \n The dog is of the {image.split('/')[0]} breed.",
+        description=f"[Cool dog image!]({image}) \n The dog is of the {image.split('/')[4]} breed.",
     )
     embed.set_image(url=image)
     await ctx.channel.send(embed=embed)
