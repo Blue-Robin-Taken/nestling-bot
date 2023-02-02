@@ -179,38 +179,6 @@ async def purge(ctx, limit: discord.Option(int)):
             ephemeral=True)
 
 
-@bot.slash_command(name="randomvideofromchannel",
-                   description="Get a random video from a channel!")
-async def randomvideofromchannel(ctx, url: discord.Option(str, description="Use a link to the channel!")):
-    request = await sync_to_async(requests.get, async_thread_sense)(url)
-    soup = await sync_to_async(BeautifulSoup, async_thread_sense)(request.content, "html.parser")
-    soup_pretty = await sync_to_async(soup.prettify, async_thread_sense)()
-    re_search = await sync_to_async(re.search, async_thread_sense)(r"var ytInitialData = ({.*});", str(soup_pretty))
-    data = await sync_to_async(json.loads, async_thread_sense)(await sync_to_async(re_search.group)(
-        1))  # https://www.youtube.com/watch?v=KcPimbou-kI
-    channelUrl = str(data['header']['c4TabbedHeaderRenderer']['channelId'])
-    channelName = str(data['header']['c4TabbedHeaderRenderer']['title'])
-    channel_url = await sync_to_async(feedparser.parse, async_thread_sense)(
-        f"https://www.youtube.com/feeds/videos.xml?channel_id={channelUrl}")  # Get all the videos from bob ross from XML request
-    video = await sync_to_async(choice, async_thread_sense)(
-        channel_url.entries)
-    # The above comment is what I used to generate a random link
-    embed = discord.Embed(
-        title=f"Random video from {channelName}!",
-        description=video.link,
-        color=discord.Color.random()
-    )
-
-    await ctx.respond(video.link)
-    await ctx.channel.send(embed=embed)
-
-
-@randomvideofromchannel.error
-async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
-    await ctx.respond(f"I couldn't complete that request. Check perms, or change link. \n > ||ERROR: {error} ||",
-                      ephemeral=True)
-
-
 @bot.slash_command(name="doaflip", description="It says what it does...")
 async def doaflip(ctx):
     embed = discord.Embed(
