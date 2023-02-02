@@ -13,6 +13,7 @@ from asgiref.sync import sync_to_async
 import moderation
 from Fun import games
 from Fun import randomgames
+from Fun import requestsfun
 from Other import other
 from Other import maths
 from Other import settings
@@ -24,8 +25,8 @@ testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 async_thread_sense = False
 cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
-        maths.quadratic_formula, other.random_hymn_redbook, other.redbook, settings.Settings, maths.standard_to_slope,
-        maths.area_perimeter, maths.other)
+        maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
+        maths.geometry, maths.other, requestsfun.testYoutube)
 
 
 def load_cogs():
@@ -176,23 +177,6 @@ async def purge(ctx, limit: discord.Option(int)):
         await ctx.respond(
             f"You do not have permission to purge messages. You need to have permission to manage messages.",
             ephemeral=True)
-
-
-@bot.slash_command(name="randombobross", description="Random bob ross video")
-async def randombobross(ctx):
-    await ctx.defer()
-    channel_url = await sync_to_async(feedparser.parse, async_thread_sense)(
-        "https://www.youtube.com/feeds/videos.xml?channel_id=UCxcnsr1R5Ge_fbTu5ajt8DQ")  # Get all the videos from bob ross from XML request
-    video = await sync_to_async(choice, async_thread_sense)(
-        channel_url.entries)  # https://www.reddit.com/r/Python/comments/ccbswi/i_wrote_a_small_script_that_opens_a_random_video/
-    # The above comment is what I used to generate a random link
-    embed = discord.Embed(
-        title="Random Bob Ross",
-        # description=video.link,
-        color=discord.Color.random()
-    )
-    await ctx.respond(f"**Here's your link!** \n {video.link}")
-    # await ctx.respond(embed=embed)
 
 
 @bot.slash_command(name="randomvideofromchannel",

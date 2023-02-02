@@ -17,7 +17,7 @@ class botinfo(commands.Cog):
             amount += 1
         embed = discord.Embed(
             title="Bot Info",
-            description=f"I'm in {amount} servers! \n I also have a support server! [Join here!](https://discord.gg/m4j6eEmSQA) \n My ping is: **{round(self.bot.latency * 1000, 1)}** ms",
+            description=f"I'm in {amount} servers! \n I also have a support server! [Join here!](https://discord.gg/m4j6eEmSQA) \n I have a documentation page: [here](https://nestlingbot.gitbook.io/nestling-bot-documentation/) \n My ping is: **{round(self.bot.latency * 1000, 1)}** ms",
             color=discord.Color.random()
         )
         await ctx.respond(embed=embed)

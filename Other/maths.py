@@ -41,13 +41,14 @@ class other(commands.Cog):
 
 
 # --- Algebra ---
+class algebra(commands.Cog):
+    algebra = SlashCommandGroup("algebra", "Algebra Commands")
 
-class quadratic_formula(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name="quadratic_equation",
-                            description="Does the quadratic equation for you, instead of spending 5 mins with a calculator!")
+    @algebra.command(name="quadratic_equation",
+                     description="Does the quadratic equation for you, instead of spending 5 mins with a calculator!")
     async def quadratic_equation(self, ctx, a: int, b: int, c: int):
         def quadratic_formula(a, b, c):
             discriminant = ((b) ** 2) - (4 * a * c)
@@ -108,41 +109,51 @@ class quadratic_formula(commands.Cog):
         embed.add_field(name="Quadratic equation formula:", value="**ax^2 + bx + c = 0**")
         await ctx.respond(embed=embed)
 
-
-class standard_to_slope(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.slash_command(name="standard_to_slope", description="Converts standard form to slope form (graphs)")
+    @algebra.command(name="standard_to_slope", description="Converts standard form to slope form (graphs)")
     async def standard_to_slope(self, ctx, a: int, b: int, c: int):
-        steps = [f"{b}y = {a}x + ({c}) \n",
+        steps = [f"{a}x + {b}y = {c} \n",
+                 f"{b}y = {-a}x + ({c}) \n",
                  f"y = ({-a}x + ({c})) / {b} \n",
                  f"y = ({-a}x / {b}) + ({c} / {b}) \n",
                  f"y = {-a / b}x + ({c / b})"]
         embed = discord.Embed(color=discord.Color.random(), title="Standard to Slope",
-                              description="```go\n" + "".join(steps) + "```"
+                              description="Steps\n```go\n" + "".join(steps) + "```"
                                           + f"""
                               Base equation 
                               `y = mx + b`
                               
                               Full equation 
-                              `y = {-a / b}x + {c / b}`""")
+                              `y = {-a / b}x + {c / b}`""".replace("    ", ""))
+        await ctx.respond(embed=embed)
+
+    @algebra.command(name="slope_to_standard", description="Converts slope form to standard form")
+    async def slope_to_standard(self, ctx, m: int, b: int):
+        steps = [f"y = {m}x + ({b})\n",
+                 f"{-m}x + y = {b}\n"]
+        embed = discord.Embed(color=discord.Color.random(), title="Slope to Standard",
+                              description="Steps\n```go\n" + "".join(steps) + "```"
+                                          + f"""
+                              Base equation 
+                              `ax + by = c`
+
+                              Full equation 
+                              `y = {-m}x + y = {b}`""".replace("    ", ""))
         await ctx.respond(embed=embed)
 
 
 # --- Geometry ---
 
-# -- Area and Perimeter --
 
-
-class area_perimeter(commands.Cog):
+class geometry(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     geometry = SlashCommandGroup("geometry", "For most geometry related math equations. Good luck!")
-    geometry_area = geometry.create_subgroup("area", "Get the area of almost any shape!")
-    geometry_perimeter = geometry.create_subgroup("perimeter", "Get the perimeter of almost any shape!")
+    geometry_area = geometry.create_subgroup("area", "Get the area of almost any shape.")
+    geometry_perimeter = geometry.create_subgroup("perimeter", "Get the perimeter of almost any shape.")
+    geometry_surface_area = geometry.create_subgroup("surface_area", "Get the surface area of a shape.")
 
+    # -- Area and Perimeter --
     @geometry_area.command(name="trapezoid_area", description="Calculate the area of a trapezoid",
                            guild_ids=[1038227549198753862, 1044711937956651089, 821083375728853043])
     async def trapezoid_area(self, ctx, b1: int, b2: int, height: int):
@@ -187,4 +198,22 @@ class area_perimeter(commands.Cog):
         
         Base equation 
         ``` 2πr² = circumference```""")
+        await ctx.respond(embed=embed)
+
+    # -- Surface Area --
+    @geometry_surface_area.command(name="cube", description="Get the surface area of a cube.")
+    async def cube(self, ctx, edge: int):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title="Cube Surface Area",
+            description=f"""The surface area of the cube is \n ```go\n{6 * (edge ** 2)}``` \n \n Base Equation ```go\n6a²```"""
+        )
+        await ctx.respond(embed=embed)
+
+    @geometry_surface_area.command(name="cylinder", description="Get the surface area of a cylinder.")
+    async def cylinder(self, ctx, radius: int, height: int):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title="Cylinder Surface Area",
+            description=f"""The surface area of the cylinder is \n ```go\n{2 * math.pi * radius * height + (2 * math.pi * (radius ** 2))}``` \n \n Base Equation ```go\n2πrh + 2πr²```""")
         await ctx.respond(embed=embed)
