@@ -5,6 +5,7 @@ from discord.commands import SlashCommandGroup
 import requests
 import random
 import math
+import json
 
 
 class testYoutube(commands.Cog):
@@ -12,10 +13,12 @@ class testYoutube(commands.Cog):
         self.bot = bot
         self.key = "AIzaSyC0QBEb_cSWCqOO8rbPG6t7edN-sFugslQ"
 
-    async def randomvideoerr(self, ctx):
+    @staticmethod
+    async def randomvideoerr(ctx):
         await ctx.respond(
             f"I couldn't complete that request. Check perms, or change link.",
             ephemeral=True)
+
     @commands.slash_command(name="randomvideofromchannel")
     async def randomvideofromchannel(self, ctx, url: str):
         try:
@@ -46,7 +49,7 @@ class testYoutube(commands.Cog):
             response = requests.get(search_url)
             channel_id = response.json()['items'][0]['id']['channelId']
 
-        url = f"https://www.googleapis.com/youtube/v3/search?key={self.key}&channelId={channel_id}&part=snippet,id&order=date&maxResults=10000&type=video"
+        url = f"https://www.googleapis.com/youtube/v3/search?key={self.key}&channelId={channel_id}&part=snippet,id&order=date&maxResults=100&type=video"
         response = requests.get(url)
         data = response.json()
         data_again = random.choice(data['items'])['id']
@@ -59,15 +62,14 @@ class testYoutube(commands.Cog):
         await ctx.respond(send_url)
 
     @randomvideofromchannel.error
-    async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
+    async def on_application_command_error(self, ctx: discord.ApplicationContext, error: discord.DiscordException):
         await ctx.respond(f"I couldn't complete that request. Check perms, or change link. \n > ||ERROR: {error} ||",
                           ephemeral=True)
 
     @commands.slash_command(name="randombobross")
     async def randombobross(self, ctx):
-        url = f"https://www.googleapis.com/youtube/v3/search?key={self.key}&channelId=UCxcnsr1R5Ge_fbTu5ajt8DQ&part=snippet,id&order=date&maxResults=10000&type=video"
-        response = requests.get(url)
-        data = response.json()
+        with open("Fun/data/bobross.json", "r") as f:
+            data = json.load(f)
         data_again = random.choice(data['items'])['id']
         send_url = "ERROR"
         try:

@@ -26,7 +26,7 @@ async_thread_sense = False
 cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
-        maths.geometry, maths.other, requestsfun.testYoutube)
+        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji)
 
 
 def load_cogs():
@@ -38,8 +38,14 @@ def load_cogs():
 
 @bot.event
 async def on_connect():
-    print("Connected!")
     await bot.sync_commands()
+    print("Connected!")
+    url = f"https://www.googleapis.com/youtube/v3/search?key=AIzaSyC0QBEb_cSWCqOO8rbPG6t7edN-sFugslQ&channelId=UCxcnsr1R5Ge_fbTu5ajt8DQ&part=snippet,id&order=date&maxResults=100&type=video"
+    data = requests.get(url).json()
+    with open("Fun/data/bobross.json", "w") as f:
+        json.dump(data, f, indent=4)
+        f.close()
+    print('Dumped data')
 
 
 @bot.event
