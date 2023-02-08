@@ -1,13 +1,81 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "xCL1X8tg0zycL1ICdZd-HhAjg5g",
+    "etag": "1ebSRka6I9Nr4kvOAWF2B_Xh3JE",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
-        "totalResults": 590,
+        "totalResults": 596,
         "resultsPerPage": 50
     },
     "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "mwZUoC5VxDrpoO2vkN7Y6IjaEc0",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "jM_68S9fVlI"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-03T17:30:07Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;if I was in a place like this I&#39;d want to build a little cabin&quot;",
+                "description": "\"Now, if I was in a place like this I'd want to build a little cabin out here. So let's have some fun today and build us a happy, little ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/jM_68S9fVlI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/jM_68S9fVlI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/jM_68S9fVlI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-03T17:30:07Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "d6dqpPDWMA6xNO71XXP3GscHHpo",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "407zZS8Y-Ac"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-03T16:00:11Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "The Man Who Made It Happen| Episode #11 | The Joy of Bob Ross - A Happy Little Podcast",
+                "description": "Bob Ross knocks on the door of a happy little house in Muncie, Indiana. The man who answers helps him create public television ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/407zZS8Y-Ac/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/407zZS8Y-Ac/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/407zZS8Y-Ac/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-03T16:00:11Z"
+            }
+        },
         {
             "kind": "youtube#searchResult",
             "etag": "L8uUYnNLTIQnD5r8jroY3pHKmo8",
@@ -40,6 +108,40 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2023-02-01T17:30:04Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "7S4fcFQcOChsZwlyLzwic7Yt7uk",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "l1bN46l88Xg"
+            },
+            "snippet": {
+                "publishedAt": "2023-01-30T16:56:38Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "Weekend Marathon! Fridays at 12PM ET.",
+                "description": "bob !cabin !paintlikebobross Bob Ross Weekend Marathons begin every Friday at 12PM ET. Streaming this weekend: Season 5 ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-01-30T16:56:38Z"
             }
         },
         {
@@ -1604,108 +1706,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2022-09-16T18:00:11Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "1DIlfUlSzSiRuAaP9Yc45D2Q2g8",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "fZ4AaQPerns"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-14T18:30:43Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;Grab you a canvas and some paint, and jump up here and do it. And it&#39;s fun.&quot;",
-                "description": "\"You can do it. You really can do it. There's no big secrets here. We'll show you how to do it. All you need is just to grab you a ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/fZ4AaQPerns/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/fZ4AaQPerns/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/fZ4AaQPerns/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-14T18:30:43Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "BwfM-Fz7ayY-QMaPlnvU-jRgHgg",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "iwTkjt2L_ac"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-12T18:30:40Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;Squirrel&#39;s got to have a little place to play.&quot;",
-                "description": "\"Maybe, maybe, maybe, maybe there's a nice tree that lives right here. Let's just drop him in. Just a nice little tree growing up right ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/iwTkjt2L_ac/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/iwTkjt2L_ac/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/iwTkjt2L_ac/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-12T18:30:40Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "VIEHVKZVngBhKxirDmIFN17ScJ0",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "UbOe3fGNnSI"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-05T21:30:01Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;That&#39;s what my dog says is &#39;rough.&#39;&quot;",
-                "description": "\"There. Don't want to over-blend this. I want to leave it sort of rough and ragged. That's what my dog says is \"rough.\" That's what ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/UbOe3fGNnSI/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/UbOe3fGNnSI/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/UbOe3fGNnSI/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-05T21:30:01Z"
             }
         }
     ]

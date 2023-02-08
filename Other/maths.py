@@ -4,6 +4,9 @@ from discord.ext import commands
 from discord.commands import SlashCommandGroup
 import random
 import math
+import plotly.express as px
+import pandas as pd
+import io
 
 
 class other(commands.Cog):
@@ -43,6 +46,7 @@ class other(commands.Cog):
 # --- Algebra ---
 class algebra(commands.Cog):
     algebra = SlashCommandGroup("algebra", "Algebra Commands")
+    graphing = algebra.create_subgroup("graphing", "Graphing Commands")
 
     def __init__(self, bot):
         self.bot = bot
@@ -140,6 +144,31 @@ class algebra(commands.Cog):
                               `y = {-m}x + y = {b}`""".replace("    ", ""))
         await ctx.respond(embed=embed)
 
+    @graphing.command(name="slope_graph",
+                      description="Creates a slope graph out of slope intercept form.")
+    async def slope_graph(self, ctx, m: int, b: int, length: discord.Option(int, default=100, max_value=500, min_value=0)):
+        if length > 500:
+            await ctx.respond(embed=discord.Embed(title="Error", description="Length must be less than 500."))
+            return
+        data_x = []
+        data_y = []
+        for i in range(length):
+            data_x.append(i)
+            data_y.append(m * i + b)
+        df = pd.DataFrame(dict(
+            x=data_x,
+            y=data_y
+        ))
+
+        fig = px.line(df, x="x", y="y", title="Slope Graph")
+
+        with io.BytesIO() as image_binary:  # https://stackoverflow.com/questions/63209888/send-pillow-image-on-discord-without-saving-the-image
+            fig.write_image(image_binary, 'PNG')
+            image_binary.seek(0)
+            embed = discord.Embed(color=discord.Color.random(), title=f"Slope Graph",)
+            await ctx.respond(embed=embed, file=discord.File(fp=image_binary, filename='image.png'))
+            image_binary.close()
+
 
 # --- Geometry ---
 
@@ -201,8 +230,8 @@ class geometry(commands.Cog):
         await ctx.respond(embed=embed)
 
     # -- Surface Area --
-    @geometry_surface_area.command(name="cube", description="Get the surface area of a cube.")
-    async def cube(self, ctx, edge: int):
+    @geometry_surface_area.command(name="cube_area", description="Get the surface area of a cube.")
+    async def cube_area(self, ctx, edge: int):
         embed = discord.Embed(
             color=discord.Color.random(),
             title="Cube Surface Area",
@@ -210,10 +239,27 @@ class geometry(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
-    @geometry_surface_area.command(name="cylinder", description="Get the surface area of a cylinder.")
-    async def cylinder(self, ctx, radius: int, height: int):
+    @geometry_surface_area.command(name="cylinder_area", description="Get the surface area of a cylinder.")
+    async def cylinder_area(self, ctx, radius: int, height: int):
         embed = discord.Embed(
             color=discord.Color.random(),
             title="Cylinder Surface Area",
             description=f"""The surface area of the cylinder is \n ```go\n{2 * math.pi * radius * height + (2 * math.pi * (radius ** 2))}``` \n \n Base Equation ```go\n2πrh + 2πr²```""")
+        await ctx.respond(embed=embed)
+
+    @geometry_surface_area.command(name="cone_area", description="Get the surface area of a cone.")
+    async def cone_area(self, ctx, radius: int, height: int):
+        slant = math.sqrt((height ** 2) + (radius ** 2))
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title="Cone Surface Area",
+            description=f"""The slant height of the cone is ```go\n{slant}```\n The surface area of the cone is ```go\n{math.pi * (radius ** 2) + math.pi * radius * slant}``` \n \n Base Equation ```go\nπrl+πr2```""")
+        await ctx.respond(embed=embed)
+
+    @geometry_surface_area.command(name="sphere_area", description="Get the surface area of a sphere.")
+    async def sphere_area(self, ctx, radius: int):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title="Sphere Surface Area",
+            description=f"""The surface area of the sphere is \n ```go\n{4 * math.pi * (radius ** 2)}``` \n \n Base Equation ```go\n4πr²```""")
         await ctx.respond(embed=embed)
