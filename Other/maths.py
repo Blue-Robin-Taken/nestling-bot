@@ -146,10 +146,8 @@ class algebra(commands.Cog):
 
     @graphing.command(name="slope_graph",
                       description="Creates a slope graph out of slope intercept form.")
-    async def slope_graph(self, ctx, m: int, b: int, length: discord.Option(int, default=100, max_value=500, min_value=0)):
-        if length > 500:
-            await ctx.respond(embed=discord.Embed(title="Error", description="Length must be less than 500."))
-            return
+    async def slope_graph(self, ctx, m: int, b: int,
+                          length: discord.Option(int, default=100, max_value=500, min_value=0)):
         data_x = []
         data_y = []
         for i in range(length):
@@ -165,7 +163,30 @@ class algebra(commands.Cog):
         with io.BytesIO() as image_binary:  # https://stackoverflow.com/questions/63209888/send-pillow-image-on-discord-without-saving-the-image
             fig.write_image(image_binary, 'PNG')
             image_binary.seek(0)
-            embed = discord.Embed(color=discord.Color.random(), title=f"Slope Graph",)
+            embed = discord.Embed(color=discord.Color.random(), title=f"Slope Graph", )
+            await ctx.respond(embed=embed, file=discord.File(fp=image_binary, filename='image.png'))
+            image_binary.close()
+
+    @graphing.command(name="quadratic_graph", description="Creates a quadratic graph out of the quadratic equation.")
+    async def quadratic_graph(self, ctx, a: int, b: int, c: int,
+                              length: discord.Option(int, default=100, max_value=500, min_value=0)):
+        data_x = []
+        data_y = []
+        for i in range(-length, length, 1):
+            data_x.append(i)
+            data_y.append((a * (i ** 2)) + (b * i) + c)
+
+        df = pd.DataFrame(dict(
+            x=data_x,
+            y=data_y
+        ))
+
+        fig = px.line(df, x="x", y="y", title="Quadratic Graph")
+
+        with io.BytesIO() as image_binary:  # https://stackoverflow.com/questions/63209888/send-pillow-image-on-discord-without-saving-the-image
+            fig.write_image(image_binary, 'PNG')
+            image_binary.seek(0)
+            embed = discord.Embed(color=discord.Color.random(), title=f"Quadratic Graph", )
             await ctx.respond(embed=embed, file=discord.File(fp=image_binary, filename='image.png'))
             image_binary.close()
 
