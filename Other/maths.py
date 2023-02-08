@@ -7,6 +7,7 @@ import math
 import plotly.express as px
 import pandas as pd
 import io
+import kaleido
 
 
 class other(commands.Cog):
