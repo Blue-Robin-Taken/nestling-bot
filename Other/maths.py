@@ -48,15 +48,33 @@ class other(commands.Cog):
 class algebra(commands.Cog):
     algebra = SlashCommandGroup("algebra", "Algebra Commands")
     graphing = algebra.create_subgroup("graphing", "Graphing Commands")
+    fractions = algebra.create_subgroup("fractions", "Fractions Commands")
 
     def __init__(self, bot):
         self.bot = bot
+
+    @fractions.command(name="simplify",
+                      description="simplifies a fraction")
+    async def simplify(self, ctx, numerator: int, denominator: int):
+        primes = [2, 3, 5, 7, 11, 13]
+        checks = 0
+        while checks < 6:
+            for i in primes:
+                if numerator % i == 0 and denominator % i == 0:
+                    numerator /= i
+                    denominator /= i
+                    continue
+                else:
+                    checks += 1
+        embed = discord.Embed(title="Simplify", color=discord.Color.random(),
+                              description=f"The fraction is: ```go\n{numerator}/{denominator}```")
+        await ctx.respond(embed=embed)
 
     @algebra.command(name="quadratic_equation",
                      description="Does the quadratic equation for you, instead of spending 5 mins with a calculator!")
     async def quadratic_equation(self, ctx, a: int, b: int, c: int):
         def quadratic_formula(a, b, c):
-            discriminant = ((b) ** 2) - (4 * a * c)
+            discriminant = (b ** 2) - (4 * a * c)
 
             answer_fraction_1 = str(-b) + '+' + "Sqrt(" + str(discriminant) + ")" + "/" + str((2 * a))
             answer_fraction_2 = str(-b) + '-' + "Sqrt(" + str(discriminant) + ")" + "/" + str((2 * a))
