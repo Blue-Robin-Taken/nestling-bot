@@ -60,14 +60,16 @@ class emoji(commands.Cog):
             "7": ":seven:",
             "8": ":eight:",
             "9": ":nine:",
-            "10": ":keycap_ten:"
+            "10": ":keycap_ten:",
+            "?": ":question:",
+            "!": ":exclamation:",
         }
         for letter in list(text):
-            if letter in l:
-                full_string += ":regional_indicator_" + letter.lower() + ":"
+            if letter.lower() in l:
+                full_string += ":regional_indicator_" + letter.lower() + ": "
             elif letter in n:
-                full_string += n[letter]
+                full_string += " " + n[letter] + " "
             else:
                 full_string += letter
-        embed = discord.Embed(title="Text to Emoji", color=discord.Color.random(), description=full_string)
+        embed = discord.Embed(title="Text to Emoji", color=discord.Color.random(), description=full_string + f'\n ```{full_string}```')
         await ctx.respond(embed=embed)
