@@ -2,17 +2,24 @@ import discord
 from discord.ui import View, Select, Button
 from discord.ext import commands
 import json
+import pymongo
 
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
+client = pymongo.MongoClient(
+    "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+db = client.moderation
 
-class warncommand(discord.Cog):
+
+class warning(discord.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # noinspection PyUnresolvedReferences
     @commands.slash_command(name="warn", description="Warn a user.")
     async def warn(self, ctx, member: discord.Option(discord.Member, description="What member do you want to warn?"),
                    reason: str):
+        coll = db.warns
         if ctx.author.guild_permissions.manage_guild:
             embed = discord.Embed(
                 title=f"{ctx.author.name} warned you",
@@ -20,55 +27,56 @@ class warncommand(discord.Cog):
                 description=f"{member.mention} \n Reason is: {reason}",
             )
             await ctx.respond(embed=embed)
-
-            with open("warns.json", "r") as f:
-                text = json.load(f)
-                guild_id = str(ctx.guild.id)
-                member_id = str(member.id)
-                if str(guild_id) in text.keys():
-                    if str(member_id) in text[guild_id].keys():
-                        print('test')
-                        text[guild_id][member_id] = str(int(text[guild_id][member_id]) + 1)
-                    else:
-                        text[guild_id][member_id] = "1"
-
-                else:
-                    print('test1')
-                    text[guild_id] = {member_id: "1"}
-            print(text)
-            with open("warns.json", "w") as f:
-                json.dump(text, f)
+            try:
+                coll.insert_one({"_id": {"guild": ctx.guild.id}, str(member.id): 1})
+            except pymongo.errors.DuplicateKeyError:
+                coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): 1}})
         else:
             await ctx.respond("You don't have permission to do that.", ephemeral=True)
 
-
-class warnscommand(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
     @commands.slash_command(name="warns", description="See all warns")
     async def warns(self, ctx):
-        with open("warns.json", "r") as f:
-            text = json.load(f)
-
-            if str(ctx.guild.id) in text.keys():
-                userText = ""
-                for user in text[str(ctx.guild.id)].keys():
-                    print(user)
-                    user_name = await self.bot.fetch_user(int(user))
-                    userText += f"{user_name} has {text[str(ctx.guild.id)][str(user)]} warn(s). \n"
+        coll = db.warns
+        if not list(coll.find({"_id": {'guild': ctx.guild.id}})) == []:
+            warns = list(coll.find({"_id": {'guild': ctx.guild.id}}))
+            userText = ""
+            print(warns)
+            for user in warns[0].keys():
+                print(user)
+                if user != "_id":
+                    user_name = await self.bot.fetch_user(user)
+                    print(user_name)
+                else:
+                    continue
+                warn_amount = warns[0][str(user)]
+                userText += f"{user_name} has {warn_amount} warn(s). \n"
+            if userText != "":
                 embed = discord.Embed(
                     title=f"Warns for {ctx.guild.name}",
                     colour=discord.Colour.random(),
                     description=userText,
                 )
+                await ctx.respond(embed=embed)
             else:
-                embed = discord.Embed(
-                    title=f"Warns for {ctx.guild.name}",
-                    colour=discord.Colour.random(),
-                    description=f"There are no warns for this server."
-                )
-            await ctx.respond(embed=embed)
+                await ctx.respond("There are no warns in this server.", ephemeral=True)
+        else:
+            await ctx.respond("There are no warns in this server.", ephemeral=True)
+
+    @commands.slash_command(name="unwarn", description="Unwarn a user.")
+    async def unwarn(self, ctx, member: discord.Option(discord.Member),
+                     amount: discord.Option(int, min_value=1, default=1)):
+        coll = db.warns
+        if not coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)}) is None:
+            if list(coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)})):
+                coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): -amount}})
+                print(list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0])
+                if list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0][str(member.id)] < 1:
+                    coll.delete_one(list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0])
+                await ctx.respond(f"{member.mention} has been unwarned.")
+            else:
+                await ctx.respond(f"{member.mention} has been unwarned.")
+        else:
+            await ctx.respond(f"{member.mention} has no warns", ephemeral=True)
 
 
 class ban(commands.Cog):
@@ -146,7 +154,12 @@ class bans(commands.Cog):
             else:
                 await interaction.response.send_message("You don't have permission to do that!", ephemeral=True)
 
-        select = Select(min_values=1, max_values=len(optionsList), options=optionsList)
+        try:
+            select = Select(min_values=1, max_values=len(optionsList), options=optionsList)
+        except ValueError as error:
+            await ctx.respond(f"There are no bans, or I don't have permission. \n > ||ERROR: {error} ||",
+                              ephemeral=True)
+            return
         view = View()
         view.add_item(select)
         embed = discord.Embed(

@@ -1,13 +1,115 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "1ebSRka6I9Nr4kvOAWF2B_Xh3JE",
+    "etag": "v5iqu5FvKH1m_8Yc1u0FnUA-uys",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
-        "totalResults": 596,
+        "totalResults": 597,
         "resultsPerPage": 50
     },
     "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "TBt9eS3ThoqTTNJlAbzcdWPxGig",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "Df9nIrp75mI"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-10T22:30:03Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;I like all those little creatures. They&#39;re my friends&quot;",
+                "description": "\"Boy, these are some nice woods back here. This is where little bunny rabbit lives back here, and the squirrel, all them little fellows ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/Df9nIrp75mI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/Df9nIrp75mI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/Df9nIrp75mI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-10T22:30:03Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "65Dlk0jcyP0S9GT1jftpGa8yQ4g",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "1oy0mjRyDQg"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-08T22:30:00Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;He&#39;s a strong little tree, and he&#39;s got a friend&quot;",
+                "description": "\"He's a strong little tree, and he's got a friend, right there. And, you know, if you have two trees there, there'll probably be a third ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/1oy0mjRyDQg/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/1oy0mjRyDQg/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/1oy0mjRyDQg/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-08T22:30:00Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "IFgZAoY3EDnVPxnx9HOoLvCrk0A",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "2kILSS2DDaQ"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-06T17:04:56Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "Weekend Marathon! Fridays at 12PM ET.",
+                "description": "bob !cabin !paintlikebobross Bob Ross Weekend Marathons begin every Friday at 12PM ET. Streaming this weekend: Season 9 ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/default_live.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/mqdefault_live.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/hqdefault_live.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "live",
+                "publishTime": "2023-02-06T17:04:56Z"
+            }
+        },
         {
             "kind": "youtube#searchResult",
             "etag": "mwZUoC5VxDrpoO2vkN7Y6IjaEc0",
@@ -112,40 +214,6 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "7S4fcFQcOChsZwlyLzwic7Yt7uk",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "l1bN46l88Xg"
-            },
-            "snippet": {
-                "publishedAt": "2023-01-30T16:56:38Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Weekend Marathon! Fridays at 12PM ET.",
-                "description": "bob !cabin !paintlikebobross Bob Ross Weekend Marathons begin every Friday at 12PM ET. Streaming this weekend: Season 5 ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/l1bN46l88Xg/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-01-30T16:56:38Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
             "etag": "rUVFvDaO8lAQAPA3J5DXq4iU9L4",
             "id": {
                 "kind": "youtube#video",
@@ -176,40 +244,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2023-01-29T22:30:03Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "UfsQ6EidnCbM8eApzibI_m8Nits",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "fgCsOmgmSmg"
-            },
-            "snippet": {
-                "publishedAt": "2023-01-23T17:30:06Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;You know, trees get tired too.&quot;",
-                "description": "\"O.K., let's go up here. Maybe, maybe an old tree fell over. You know, trees get tired too.\" - Bob Ross \"Dark Waterfall\" (Season 7 ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-01-23T17:30:06Z"
             }
         },
         {
@@ -1574,7 +1608,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "CJ5YA4XWb4pBRPAWE8lHPLldnGo",
+            "etag": "bVgPG8DMmQHCCTmAnKyHFpShzWc",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "Ho0PLgbgdSQ"
@@ -1672,40 +1706,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2022-09-23T15:00:11Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "H6VtXjir1HsWzsDMs0RY4b-u7o4",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "XafeKSigjf8"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-16T18:00:11Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;Let&#39;s have some fun. Let&#39;s get crazy here.&quot;",
-                "description": "\"Now then, let's find, there it is, the round brush. Let's have some fun. Let's get crazy here. I'm going to take a little of the Bright Red ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/XafeKSigjf8/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/XafeKSigjf8/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/XafeKSigjf8/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-16T18:00:11Z"
             }
         }
     ]

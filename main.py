@@ -1,13 +1,10 @@
 import discord
 import requests
 from discord.ui import Button, View, Select
-import feedparser
 import json
 import random
-from random import choice
-from bs4 import BeautifulSoup
-import re
 from asgiref.sync import sync_to_async
+import pymongo
 
 # Bot cogs
 import moderation
@@ -18,15 +15,19 @@ from Other import other
 from Other import maths
 from Other import settings
 
-bot = discord.Bot()
+bot = discord.Bot(intents=discord.Intents.all())
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
 # testing_servers = [1044711937956651089]
 async_thread_sense = False
-cogs = (moderation.warncommand, moderation.warnscommand, moderation.ban, moderation.bans,
+cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
-        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji)
+        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, settings.NewSettings)
+
+client = pymongo.MongoClient(
+    "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+db = client.settings
 
 
 def load_cogs():
@@ -38,7 +39,10 @@ def load_cogs():
 
 @bot.event
 async def on_connect():
-    await bot.sync_commands()
+    try:
+        await bot.sync_commands()
+    except discord.HTTPException as e:
+        print(e)
     print("Connected!")
     url = f"https://www.googleapis.com/youtube/v3/search?key=AIzaSyC0QBEb_cSWCqOO8rbPG6t7edN-sFugslQ&channelId=UCxcnsr1R5Ge_fbTu5ajt8DQ&part=snippet,id&order=date&maxResults=100&type=video"
     data = requests.get(url).json()
@@ -51,6 +55,16 @@ async def on_connect():
 @bot.event
 async def on_ready():
     print('ready')
+
+
+@bot.event
+async def on_member_join(member):
+    label = "Auto Role"
+    coll = getattr(db, f"{label}")
+    if coll.find_one({"_id": member.guild.id}) is not None:
+        role = member.guild.get_role(coll.find_one({"_id": member.guild.id})['role'])
+        await member.add_roles(role)
+        print(str(role) + " joined")
 
 
 @bot.slash_command(name='ping', description='Test if the bot is online!')
@@ -96,20 +110,15 @@ class approvebutton(Button):
 @bot.slash_command(name="suggest",
                    description="Suggest something in the set suggestion channel!")
 async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!")):
-    error = False
-    embed = discord.Embed(
-        color=discord.Color.red(),
-        title=f"Suggestion by {ctx.author.name}",
-        description=f"{suggestion}",
-    )
-    with open("settings.json", "r") as f:
-        try:
-            file = json.load(f)
-            channel = bot.get_channel(int(file[str(ctx.guild.id)]["Suggestion Channel"]))
-        except KeyError:
-            await ctx.respond("There isn't a suggestion channel set. Use /settings to set one.", ephemeral=True)
-            error = True
-    if not error:
+    label = "Suggestion Channel"
+    coll = getattr(db, f"{label}")
+    if coll.find_one({"_id": ctx.guild.id}) is not None:
+        channel = discord.utils.get(ctx.guild.text_channels, id=coll.find_one({"_id": ctx.guild.id})['channel'])
+        embed = discord.Embed(
+            color=discord.Color.red(),
+            title=f"Suggestion by {ctx.author.name}",
+            description=f"{suggestion}",
+        )
         await ctx.respond("Sending message!", ephemeral=True)
         message = await channel.send(embed=embed)
         await message.add_reaction("⬆")
@@ -118,6 +127,8 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
         view.add_item(approvebutton(0, "✅", message))
         view.add_item(approvebutton(0, "❌", message))
         await message.edit(view=view)
+    else:
+        ctx.respond("No suggestion channel set!", ephemeral=True)
 
 
 class AnnounceButton(Button):
