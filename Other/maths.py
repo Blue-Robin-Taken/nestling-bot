@@ -54,8 +54,10 @@ class algebra(commands.Cog):
         self.bot = bot
 
     @fractions.command(name="simplify",
-                      description="simplifies a fraction")
+                       description="simplifies a fraction")
     async def simplify(self, ctx, numerator: int, denominator: int):
+        if denominator == 0:
+            return await ctx.respond("You cannot simplify a fraction with a denominator of 0! What are you trying to do? Break the bot?")
         primes = [2, 3, 5, 7, 11, 13]
         checks = 0
         while checks < 6:
@@ -189,6 +191,7 @@ class algebra(commands.Cog):
     @graphing.command(name="quadratic_graph", description="Creates a quadratic graph out of the quadratic equation.")
     async def quadratic_graph(self, ctx, a: int, b: int, c: int,
                               length: discord.Option(int, default=100, max_value=500, min_value=0)):
+        await ctx.defer()
         data_x = []
         data_y = []
         for i in range(-length, length, 1):

@@ -1,6 +1,7 @@
 import main
+from Other import maths
 
 
 @main.flip.error
-def main(ctx, err):
-    ctx.respond(err)
+async def main(ctx, err):
+    await ctx.respond(err)

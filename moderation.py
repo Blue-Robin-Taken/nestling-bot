@@ -28,8 +28,9 @@ class warning(discord.Cog):
             )
             await ctx.respond(embed=embed)
             try:
-                coll.insert_one({"_id": {"guild": ctx.guild.id}, str(member.id): 1})
+                coll.insert_one({"_id": {"guild": ctx.guild.id}, "users": [{str(member.id): 1}]})
             except pymongo.errors.DuplicateKeyError:
+
                 coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): 1}})
         else:
             await ctx.respond("You don't have permission to do that.", ephemeral=True)
@@ -69,9 +70,8 @@ class warning(discord.Cog):
         if not coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)}) is None:
             if list(coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)})):
                 coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): -amount}})
-                print(list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0])
-                if list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0][str(member.id)] < 1:
-                    coll.delete_one(list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0])
+                find_list = list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0]
+                x = coll.delete_one({'_id': {'guild': 1044711937956651089}, '497930397985013781': -5})
                 await ctx.respond(f"{member.mention} has been unwarned.")
             else:
                 await ctx.respond(f"{member.mention} has been unwarned.")
