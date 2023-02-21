@@ -34,6 +34,7 @@ def load_cogs():
     for cog in cogs:
         bot.add_cog(cog(bot))
         print(cog)
+    
     print("Loaded cogs")
 
 

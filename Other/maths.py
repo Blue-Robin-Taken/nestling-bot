@@ -44,6 +44,7 @@ class other(commands.Cog):
         await ctx.respond(embed=embed)
 
 
+
 # --- Algebra ---
 class algebra(commands.Cog):
     algebra = SlashCommandGroup("algebra", "Algebra Commands")

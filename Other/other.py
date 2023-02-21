@@ -22,6 +22,12 @@ class botinfo(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
+    @commands.slash_command(name="documentation", description="Get the link to the documentation")
+    async def documentation(self, ctx):
+        embed = discord.Embed(title="Documentation", color=discord.Color.random(),
+                              description="https://nestlingbot.gitbook.io/")
+        await ctx.respond(embed=embed)
+
 
 class vote(commands.Cog):
     def __init__(self, bot):
@@ -68,7 +74,7 @@ class redbook(commands.Cog):
                 song = i
         if song is None:
             embed = discord.Embed(
-                title = "Hymn not found!",
+                title="Hymn not found!",
                 description="No song found! If you believe this is a mistake, please ask in our support server. [Here!](https://discord.gg/m4j6eEmSQA)",
                 color=discord.Color.random()
             )

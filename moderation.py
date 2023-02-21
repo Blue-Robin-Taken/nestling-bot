@@ -18,7 +18,7 @@ class warning(discord.Cog):
     # noinspection PyUnresolvedReferences
     @commands.slash_command(name="warn", description="Warn a user.")
     async def warn(self, ctx, member: discord.Option(discord.Member, description="What member do you want to warn?"),
-                   reason: str):
+                   reason: discord.Option(str, description="Why do you want to warn this user?", required=False)):
         coll = db.warns
         if ctx.author.guild_permissions.manage_guild:
             embed = discord.Embed(
@@ -28,55 +28,60 @@ class warning(discord.Cog):
             )
             await ctx.respond(embed=embed)
             try:
-                coll.insert_one({"_id": {"guild": ctx.guild.id}, "users": [{str(member.id): 1}]})
+                coll.insert_one({"_id": {"guild": ctx.guild.id, "user": member.id}, "amount": 1})
             except pymongo.errors.DuplicateKeyError:
-
-                coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): 1}})
+                # print(coll.find_one({"_id": {"guild": ctx.guild.id}, "users"}))
+                coll.update_one({"_id": {"guild": ctx.guild.id, "user": member.id}, "$inc": {"amount": 1}})
         else:
             await ctx.respond("You don't have permission to do that.", ephemeral=True)
 
     @commands.slash_command(name="warns", description="See all warns")
     async def warns(self, ctx):
         coll = db.warns
-        if not list(coll.find({"_id": {'guild': ctx.guild.id}})) == []:
-            warns = list(coll.find({"_id": {'guild': ctx.guild.id}}))
-            userText = ""
-            print(warns)
-            for user in warns[0].keys():
-                print(user)
-                if user != "_id":
-                    user_name = await self.bot.fetch_user(user)
-                    print(user_name)
-                else:
-                    continue
-                warn_amount = warns[0][str(user)]
-                userText += f"{user_name} has {warn_amount} warn(s). \n"
-            if userText != "":
-                embed = discord.Embed(
-                    title=f"Warns for {ctx.guild.name}",
-                    colour=discord.Colour.random(),
-                    description=userText,
-                )
-                await ctx.respond(embed=embed)
-            else:
-                await ctx.respond("There are no warns in this server.", ephemeral=True)
-        else:
-            await ctx.respond("There are no warns in this server.", ephemeral=True)
+        users = coll.find({})
+        end_str = ""
+        for user in users:
+            if user["_id"]["guild"] == ctx.guild.id:
+                end_str += f"Member: {ctx.guild.get_member(user['_id']['user'])} has {user['amount']} warn(s)"
+        embed = discord.Embed(
+            title="Server warns",
+            description=end_str,
+            color=discord.Color.random()
+        )
+        if not end_str:
+            embed = discord.Embed(
+                title="This server doesn't have any warns.",
+                color=discord.Color.random()
+            )
+
+        await ctx.respond(embed=embed)
 
     @commands.slash_command(name="unwarn", description="Unwarn a user.")
-    async def unwarn(self, ctx, member: discord.Option(discord.Member),
+    async def unwarn(self, ctx, user: discord.Option(discord.Member),
                      amount: discord.Option(int, min_value=1, default=1)):
-        coll = db.warns
-        if not coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)}) is None:
-            if list(coll.find_one({"_id": {"guild": ctx.guild.id}}, {str(member.id)})):
-                coll.update_one({"_id": {"guild": ctx.guild.id}}, {"$inc": {str(member.id): -amount}})
-                find_list = list(coll.find({"_id": {"guild": ctx.guild.id}}, {str(member.id)}))[0]
-                x = coll.delete_one({'_id': {'guild': 1044711937956651089}, '497930397985013781': -5})
-                await ctx.respond(f"{member.mention} has been unwarned.")
-            else:
-                await ctx.respond(f"{member.mention} has been unwarned.")
+        if user.guild_permissions.manage_guild:
+            coll = db.warns
+            if amount < 1:
+                await ctx.respond("Unwarn amount must be greater than one.", ephemeral=True)
+                return 0
+            try:
+                coll.update_one({"_id": {"guild": user.guild.id, "user": user.id}}, {"$inc": {"amount": -amount}})
+                if coll.find_one({"_id": {"guild": user.guild.id, "user": user.id}})["amount"] <= 0:
+                    coll.delete_one({"_id": {"guild": user.guild.id, "user": user.id}})
+                embed = discord.Embed(
+                    title="Removed warn",
+                    description=f"Removed warn(s) for {user.mention} \n Removed {amount} warn(s)",
+                    color=discord.Color.random()
+                )
+            except TypeError:
+                embed = discord.Embed(
+                    title="This server doesn't have any warns.",
+                    color=discord.Color.random()
+                )
+
+            await ctx.respond(embed=embed)
         else:
-            await ctx.respond(f"{member.mention} has no warns", ephemeral=True)
+            await ctx.respond("You don't have permission to do that!", ephemeral=True)
 
 
 class ban(commands.Cog):
