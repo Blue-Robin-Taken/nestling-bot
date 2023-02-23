@@ -11,6 +11,7 @@ import moderation
 from Fun import games
 from Fun import randomgames
 from Fun import requestsfun
+from Fun.mc import mc
 from Other import other
 from Other import maths
 from Other import settings
@@ -23,7 +24,7 @@ async_thread_sense = False
 cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
-        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji)
+        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")

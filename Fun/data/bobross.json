@@ -1,13 +1,183 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "v5iqu5FvKH1m_8Yc1u0FnUA-uys",
+    "etag": "eg5TzJWqIVCRgDNf2ow84jszccw",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
-        "totalResults": 597,
+        "totalResults": 599,
         "resultsPerPage": 50
     },
     "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "Y6sqVag18EPSgWqOLP16fnGm11c",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "pNqHWRgB30g"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-23T00:00:22Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "Paint Like Bob Ross | Western Peaks",
+                "description": "Join us tomorrow evening for a wild western scene. Learn how to create rocky mountains, lush green slopes and a lake ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/pNqHWRgB30g/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/pNqHWRgB30g/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/pNqHWRgB30g/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-23T00:00:22Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "2vQaG1UTRZNsKEGamqnZp66eJT8",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "TY4b4JlbNis"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-22T17:41:06Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "Paint Like Bob Ross | Western Peaks | Keeping The Bob Ross Dream Alive",
+                "description": "In this wild western scene, learn how to create rocky mountains, lush green slopes and a lake surrounded by vivid foliage.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/TY4b4JlbNis/default_live.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/TY4b4JlbNis/mqdefault_live.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/TY4b4JlbNis/hqdefault_live.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "upcoming",
+                "publishTime": "2023-02-22T17:41:06Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "2oYnu7otoBfZDWkteekWGyB_dL4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "2N4CoBjudXw"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-19T22:30:00Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;Remember each bush has its own personality&quot;",
+                "description": "\"Begin forming individual little bushes, one at a time, don't get in a hurry, do one bush at a time. Remember each bush has its own ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/2N4CoBjudXw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/2N4CoBjudXw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/2N4CoBjudXw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-19T22:30:00Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "e7HOL28jQoH7k8-qgU2NDGLG8HU",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "au1_l7umcVo"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-17T16:00:02Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "Make Love To The Canvas | Episode #12 | The Joy of Bob Ross - A Happy Little Podcast",
+                "description": "Two Certified Ross Instructors find themselves returning to each other -- all while having separate love affairs with Bob Ross.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/au1_l7umcVo/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/au1_l7umcVo/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/au1_l7umcVo/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-17T16:00:02Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "hu_yhsaCy-CMOZMWThxYLyX_yfc",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "xGMTCSKXeTc"
+            },
+            "snippet": {
+                "publishedAt": "2023-02-16T22:30:08Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;Painting offers you freedom. It offers you a world that you can make anyway you want.&quot;",
+                "description": "\"In your world you can do anything that you wanna do. Painting offers you freedom. It offers you a world that you can make anyway ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/xGMTCSKXeTc/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/xGMTCSKXeTc/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/xGMTCSKXeTc/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-02-16T22:30:08Z"
+            }
+        },
         {
             "kind": "youtube#searchResult",
             "etag": "TBt9eS3ThoqTTNJlAbzcdWPxGig",
@@ -78,40 +248,6 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "IFgZAoY3EDnVPxnx9HOoLvCrk0A",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "2kILSS2DDaQ"
-            },
-            "snippet": {
-                "publishedAt": "2023-02-06T17:04:56Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Weekend Marathon! Fridays at 12PM ET.",
-                "description": "bob !cabin !paintlikebobross Bob Ross Weekend Marathons begin every Friday at 12PM ET. Streaming this weekend: Season 9 ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/default_live.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/mqdefault_live.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/2kILSS2DDaQ/hqdefault_live.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "live",
-                "publishTime": "2023-02-06T17:04:56Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
             "etag": "mwZUoC5VxDrpoO2vkN7Y6IjaEc0",
             "id": {
                 "kind": "youtube#video",
@@ -146,7 +282,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "d6dqpPDWMA6xNO71XXP3GscHHpo",
+            "etag": "t5tU3Lv1NZfyjjOqf77Bnus2HmE",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "407zZS8Y-Ac"
@@ -248,7 +384,41 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "_5C2tXXPHnm2jpjN1IuovQFWAgM",
+            "etag": "UfsQ6EidnCbM8eApzibI_m8Nits",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "fgCsOmgmSmg"
+            },
+            "snippet": {
+                "publishedAt": "2023-01-23T17:30:06Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;You know, trees get tired too.&quot;",
+                "description": "\"O.K., let's go up here. Maybe, maybe an old tree fell over. You know, trees get tired too.\" - Bob Ross \"Dark Waterfall\" (Season 7 ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/fgCsOmgmSmg/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-01-23T17:30:06Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "qRoESbGce4ESNqOeCxMuqDd6ZCM",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "2EWJPhvJgwk"
@@ -1472,7 +1642,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "yloyA2vb2k5bjEFDjtxuTpBnOyE",
+            "etag": "3Dd2KZlayv8qHuPzjDgXPgQs36g",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "4RumKm43Ywg"
@@ -1536,176 +1706,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2022-10-09T16:00:13Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "GoJJsw1Tb_T916GJi5Auub_Jk5Y",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "dWpqD3Pt81g"
-            },
-            "snippet": {
-                "publishedAt": "2022-10-07T21:30:16Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;We&#39;ll give him a little friend, everybody needs a friend.&quot;",
-                "description": "\"Now maybe back in here, let's come right in here, maybe there lives, in our world, a happy little tree, right there. There he is.",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/dWpqD3Pt81g/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/dWpqD3Pt81g/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/dWpqD3Pt81g/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-10-07T21:30:16Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "E0faRixTGrxMY9ih2GNgc4VI2Oo",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "VvQIzKvVaN0"
-            },
-            "snippet": {
-                "publishedAt": "2022-10-05T16:00:31Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "\u201cPainting is fun, it does nice things to you.&quot;",
-                "description": "Painting is fun, it does nice things to you. It doesn't hurt anybody. Everybody's happy. It brings a lot of joy to people whether you're ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/VvQIzKvVaN0/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/VvQIzKvVaN0/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/VvQIzKvVaN0/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-10-05T16:00:31Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "bVgPG8DMmQHCCTmAnKyHFpShzWc",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "Ho0PLgbgdSQ"
-            },
-            "snippet": {
-                "publishedAt": "2022-10-04T19:30:02Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;This is your world, do anything you want to do in here.&quot;",
-                "description": "shorts #bobross #bobrosspainting #painting #art #shortsfeed #shortsyoutube #shortsvideo \"We'll just put it, just make a decision, ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/Ho0PLgbgdSQ/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/Ho0PLgbgdSQ/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/Ho0PLgbgdSQ/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-10-04T19:30:02Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "y4EO9InLFSMXkPVqiBryTWSnjoM",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "aRWZ6fnux1I"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-30T15:00:12Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Bobby Says Relax | Episode #2 | The Joy of Bob Ross - A Happy Little Podcast",
-                "description": "Stressed out? A physiologist explains the science behind Bob Ross' soothing voice - and why it makes our spines tingle. Plus ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/aRWZ6fnux1I/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/aRWZ6fnux1I/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/aRWZ6fnux1I/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-30T15:00:12Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "9-cGdqd464pWw03kbpifpwmNErk",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "pPh9F3anwaY"
-            },
-            "snippet": {
-                "publishedAt": "2022-09-23T15:00:11Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Welcome To Bob\u2019s World | Episode #1 | The Joy of Bob Ross - A Happy Little Podcast",
-                "description": "Bob Ross encourages a #podcast host to tell stories about his life and spread the joy of painting. Plus, Faye Fletcher's journey ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/pPh9F3anwaY/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/pPh9F3anwaY/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/pPh9F3anwaY/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2022-09-23T15:00:11Z"
             }
         }
     ]
