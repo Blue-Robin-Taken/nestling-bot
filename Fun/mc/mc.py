@@ -21,21 +21,18 @@ class mc(commands.Cog):
 
     @users_minecraft.command(name="get_user", description="Get a random user")
     async def get_user(self, ctx, name: str):
-        uuid = self.api.get_uuid(name)
-        profile = self.api.get_profile(uuid)
-        if not uuid:
+        request_json = requests.get(f"https://api.ashcon.app/mojang/v2/user/{name}").json()
+        if "error" in request_json.keys():
+            ctx.respond("Sorry, that user doesn't exist.")
+            return
+        uuid = request_json["uuid"]
 
-            if not self.api.get_username(name):
-                await ctx.respond("User not found")
-                return
-            else:
-                uuid = name
-                profile = self.api.get_profile(uuid)
         embed = discord.Embed(
-            title=profile.name,
-            description=f"The UUID of the user is `{uuid}`\nTheir nameMC page is [here](https://namemc.com/profile/{name}.1)",
+            title=request_json["username"],
+            description=f"The UUID of the user is `{uuid}`\nTheir account was created at: {request_json['created_at']}\nTheir nameMC page is [here](https://namemc.com/profile/{request_json['username']}.1)",
             color=discord.Color.random(),
         )
+
         embed.set_footer(text="The user's avatar")
-        embed.set_image(url=profile.skin_url)
+        embed.set_image(url=request_json['textures']['skin']['url'])
         await ctx.respond(embed=embed)
