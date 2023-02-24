@@ -42,7 +42,7 @@ class warning(discord.Cog):
         end_str = ""
         for user in users:
             if user["_id"]["guild"] == ctx.guild.id:
-                end_str += f"Member: {ctx.guild.get_member(user['_id']['user'])} has {user['amount']} warn(s)"
+                end_str += f"Member: {ctx.guild.get_member(user['_id']['user'])} has {user['amount']} warn(s)\n"
         embed = discord.Embed(
             title="Server warns",
             description=end_str,
