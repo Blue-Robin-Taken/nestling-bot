@@ -7,14 +7,12 @@ import random
 import math
 import json
 from bs4 import BeautifulSoup
-from mojang import API
 from datetime import datetime
 
 
 class mc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.api = API()
 
     minecraft = SlashCommandGroup("minecraft", "mc related commands")
     users_minecraft = minecraft.create_subgroup("users", "Users related commands")
