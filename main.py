@@ -131,7 +131,7 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
         view.add_item(approvebutton(0, "❌", message))
         await message.edit(view=view)
     else:
-        await ctx.respond("No suggestion channel set!", ephemeral=True)
+        await ctx.respond("No suggestion channel set! Set one with /settings", ephemeral=True)
 
 
 class AnnounceButton(Button):
