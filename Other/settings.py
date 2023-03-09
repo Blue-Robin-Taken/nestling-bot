@@ -30,17 +30,18 @@ class Settings(commands.Cog):
                 selection = self.selection
 
                 class baseSelect(Select):
-                    def __init__(self, options, **kwargs):
-                        super().__init__(options=options, **kwargs)
+                    def __init__(self, **kwargs):
+                        super().__init__(**kwargs)
 
                     async def callback(self, i):
+                        print(self.type)
                         if i.user.id == interaction.user.id:
                             self.view.disable_all_items()
                             await i.message.edit(view=self.view)
-                            if selection == "text_channel":
+                            if self.channel_types == [discord.ChannelType.text]:
                                 coll = getattr(db, f"{label}")
                                 # channel
-                                c = discord.utils.get(interaction.guild.text_channels, name=self.values[0]).id
+                                c = self.values[0].id
                                 # noinspection PyUnresolvedReferences
                                 # The above line is for the editor Pycharm
                                 try:
@@ -48,10 +49,10 @@ class Settings(commands.Cog):
                                 except pymongo.errors.DuplicateKeyError:
                                     coll.update_one({"_id": interaction.guild.id}, {"$set": {"channel": c}})
                                 await i.response.send_message('Set Channel')
-                            elif selection == "roles":
+                            elif self.type == discord.ComponentType.role_select:
                                 coll = getattr(db, f"{label}")
                                 # channel
-                                c = discord.utils.get(interaction.guild.roles, name=self.values[0]).id
+                                c = self.values[0].id
                                 # noinspection PyUnresolvedReferences
                                 # The above line is for the editor Pycharm
                                 try:
@@ -69,31 +70,20 @@ class Settings(commands.Cog):
                 )
                 message = await interaction.response.send_message(embed=embed)
                 view = View()
-                options_list = list()
-                selects = list()
-                guild = interaction.guild
+
                 if self.selection == 'text_channel':
-                    for channel in guild.text_channels:
-                        if len(options_list) >= 20:
-                            selects.append(Select(options=options_list))
-                            options_list = []
-                        else:
-                            options_list.append(discord.SelectOption(label=channel.name))
-                    selects.append(baseSelect(options=options_list))
-                    for select in selects:
-                        view.add_item(select)
+                    selection = baseSelect(select_type=discord.ComponentType.channel_select, channel_types=[discord.ChannelType.text])
+                    view.add_item(selection)
                 elif self.selection == 'roles':
-                    for role in guild.roles:
-                        if role.name != "@everyone":
-                            if len(options_list) >= 20:
-                                selects.append(Select(options=options_list))
-                                options_list = []
-                            else:
-                                options_list.append(discord.SelectOption(label=role.name))
-                    selects.append(baseSelect(options=options_list))
-                    for select in selects:
-                        view.add_item(select)
-                await message.edit_original_response(embed=embed, view=view)
+                    selection = baseSelect(select_type=discord.ComponentType.role_select)
+                    view.add_item(selection)
+                try:
+                    seen = set()
+                    view.children = [x for x in view.children if x not in seen and not seen.add(x)]
+                    await message.edit_original_response(embed=embed, view=view)
+                except discord.HTTPException as e:
+                    print(e)
+                    await message.edit_original_response(embed=embed)
             else:
                 await interaction.response.send_message("You don't have permission to do that!", ephemeral=True)
 
