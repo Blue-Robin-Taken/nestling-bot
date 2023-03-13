@@ -16,6 +16,7 @@ from Fun.mc import mc
 from Other import other
 from Other import maths
 from Other import settings
+from Other import reaction_roles
 
 bot = discord.Bot(intents=discord.Intents.all())
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -25,7 +26,7 @@ async_thread_sense = False
 cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
-        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars)
+        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars, reaction_roles.ReactionRoles)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -36,7 +37,7 @@ def load_cogs():
     for cog in cogs:
         bot.add_cog(cog(bot))
         print(cog)
-    
+
     print("Loaded cogs")
 
 
@@ -57,6 +58,8 @@ async def on_connect():
 
 @bot.event
 async def on_ready():
+    bot.add_view(SuggestView())
+    bot.add_view(reaction_roles.ReactionRoles.ReactionView([]))
     print('ready')
 
 
@@ -75,39 +78,65 @@ async def ping(ctx):
     await ctx.respond('Pong! (Run /botinfo for ping)')
 
 
-class approvebutton(Button):
-    def __init__(self, row, emoji, message):
-        super().__init__(style=discord.ButtonStyle.blurple, emoji=emoji, row=row)
-        self.message_self = message
+class SuggestView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.add_item(self.RejectButton())
+        self.add_item(self.AcceptButton())
 
-    async def callback(self, interaction):
-        embed = discord.Embed(
-            color=discord.Color.red(),
-            title=f"ERROR",
-        )
-        if interaction.user.guild_permissions.manage_guild:
-            if self.emoji.name == "✅":
-                embed = discord.Embed(
-                    color=discord.Color.green(),
-                    title=f"Messaged Approved!",
-                    description=f"This message was approved by {interaction.user.name}"
-                )
-            elif self.emoji.name == "❌":
+    class RejectButton(discord.ui.Button):
+        def __init__(self):
+            super().__init__(style=discord.ButtonStyle.blurple, emoji="❌", custom_id="reject")
+
+        async def callback(self, interaction):
+            embed = discord.Embed(
+                color=discord.Color.red(),
+                title=f"ERROR",
+            )
+
+            if interaction.user.guild_permissions.manage_guild:
                 embed = discord.Embed(
                     color=discord.Color.red(),
                     title=f"Messaged Rejected!",
                     description=f"This message was rejected by {interaction.user.name}"
                 )
-            self.view.disable_all_items()
-            await self.message_self.edit(view=self.view)
-            await interaction.response.send_message(embed=embed, ephemeral=False)
+                self.view.disable_all_items()
+                await interaction.message.edit(view=self.view)
+                await interaction.response.send_message(embed=embed, ephemeral=False)
 
-        else:
+            else:
+                embed = discord.Embed(
+                    color=discord.Color.red(),
+                    title=f"You don't have the permissions to do that!",
+                )
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    class AcceptButton(discord.ui.Button):
+        def __init__(self):
+            super().__init__(style=discord.ButtonStyle.blurple, emoji="✅", custom_id="accept")
+
+        async def callback(self, interaction):
             embed = discord.Embed(
                 color=discord.Color.red(),
-                title=f"You don't have the permissions to do that!",
+                title=f"ERROR",
             )
-            await interaction.response.send_message(embed=embed, ephemeral=True)
+
+            if interaction.user.guild_permissions.manage_guild:
+                embed = discord.Embed(
+                    color=discord.Color.green(),
+                    title=f"Messaged Approved!",
+                    description=f"This message was approved by {interaction.user.name}"
+                )
+                self.view.disable_all_items()
+                await interaction.message.edit(view=self.view)
+                await interaction.response.send_message(embed=embed, ephemeral=False)
+
+            else:
+                embed = discord.Embed(
+                    color=discord.Color.red(),
+                    title=f"You don't have the permissions to do that!",
+                )
+                await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 @bot.slash_command(name="suggest",
@@ -126,9 +155,7 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
         message = await channel.send(embed=embed)
         await message.add_reaction("⬆")
         await message.add_reaction("⬇")
-        view = View()
-        view.add_item(approvebutton(0, "✅", message))
-        view.add_item(approvebutton(0, "❌", message))
+        view = SuggestView()
         await message.edit(view=view)
     else:
         await ctx.respond("No suggestion channel set! Set one with /settings", ephemeral=True)
