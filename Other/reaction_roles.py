@@ -77,7 +77,7 @@ class ReactionRoles(commands.Cog):
                     embed = discord.Embed(title=self.parent.title, description=self.parent.description,
                                           color=self.parent.color)
                     message = await self.parent.channel.send(embed=embed)
-                    view = ReactionRoles.ReactionView(self.values)
+                    view = ReactionRoles.ReactionView("Embed sent!")
                     await message.edit(view=view)
                 else:
                     await interaction.response.send_message("You don't have permission to do that! (Need administrator)", ephemeral=True)
