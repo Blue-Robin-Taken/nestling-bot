@@ -4,11 +4,10 @@ from discord.ext import commands
 from discord.ui.select import Select
 import json
 import pymongo
-import enum
 
 
 class ReactionRoles(commands.Cog):
-    def __init__(self, bot, ):
+    def __init__(self, bot):
         self.bot = bot
 
     class ReactionView(discord.ui.View):
@@ -16,8 +15,8 @@ class ReactionRoles(commands.Cog):
             super().__init__(timeout=None)
             options = []
             for i in roles:
-                print(i)
                 options.append(discord.SelectOption(label=i.name))
+            options.append(discord.SelectOption(label="Remove Selected Roles"))
             self.add_item(self.ReactionGetSelect(options))
 
         class ReactionGetSelect(
@@ -25,36 +24,34 @@ class ReactionRoles(commands.Cog):
             def __init__(self, options):
                 if not options:
                     options = [" "]
-                options.append(discord.SelectOption(label="Remove All Roles"))
-                print(options)
                 super().__init__(options=options, custom_id="MenuSelect", min_values=1, placeholder="Select a role",
                                  max_values=len(options))
 
             async def callback(self, interaction: discord.Interaction):
-                if self.values[0] == "Remove All Roles":
-                    print(self.options)
-                    role = None
-                    for i in self.options:
+                if all(elem == "Remove Selected Roles" for elem in self.values):
+                    await interaction.response.send_message(
+                        "You must select at least one role.", ephemeral=True)
 
-                        try:
-                            try:
-                                role = discord.utils.get(interaction.guild.roles, name=i.label)
-                            except AttributeError:
-                                pass
-                            if role:
-                                await interaction.response.send_message(f"Removed roles.", ephemeral=True)
-                                return await interaction.user.remove_roles(role)
-                        except discord.errors.Forbidden:
-                            return await interaction.response.send_message("I don't have the proper permissions.", ephemeral=True)
-
+                remove = False
+                if "Remove Selected Roles" in self.values:
+                    remove = True
+                if not remove:
+                    await interaction.response.send_message(f"Added role.", ephemeral=True)
+                else:
+                    await interaction.response.send_message(f"Removed selected roles.",
+                                                            ephemeral=True)
                 for i in self.values:
+
                     try:
                         role = discord.utils.get(interaction.guild.roles, name=i)
                         if role is not None:
-                            await interaction.user.add_roles(discord.utils.get(interaction.guild.roles, name=i))
+                            if i in [x.name for x in interaction.user.roles] and remove:
+                                await interaction.user.remove_roles(discord.utils.get(interaction.guild.roles, name=i))
+                            else:
+                                await interaction.user.add_roles(discord.utils.get(interaction.guild.roles, name=i))
+
                     except discord.errors.Forbidden:
                         await interaction.response.send_message("I don't have the proper permissions.", ephemeral=True)
-                await interaction.response.send_message(f"Added role {self.values[0]}.", ephemeral=True)
 
     class ReactionSelect(discord.ui.View):
         def __init__(self, channel, title, description, color):
@@ -68,25 +65,32 @@ class ReactionRoles(commands.Cog):
         class SelectOption(discord.ui.Select):
             def __init__(self, parent):
                 super().__init__(placeholder="Select a role", min_values=1,
-                                 select_type=discord.ComponentType.role_select)
+                                 select_type=discord.ComponentType.role_select, max_values=8)
                 self.parent = parent
 
             async def callback(self, interaction: discord.Interaction):
                 if interaction.user.guild_permissions.administrator:
                     await interaction.response.send_message(f"{self.values}")
-                    embed = discord.Embed(title=self.parent.title, description=self.parent.description,
+                    names = [i for i in self.values]
+                    print(names)
+                    print(self.parent)
+                    embed = discord.Embed(title=self.parent.title,
+                                          description=f"{self.parent.description}",
                                           color=self.parent.color)
                     message = await self.parent.channel.send(embed=embed)
-                    view = ReactionRoles.ReactionView("Embed sent!")
+                    view = ReactionRoles.ReactionView(self.values)
                     await message.edit(view=view)
                 else:
-                    await interaction.response.send_message("You don't have permission to do that! (Need administrator)", ephemeral=True)
+                    await interaction.response.send_message(
+                        "You don't have permission to do that! (Need administrator)", ephemeral=True)
 
     @commands.slash_command(name="reactionroles",
                             description="(COMMAND IN PROGRESS) Create a reaction role message (With buttons!)")
     async def reactionroles(self, ctx, channel: discord.Option(discord.TextChannel), title: str,
                             description: discord.Option(str, required=False),
-                            color_r: discord.Option(int, required=False) = 0, color_g: discord.Option(int, required=False) = 0, color_b: discord.Option(int, required=False) = 0):
+                            color_r: discord.Option(int, required=False) = 0,
+                            color_g: discord.Option(int, required=False) = 0,
+                            color_b: discord.Option(int, required=False) = 0):
         if ctx.author.guild_permissions.administrator:
             color = discord.Color.from_rgb(r=color_r, g=color_g, b=color_b)
             await ctx.defer()
