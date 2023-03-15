@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.ui.select import Select
 import json
 import pymongo
+import re
 
 
 class ReactionRoles(commands.Cog):
@@ -70,7 +71,7 @@ class ReactionRoles(commands.Cog):
 
             async def callback(self, interaction: discord.Interaction):
                 if interaction.user.guild_permissions.administrator:
-                    await interaction.response.send_message(f"{self.values}")
+                    await interaction.response.send_message(f"Sending!")
                     names = [i for i in self.values]
                     print(names)
                     print(self.parent)
@@ -88,10 +89,22 @@ class ReactionRoles(commands.Cog):
                             description="(COMMAND IN PROGRESS) Create a reaction role message (With buttons!)")
     async def reactionroles(self, ctx, channel: discord.Option(discord.TextChannel), title: str,
                             description: discord.Option(str, required=False),
-                            color_r: discord.Option(int, required=False) = 0,
-                            color_g: discord.Option(int, required=False) = 0,
-                            color_b: discord.Option(int, required=False) = 0):
+                            color_r: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                            color_g: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                            color_b: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                            color_hex: discord.Option(str, required=False, description="If RGB is inputted and this is as well, this will be the output") = "#000000",):
         if ctx.author.guild_permissions.administrator:
+            if not color_hex == "#000000":
+                match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color_hex)
+                if match:
+                    rgb = tuple(int(color_hex.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))  # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+                    color_r = rgb[0]
+                    color_g = rgb[1]
+                    color_b = rgb[2]
+            try:
+                description = description.replace("\\n", "\n")
+            except AttributeError:
+                pass
             color = discord.Color.from_rgb(r=color_r, g=color_g, b=color_b)
             await ctx.defer()
             message = await ctx.respond(
