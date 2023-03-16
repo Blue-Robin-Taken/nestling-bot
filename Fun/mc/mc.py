@@ -21,7 +21,7 @@ class mc(commands.Cog):
     async def get_user(self, ctx, name: str):
         request_json = requests.get(f"https://api.ashcon.app/mojang/v2/user/{name}").json()
         if "error" in request_json.keys():
-            ctx.respond("Sorry, that user doesn't exist.")
+            await ctx.respond("Sorry, that user doesn't exist.")
             return
         uuid = request_json["uuid"]
 
