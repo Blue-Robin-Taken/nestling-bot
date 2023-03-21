@@ -30,14 +30,14 @@ class ReactionRoles(commands.Cog):
 
             async def callback(self, interaction: discord.Interaction):
                 if all(elem == "Remove Selected Roles" for elem in self.values):
-                    await interaction.response.send_message(
+                    return await interaction.response.send_message(
                         "You must select at least one role.", ephemeral=True)
 
                 remove = False
                 if "Remove Selected Roles" in self.values:
                     remove = True
                 if not remove:
-                    await interaction.response.send_message(f"Added role.", ephemeral=True)
+                    return await interaction.response.send_message(f"Added role.", ephemeral=True)
                 else:
                     await interaction.response.send_message(f"Removed selected roles.",
                                                             ephemeral=True)
