@@ -88,3 +88,86 @@ class eightball(commands.Cog):
         """
         )
         await ctx.respond(embed=embed)
+
+
+class rockpaperscissors(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    class RPSView(discord.ui.View):
+        class RPSButton(discord.ui.Button):
+            def __init__(self, emoji):
+                super().__init__(style=discord.ButtonStyle.blurple, emoji=emoji)
+
+            async def callback(self, interaction: discord.Interaction):
+                i = random.randint(0, 2)
+                options = ["rock", "paper", "scissors"]
+                # 0 = rock
+                # 1 = paper
+                # 2 = scissors
+                condition = None
+                print(self.emoji.name)
+                conditionals = {
+                    i == 0 and self.emoji.name == "✂": "lost",
+                    i == 0 and self.emoji.name == "🪨": "draw",
+                    i == 0 and self.emoji.name == "📃": "won",
+                    i == 1 and self.emoji.name == "✂": "won",
+                    i == 1 and self.emoji.name == "🪨": "lost",
+                    i == 1 and self.emoji.name == "📃": "draw",
+                    i == 2 and self.emoji.name == "✂": "draw",
+                    i == 2 and self.emoji.name == "🪨": "won",
+                    i == 2 and self.emoji.name == "📃": "lost",
+                }
+                if i == 0:
+                    if self.emoji.name == "✂":
+                        condition = "lost"
+                    elif self.emoji.name == "🪨":
+                        condition = "draw"
+                    elif self.emoji.name == "📃":
+                        condition = "won"
+                elif i == 1:
+                    if self.emoji.name == "✂":
+                        condition = "won"
+                    elif self.emoji.name == "🪨":
+                        condition = "lost"
+                    elif self.emoji.name == "📃":
+                        condition = "draw"
+                elif i == 2:
+                    if self.emoji.name == "✂":
+                        condition = "draw"
+                    elif self.emoji.name == "🪨":
+                        condition = "won"
+                    elif self.emoji.name == "📃":
+                        condition = "lost"
+
+                embed = discord.Embed(
+                    color=discord.Color.random(),
+                    title="Rock Paper Scissors",
+                    description=f"I choose {options[i]}. You choose {self.emoji.name}."
+                )
+                if condition == "lost":
+                    await interaction.response.send_message("You lost!", embed=embed)
+                if condition == "won":
+                    await interaction.response.send_message("You won!", embed=embed)
+                if condition == "draw":
+                    await interaction.response.send_message("It's a draw!", embed=embed)
+
+                self.view.disable_all_items()
+                await self.view.message.edit(view=self.view)
+
+        def __init__(self, ctx):
+            super().__init__()
+            self.add_item(self.RPSButton("🪨"))
+            self.add_item(self.RPSButton("✂"))
+            self.add_item(self.RPSButton("📃"))
+
+    @commands.slash_command(name="rockpaperscissors", description="Play rock paper scissors")
+    async def rockpaperscissors(self, ctx):
+        embed = discord.Embed(
+            color=discord.Color.random(),
+            title="Rock Paper Scissors",
+            description=f"Choose one!"
+        )
+
+        view = self.RPSView(ctx)
+        await ctx.respond(embed=embed, view=view)

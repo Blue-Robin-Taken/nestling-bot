@@ -5,6 +5,7 @@ import json
 import random
 from asgiref.sync import sync_to_async
 import pymongo
+import enum
 
 # Bot cogs
 import moderation
@@ -26,7 +27,8 @@ async_thread_sense = False
 cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
-        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars, reaction_roles.ReactionRoles)
+        maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
+        reaction_roles.ReactionRoles, games.rockpaperscissors)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -171,6 +173,7 @@ class AnnounceButton(Button):
     async def callback(self, interaction):
         self.view.disable_all_items()
         await self.message_self.edit(view=self.view)
+        embed = None
         if self.emoji.name == "✅":
             embed = discord.Embed(
                 color=discord.Color.green(),
@@ -187,22 +190,19 @@ class AnnounceButton(Button):
 
 
 @bot.slash_command(name="announce", description="Make server announcements!")
-async def announce(ctx, channel: discord.Option(str,
+async def announce(ctx, channel: discord.Option(discord.TextChannel,
+                                                channel_types=[discord.ChannelType.text, discord.ChannelType.news,
+                                                               discord.ChannelType.news_thread,
+                                                               discord.ChannelType.public_thread,
+                                                               discord.ChannelType.private_thread],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
+
                    title: str, text: str):
     if not ctx.author.guild_permissions.administrator:
         await ctx.respond("You do not have the permissions to do that!")
         return
-
-        # response embed
-    try:
-        channel = bot.get_channel(int(channel))
-    except ValueError:
-        channel = bot.get_channel(int(''.join(char for char in channel if char.isdigit())))
-        # announcement embed
     newText = text.replace("~", "\n")
     embed_check = discord.Embed(
-        colour=discord.Colour.red(),
         title=title,
         description=newText
     )

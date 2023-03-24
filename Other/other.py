@@ -13,11 +13,15 @@ class botinfo(commands.Cog):
     @commands.slash_command(name="botinfo", description="Get bot info!")
     async def botinfo(self, ctx):
         amount = 0
+        bot_channels = 0
+        members = 0
         for i in self.bot.guilds:
             amount += 1
+            bot_channels += len(i.channels)
+            members += i.member_count
         embed = discord.Embed(
             title="Bot Info",
-            description=f"I'm in {amount} servers! \n I also have a support server! [Join here!](https://discord.gg/m4j6eEmSQA) \n I have a documentation page: [here](https://nestlingbot.gitbook.io/nestling-bot-documentation/) \n My ping is: **{round(self.bot.latency * 1000, 1)}** ms",
+            description=f"I'm in {amount} servers! \n I'm in {bot_channels} channels! \n There are {members} members that can use my commands!\n I also have a support server! [Join here!](https://discord.gg/m4j6eEmSQA) \n I have a documentation page: [here](https://nestlingbot.gitbook.io/nestling-bot-documentation/) \n My ping is: **{round(self.bot.latency * 1000, 1)}** ms",
             color=discord.Color.random()
         )
         await ctx.respond(embed=embed)
