@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+
 class bungcommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -70,5 +71,6 @@ class emoji(commands.Cog):
                 full_string += " " + n[letter] + " "
             else:
                 full_string += letter
-        embed = discord.Embed(title="Text to Emoji", color=discord.Color.random(), description=full_string + f'\n ```{full_string}```')
+        embed = discord.Embed(title="Text to Emoji", color=discord.Color.random(),
+                              description=full_string + f'\n ```{full_string}```')
         await ctx.respond(embed=embed)

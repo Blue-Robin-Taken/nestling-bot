@@ -18,6 +18,7 @@ from Other import other
 from Other import maths
 from Other import settings
 from Other import reaction_roles
+import re
 
 bot = discord.Bot(intents=discord.Intents.all())
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -185,7 +186,7 @@ class AnnounceButton(Button):
             embed = discord.Embed(
                 color=discord.Color.red(),
                 title=f"Announcement canceled!",
-                description=f"```If you think this was a bug, please talk to the developer.```")
+                description=f"```If you think this was a bug, please talk to the developer. (in the support server)```")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
@@ -197,12 +198,28 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                                discord.ChannelType.private_thread],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
 
-                   title: str, text: str):
+                   title: str, text: str,
+                   color_r: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                   color_g: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                   color_b: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
+                   color_hex: discord.Option(str, required=False,
+                                             description="If RGB is inputted and this is as well, this will be the output") = "#000000",
+                   ):
+    if not color_hex == "#000000":
+        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color_hex)
+        if match:
+            rgb = tuple(int(color_hex.lstrip('#')[i:i + 2], 16) for i in (
+                0, 2, 4))  # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+            color_r = rgb[0]
+            color_g = rgb[1]
+            color_b = rgb[2]
+    color = discord.Color.from_rgb(r=color_r, g=color_g, b=color_b)
     if not ctx.author.guild_permissions.administrator:
         await ctx.respond("You do not have the permissions to do that!")
         return
     newText = text.replace("~", "\n")
     embed_check = discord.Embed(
+        color=color,
         title=title,
         description=newText
     )
