@@ -165,29 +165,33 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
 
 
 class AnnounceButton(Button):
-    def __init__(self, row, emoji, channel, message, self_message):
+    def __init__(self, row, emoji, channel, message, self_message, user):
         super().__init__(style=discord.ButtonStyle.blurple, emoji=emoji, row=row)
         self.channel = channel
         self.message = message
         self.message_self = self_message
+        self.user = user
 
     async def callback(self, interaction):
-        self.view.disable_all_items()
-        await self.message_self.edit(view=self.view)
-        embed = None
-        if self.emoji.name == "✅":
-            embed = discord.Embed(
-                color=discord.Color.green(),
-                title=f"Sending announcement!",
-                description=f"Sending..."
-            )
-            await self.channel.send(embed=self.message)
-        elif self.emoji.name == "❌":
-            embed = discord.Embed(
-                color=discord.Color.red(),
-                title=f"Announcement canceled!",
-                description=f"```If you think this was a bug, please talk to the developer. (in the support server)```")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        if interaction.user.id == self.user.id:
+            self.view.disable_all_items()
+            await self.message_self.edit(view=self.view)
+            embed = None
+            if self.emoji.name == "✅":
+                embed = discord.Embed(
+                    color=discord.Color.green(),
+                    title=f"Sending announcement!",
+                    description=f"Sending..."
+                )
+                await self.channel.send(embed=self.message)
+            elif self.emoji.name == "❌":
+                embed = discord.Embed(
+                    color=discord.Color.red(),
+                    title=f"Announcement canceled!",
+                    description=f"```If you think this was a bug, please talk to the developer. (in the support server)```")
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+        else:
+            await interaction.response.send_message(f"You aren't the user who ran this command.", ephemeral=True)
 
 
 @bot.slash_command(name="announce", description="Make server announcements!")
@@ -195,7 +199,8 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                 channel_types=[discord.ChannelType.text, discord.ChannelType.news,
                                                                discord.ChannelType.news_thread,
                                                                discord.ChannelType.public_thread,
-                                                               discord.ChannelType.private_thread],
+                                                               discord.ChannelType.private_thread,
+                                                               ],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
 
                    title: str, text: str,
@@ -226,8 +231,8 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
     await ctx.respond(embed=embed_check)
     message = await ctx.channel.send("Is this correct?")
     view = View()
-    view.add_item(AnnounceButton(0, "✅", channel, embed_check, message))
-    view.add_item(AnnounceButton(0, "❌", channel, embed_check, message))
+    view.add_item(AnnounceButton(0, "✅", channel, embed_check, message, ctx.author))
+    view.add_item(AnnounceButton(0, "❌", channel, embed_check, message, ctx.author))
     await message.edit(view=view)
 
 
