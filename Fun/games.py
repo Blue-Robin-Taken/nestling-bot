@@ -37,6 +37,21 @@ class TwentyFortyEightButton(Button):
             await interaction.response.send_message("This is not your game!", ephemeral=True)
 
 
+class twentyfortyeightview(View):
+    def __init__(self, user, game, m):
+        super().__init__(timeout=500)
+        self.message = m
+        self.add_item(TwentyFortyEightButton(0, "🔼", game, user, False))
+        self.add_item(TwentyFortyEightButton(0, "🔽", game, user, False))
+        self.add_item(TwentyFortyEightButton(0, "◀", game, user, False))
+        self.add_item(TwentyFortyEightButton(0, "▶", game, user, False))
+
+    async def on_timeout(self):
+        self.disable_all_items()
+        await self.message.edit_original_response(view=self)
+        await self.message.channel.send("Game timed out!")
+
+
 class twentyfortyeightcommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -54,11 +69,7 @@ class twentyfortyeightcommand(commands.Cog):
         embed.set_footer(text=f"Score: {game.score}")
 
         message = await ctx.respond(embed=embed)
-        view = View(timeout=300)
-        view.add_item(TwentyFortyEightButton(0, "🔼", game, ctx.user, False))
-        view.add_item(TwentyFortyEightButton(0, "🔽", game, ctx.user, False))
-        view.add_item(TwentyFortyEightButton(0, "◀", game, ctx.user, False))
-        view.add_item(TwentyFortyEightButton(0, "▶", game, ctx.user, False))
+        view = twentyfortyeightview(ctx.user, game, message)
 
         await message.edit_original_response(view=view)
 
@@ -154,4 +165,3 @@ class rockpaperscissors(commands.Cog):
 
         view = self.RPSView(ctx)
         await ctx.respond(embed=embed, view=view)
-

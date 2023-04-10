@@ -59,6 +59,16 @@ async def on_connect():
     print('Dumped data')
 
 
+@bot.slash_command(name="channel_type", description="Get a channel type")
+async def channel_type(ctx, channel):
+    try:
+
+        channel = await bot.fetch_channel(int(channel))
+        await ctx.respond(channel.type)
+    except AttributeError as e:
+        await ctx.respond(e)
+
+
 @bot.event
 async def on_ready():
     bot.add_view(SuggestView())
@@ -200,7 +210,7 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                                discord.ChannelType.news_thread,
                                                                discord.ChannelType.public_thread,
                                                                discord.ChannelType.private_thread,
-                                                               ],
+                                                               discord.ChannelType.news],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
 
                    title: str, text: str,
@@ -246,15 +256,6 @@ async def purge(ctx, limit: discord.Option(int)):
         await ctx.respond(
             f"You do not have permission to purge messages. You need to have permission to manage messages.",
             ephemeral=True)
-
-
-@bot.slash_command(name="doaflip", description="It says what it does...")
-async def doaflip(ctx):
-    embed = discord.Embed(
-        title="You asked, I answered.",
-        colour=discord.Colour.random()
-    )
-    await ctx.respond(embed=embed, file=discord.File("Doaflip.gif"))
 
 
 @bot.user_command(name="Account Creation Date")
