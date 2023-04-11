@@ -29,30 +29,31 @@ class ReactionRoles(commands.Cog):
                                  max_values=len(options))
 
             async def callback(self, interaction: discord.Interaction):
-                if all(elem == "Remove Selected Roles" for elem in self.values):
-                    return await interaction.response.send_message(
-                        "You must select at least one role.", ephemeral=True)
-
+                v = self.values
+                print(v)
                 remove = False
-                if "Remove Selected Roles" in self.values:
+                if "Remove Selected Roles" in v:
                     remove = True
-                if not remove:
-                    return await interaction.response.send_message(f"Added role.", ephemeral=True)
-                else:
-                    await interaction.response.send_message(f"Removed selected roles.",
-                                                            ephemeral=True)
-                for i in self.values:
+
+                for i in v:
 
                     try:
                         role = discord.utils.get(interaction.guild.roles, name=i)
+                        print(role)
                         if role is not None:
                             if i in [x.name for x in interaction.user.roles] and remove:
                                 await interaction.user.remove_roles(discord.utils.get(interaction.guild.roles, name=i))
                             else:
                                 await interaction.user.add_roles(discord.utils.get(interaction.guild.roles, name=i))
-
+                        elif i != "Remove Selected Roles":
+                            return await interaction.response.send_message(f"Role {i} does not exist.",)
                     except discord.errors.Forbidden:
                         await interaction.response.send_message("I don't have the proper permissions.", ephemeral=True)
+                if not remove:
+                    return await interaction.response.send_message(f"Added role.", ephemeral=True)
+                else:
+                    await interaction.response.send_message(f"Removed selected roles.",
+                                                            ephemeral=True)
 
     class ReactionSelect(discord.ui.View):
         def __init__(self, channel, title, description, color):
