@@ -204,7 +204,7 @@ class AnnounceButton(Button):
             await interaction.response.send_message(f"You aren't the user who ran this command.", ephemeral=True)
 
 
-@bot.slash_command(name="announce", description="Make server announcements!")
+@bot.slash_command(name="announce", description="Make server announcements! Use \\n in the message to create a new line!")
 async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                 channel_types=[discord.ChannelType.text, discord.ChannelType.news,
                                                                discord.ChannelType.news_thread,
