@@ -204,7 +204,8 @@ class AnnounceButton(Button):
             await interaction.response.send_message(f"You aren't the user who ran this command.", ephemeral=True)
 
 
-@bot.slash_command(name="announce", description="Make server announcements! Use \\n in the message to create a new line!")
+@bot.slash_command(name="announce",
+                   description="Make server announcements! Use \\n in the message to create a new line!")
 async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                 channel_types=[discord.ChannelType.text, discord.ChannelType.news,
                                                                discord.ChannelType.news_thread,
@@ -212,7 +213,10 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                                discord.ChannelType.private_thread],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
 
-                   title: str, text: str, author: discord.Option(str, required=False, description="The author of the announcement."),
+                   title: str, text: str,
+                   author: discord.Option(str, required=False, description="The author of the announcement."),
+                   attachment: discord.Option(discord.Attachment, required=False,
+                                              description="The attachment of the announcement."),
                    color_r: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                    color_g: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                    color_b: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
@@ -235,8 +239,10 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
     embed_check = discord.Embed(
         color=color,
         title=title,
-        description=newText
+        description=newText,
     )
+    embed_check.set_image(url=attachment.url)
+    embed_check.set_author(name=author)
     await ctx.respond(embed=embed_check)
     message = await ctx.channel.send("Is this correct?")
     view = View()
