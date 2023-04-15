@@ -232,7 +232,7 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
     if not ctx.author.guild_permissions.administrator:
         await ctx.respond("You do not have the permissions to do that!")
         return
-    newText = text.replace("~", "\n")
+    newText = text.replace("\\n", "\n")
     embed_check = discord.Embed(
         color=color,
         title=title,
