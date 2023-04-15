@@ -18,6 +18,7 @@ from Other import other
 from Other import maths
 from Other import settings
 from Other import reaction_roles
+from Other import encrypt
 import re
 
 bot = discord.Bot(intents=discord.Intents.all())
@@ -29,7 +30,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
-        reaction_roles.ReactionRoles, games.rockpaperscissors)
+        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -243,7 +244,8 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
     )
     if attachment is not None:
         embed_check.set_image(url=attachment.url)
-    embed_check.set_author(name=author)
+    if author is not None:
+        embed_check.set_author(name=author)
     await ctx.respond(embed=embed_check)
     message = await ctx.channel.send("Is this correct?")
     view = View()
