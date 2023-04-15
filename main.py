@@ -212,7 +212,7 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
                                                                discord.ChannelType.private_thread],
                                                 description="Copy the text channel in developer mode, or just use the # system."),
 
-                   title: str, text: str,
+                   title: str, text: str, author: discord.Option(str, required=False, description="The author of the announcement."),
                    color_r: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                    color_g: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                    color_b: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
