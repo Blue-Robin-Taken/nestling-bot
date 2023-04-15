@@ -15,7 +15,7 @@ class encryption(commands.Cog):
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
-            salt= b'8\xa8+h(\x10\xe1s\x13\xc0\xf9/?\xa3\\\xc0%X\xd1\xe9\xee\xd101\xbd\x0b}h\x16]\\\x8e',
+            salt= b'e,\x9f\xbfA\xfd\xa7\t U\xc5\xc7\x11\xde\xae6e\x14\xe0\xd7N\xc4*\xabe0\x8f\xb8y\xa3\xa2\xdf',
             iterations=480000,
         )
         key = base64.urlsafe_b64encode(kdf.derive(key_.encode()))
@@ -29,7 +29,8 @@ class encryption(commands.Cog):
         key = self.get_key(key)
         fernet = Fernet(key)
         encrypted_message = fernet.encrypt(message.encode())
-        await ctx.respond(encrypted_message.decode(), ephemeral=True)
+        embed = discord.Embed(title="Encrypted Message", description=encrypted_message.decode(), color=discord.Color.random())
+        await ctx.respond(embed=embed, ephemeral=True)
 
     @commands.slash_command(name="decrypt", description="Decrypts a message")
     async def decrypt(self, ctx,
@@ -40,6 +41,7 @@ class encryption(commands.Cog):
             key = self.get_key(key)
             fernet = Fernet(key)
             decrypted_message = fernet.decrypt(message.encode())
-            await ctx.respond(decrypted_message.decode(), ephemeral=True)
+            embed = discord.Embed(title="Decrypted Message", description=decrypted_message.decode(), color=discord.Color.random())
+            await ctx.respond(embed=embed, ephemeral=True)
         except cryptography.fernet.InvalidToken as e:
             await ctx.respond(f"Invalid token", ephemeral=True)
