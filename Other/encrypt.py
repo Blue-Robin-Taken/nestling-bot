@@ -29,7 +29,7 @@ class encryption(commands.Cog):
         key = self.get_key(key)
         fernet = Fernet(key)
         encrypted_message = fernet.encrypt(message.encode())
-        await ctx.respond(encrypted_message.decode())
+        await ctx.respond(encrypted_message.decode(), ephemeral=True)
 
     @commands.slash_command(name="decrypt", description="Decrypts a message")
     async def decrypt(self, ctx,
@@ -40,6 +40,6 @@ class encryption(commands.Cog):
             key = self.get_key(key)
             fernet = Fernet(key)
             decrypted_message = fernet.decrypt(message.encode())
-            await ctx.respond(decrypted_message.decode())
+            await ctx.respond(decrypted_message.decode(), ephemeral=True)
         except cryptography.fernet.InvalidToken as e:
-            await ctx.respond(f"Invalid token")
+            await ctx.respond(f"Invalid token", ephemeral=True)
