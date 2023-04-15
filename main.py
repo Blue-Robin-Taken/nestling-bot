@@ -241,7 +241,8 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
         title=title,
         description=newText,
     )
-    embed_check.set_image(url=attachment.url)
+    if attachment is not None:
+        embed_check.set_image(url=attachment.url)
     embed_check.set_author(name=author)
     await ctx.respond(embed=embed_check)
     message = await ctx.channel.send("Is this correct?")
