@@ -19,6 +19,7 @@ from Other import maths
 from Other import settings
 from Other import reaction_roles
 from Other import encrypt
+from Other import imaging
 import re
 
 bot = discord.Bot(intents=discord.Intents.all())
@@ -30,7 +31,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
-        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption)
+        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
