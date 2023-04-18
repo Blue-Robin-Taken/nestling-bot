@@ -15,8 +15,7 @@ class imaging(commands.Cog):
 
     @staticmethod
     def check_image_size(attachment):
-        print(attachment.size / 1000, 'e')
-        if attachment.size / 1000 > 100:
+        if attachment.size / 1000 > 500:
             return False
         else:
             return True
@@ -31,7 +30,7 @@ class imaging(commands.Cog):
 
         try:
             if not self.check_image_size(attachment):
-                return await ctx.respond("Invalid image", ephemeral=True)
+                return await ctx.respond("Image too big. If you want image compression added, make a suggestion in the main server `/botinfo`", ephemeral=True)
             await ctx.defer()
             if color_hex is not None:
                 match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$',
@@ -82,7 +81,7 @@ class imaging(commands.Cog):
                         inverse: discord.Option(bool, required=False, description="Invert image grayscale")):
         try:
             if not self.check_image_size(attachment):
-                return await ctx.respond("Invalid image", ephemeral=True)
+                return await ctx.respond("Image too big. If you want image compression added, make a suggestion in the main server `/botinfo`", ephemeral=True)
             await ctx.defer()
             temp = io.BytesIO()
             await attachment.save(temp)
@@ -107,6 +106,7 @@ class imaging(commands.Cog):
                 await ctx.respond(file=discord.File(output, filename="grayscale.png"))
 
         except PIL.UnidentifiedImageError:
+            print(attachment.content_type)
             await ctx.respond("This is not a valid image!", ephemeral=True)
 
     class palette_types(Enum):
