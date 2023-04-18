@@ -3,8 +3,7 @@ from discord.ext import commands
 import PIL
 from PIL import Image
 import io
-import os
-import chardet
+import re
 
 
 class imaging(commands.Cog):
@@ -12,18 +11,19 @@ class imaging(commands.Cog):
         self.bot = bot
 
     command_group = discord.SlashCommandGroup(name="imaging")
-    hide_command_group = command_group.create_subgroup(name="hide")
 
-    @hide_command_group.command(name="darkmode", description="Hides image for dark mode users")
-    async def hide_darkmode(self, ctx,
-                            attachment: discord.Option(discord.Attachment, required=True, description="Image to hide")):
+    @command_group.command(name="hide", description="Hides image in certain color")
+    async def hide(self, ctx,
+                   attachment: discord.Option(discord.Attachment, required=True, description="Image to hide"),
+                   color_hex: discord.Option(str, required=False, description="Color to hide"), light_mode: discord.Option(bool, required=False, description="Invisible to light mode users")):
+
         try:
-            # await ctx.defer()
-            embed = discord.Embed(
-                title="Dark Mode",
-                description="This image will be hidden for dark mode users",
-                color=discord.Color.dark_blue()
-            )
+            await ctx.defer()
+            if color_hex is not None:
+                match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$',
+                                  color_hex)  # https://stackoverflow.com/questions/30241375/python-how-to-check-if-string-is-a-hex-color-code/30241753#30241753
+                if not match:
+                    return await ctx.respond("Invalid color")
             temp = io.BytesIO()
             await attachment.save(temp)
             img = Image.open(
@@ -40,7 +40,14 @@ class imaging(commands.Cog):
 
             imgReturn = []
             for x in range(len(imgdata)):
-                imgReturn.append((49,51,56, grayscale[x][0]))
+                if color_hex is not None:
+                    rgb = PIL.ImageColor.getcolor(color_hex, "RGB") # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+                    imgReturn.append((rgb[0], rgb[1], rgb[2], grayscale[x][0]))
+                elif light_mode is not None:
+                    rgb = PIL.ImageColor.getcolor("#FEFFFE", "RGB") # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+                    imgReturn.append((rgb[0], rgb[1], rgb[2], grayscale[x][0]))
+                else:
+                    imgReturn.append((49, 51, 56, grayscale[x][0]))
             img.putdata(imgReturn)
             with io.BytesIO() as output:
                 img.save(output, format="PNG")

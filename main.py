@@ -21,6 +21,7 @@ from Other import reaction_roles
 from Other import encrypt
 from Other import imaging
 import re
+from enum import Enum
 
 bot = discord.Bot(intents=discord.Intents.all())
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
