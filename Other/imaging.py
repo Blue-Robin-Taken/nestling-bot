@@ -120,16 +120,24 @@ class imaging(commands.Cog):
                             palette_type: discord.Option(palette_types, required=True,
                                                          description="Type of color palette to generate", )):
         multi = 30
-
+        e = 1
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         if palette_type == imaging.palette_types.Monochromatic:
-            colors = [(color[0] + (i * (360 / amount)), color[1] + (i * (360 / amount)), color[2] + (i * (360 / amount)))
-                      for i in range(amount)]
+            colors = [
+                (color[0] + (i * (360 / amount)), color[1] + (i * (360 / amount)), color[2] + (i * (360 / amount)))
+                for i in range(amount)]
         elif palette_type == imaging.palette_types.Complementary:
-            colors = [(abs(color[0] + (i * (360 / amount) - 255)), abs(color[1] + (i * (360 / amount) - 255)), abs(color[2] + (i * (360 / amount) - 255)))
-                      for i in range(amount)]  # https://www.quora.com/How-do-you-find-an-RGB-complementary-color
+            e = 2
+            other_colors = [
+                (color[0] + (i * (360 / amount)), color[1] + (i * (360 / amount)), color[2] + (i * (360 / amount)))
+                for i in range(round(amount))]
+            colors = [(abs(color[0] + (i * (360 / amount) - 255)), abs(color[1] + (i * (360 / amount) - 255)),
+                       abs(color[2] + (i * (360 / amount) - 255)))
+                      for i in range(amount)]
 
-        image = PIL.Image.new('RGB', (multi * amount, multi))
+            colors.extend(other_colors)  # https://www.quora.com/How-do-you-find-an-RGB-complementary-color
+
+        image = PIL.Image.new('RGB', (multi * amount * e, multi * e))
         draw = ImageDraw.Draw(image)
         for x in range(len(colors)):
             shape = [(0 + x * multi, 0), (image.width - (x * multi) + (x * multi), image.height)]
