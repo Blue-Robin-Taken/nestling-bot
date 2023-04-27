@@ -94,6 +94,23 @@ async def ping(ctx):
     await ctx.respond('Pong! (Run /botinfo for ping)')
 
 
+@bot.slash_command(name='server_member_amount', description='Get the amount of members in this server')
+async def server_member_amount(ctx):
+    bot = 0
+    members = 0
+    for member in ctx.guild.members:
+        if member.bot:
+            bot += 1
+        else:
+            members += 1
+    embed = discord.Embed(
+        title = f"Server Member Amount for {ctx.guild.name}",
+        description=f"Bots: {bot} \n Members: {members}",
+        color=discord.Color.random()
+    )
+    await ctx.respond(embed=embed)
+
+
 class SuggestView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
