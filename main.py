@@ -32,7 +32,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
-        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging)
+        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -47,12 +47,8 @@ def load_cogs():
     print("Loaded cogs")
 
 
-@bot.event
+@bot.listen()
 async def on_connect():
-    try:
-        await bot.sync_commands()
-    except discord.HTTPException as e:
-        print(e)
     print("Connected!")
     url = f"https://www.googleapis.com/youtube/v3/search?key=AIzaSyC0QBEb_cSWCqOO8rbPG6t7edN-sFugslQ&channelId=UCxcnsr1R5Ge_fbTu5ajt8DQ&part=snippet,id&order=date&maxResults=100&type=video"
     data = requests.get(url).json()

@@ -94,3 +94,4 @@ class redbook(commands.Cog):
         )
 
         await ctx.respond(embed=embed)
+

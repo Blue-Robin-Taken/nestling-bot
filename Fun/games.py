@@ -3,6 +3,12 @@ from discord.ui import View, Button
 from discord.ext import commands
 import twentyfortyeight
 import random
+import pymongo
+
+import pymongo
+
+client = pymongo.MongoClient(
+    "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 
 
 class TwentyFortyEightButton(Button):
@@ -165,3 +171,76 @@ class rockpaperscissors(commands.Cog):
 
         view = self.RPSView(ctx)
         await ctx.respond(embed=embed, view=view)
+
+
+class counting(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.db = client.Fun
+        self.coll = self.db.Count
+
+        @bot.listen()
+        async def on_message(message):
+            try:
+                coll = getattr(client.settings, "Counting Channel")
+                channel_dict = coll.find_one(
+                    {"_id": message.guild.id})  # return value of column for counting channel settings
+                if channel_dict is not None:
+                    if message.channel.id == channel_dict['channel']:
+                        if message.content.isdigit():  # https://stackoverflow.com/questions/5606585/python-test-if-value-can-be-converted-to-an-int-in-a-list-comprehension
+                            # try:
+                            count_dict = self.coll.find_one(
+                                {'_id': message.guild.id})  # return value for column for counting database
+                            if count_dict is not None:
+                                if int(message.content) == count_dict['count'] + 1:
+                                    if (count_dict['count'] + 1) % 100 == 0:
+                                        await message.add_reaction("<:100count:1107161672210206720>")
+                                    elif (count_dict['count'] + 1) % 1000 == 0:
+                                        await message.add_reaction("💫")
+                                    elif (count_dict['count'] + 1) % 10000 == 0:
+                                        await message.add_reaction("😀")
+                                    await message.add_reaction("✅")
+                                    self.coll.update_one({'_id': message.guild.id}, {'$inc': {'count': 1}})
+                                else:
+                                    await message.add_reaction("❌")
+                            else:
+                                self.coll.insert_one({'_id': message.guild.id, 'count': 1})
+
+            except (TypeError, pymongo.errors.InvalidDocument):
+                pass
+
+    @commands.slash_command(description="Get the current count for the server")
+    async def count(self, ctx):
+        count_dict = self.coll.find_one({'_id': ctx.guild.id})  # return value for column for counting database
+        if count_dict is not None:
+            embed = discord.Embed(
+                title=f'Current Count for {ctx.guild.name}',
+                description=f'{count_dict["count"]}',
+                color=discord.Color.random()
+            )
+            await ctx.respond(embed=embed)
+
+    async def catch(self,
+                    val):  # the catch function makes sure that a server isn't None (for list comprehensions) see here: https://stackoverflow.com/questions/1528237/how-to-handle-exceptions-in-a-list-comprehensions
+        try:
+            if val is not None:
+                return val.name
+            else:
+                return "Unknown server"
+        except:
+            return "Bot isn't in this server"
+
+    @commands.slash_command(description='Get a leaderboard count for all servers that use counting')
+    async def count_leaderboard(self, ctx):
+        data = self.coll.find({})  # All servers listed in the count column
+        servers = [server for server in data]
+        embed = discord.Embed(
+            title='Count Leaderboard',
+            # https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
+            description="".join([str(await self.catch(self.bot.get_guild(i["_id"]))) + ": " + str(i["count"]) + "\n" for i in
+                                 sorted(servers, key=lambda d: d["count"], reverse=True)[:min(len(servers), 10)]]),
+            # sort by count then get top 10 servers then format into proper string (also uses catch function to check if object doesn't return error)
+
+            color=discord.Color.random()
+        )
+        await ctx.respond(embed=embed)
