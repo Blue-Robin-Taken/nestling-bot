@@ -1,10 +1,6 @@
-from discord.ui import Button, View
+import re
 import discord
 from discord.ext import commands
-from discord.ui.select import Select
-import json
-import pymongo
-import re
 
 
 class ReactionRoles(commands.Cog):

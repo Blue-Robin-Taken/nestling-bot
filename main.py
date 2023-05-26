@@ -20,6 +20,7 @@ from Other import settings
 from Other import reaction_roles
 from Other import encrypt
 from Other import imaging
+from Other import polls
 import re
 from enum import Enum
 
@@ -32,7 +33,8 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         games.twentyfortyeightcommand, games.eightball, randomgames.bungcommand, other.botinfo, other.vote,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
-        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting)
+        reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
+        polls.Polls)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -64,7 +66,7 @@ async def channel_type(ctx, channel):
 
         channel = await bot.fetch_channel(int(channel))
         await ctx.respond(channel.type)
-    except AttributeError as e:
+    except (AttributeError, discord.errors.NotFound, ValueError, discord.errors.HTTPException) as e:
         await ctx.respond(e)
 
 
@@ -100,7 +102,7 @@ async def server_member_amount(ctx):
         else:
             members += 1
     embed = discord.Embed(
-        title = f"Server Member Amount for {ctx.guild.name}",
+        title=f"Server Member Amount for {ctx.guild.name}",
         description=f"Bots: {bot} \n Members: {members}",
         color=discord.Color.random()
     )

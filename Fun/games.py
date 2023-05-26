@@ -178,6 +178,7 @@ class counting(commands.Cog):
         self.bot = bot
         self.db = client.Fun
         self.coll = self.db.Count
+        self.coll_users = self.db.Count_Users
 
         @bot.listen()
         async def on_message(message):
@@ -188,7 +189,6 @@ class counting(commands.Cog):
                 if channel_dict is not None:
                     if message.channel.id == channel_dict['channel']:
                         if message.content.isdigit():  # https://stackoverflow.com/questions/5606585/python-test-if-value-can-be-converted-to-an-int-in-a-list-comprehension
-                            # try:
                             count_dict = self.coll.find_one(
                                 {'_id': message.guild.id})  # return value for column for counting database
                             if count_dict is not None:
@@ -200,7 +200,22 @@ class counting(commands.Cog):
                                     elif (count_dict['count'] + 1) % 10000 == 0:
                                         await message.add_reaction("😀")
                                     await message.add_reaction("✅")
-                                    self.coll.update_one({'_id': message.guild.id}, {'$inc': {'count': 1}})
+                                    self.coll.update_one({'_id': message.guild.id},
+                                                         {'$inc': {'count': 1}})  # update count
+
+                                    user_count_dict = self.coll_users.find_one(
+                                        {'_id': message.guild.id}
+                                    )  # check if user has counted before. If they have, reply with the following message:
+                                    if user_count_dict is not None:
+                                        print(int(user_count_dict['user']), ' ', int(message.author.id))
+                                        if int(user_count_dict['user']) == int(message.author.id):
+                                            return await message.reply("You can't count twice!")
+                                        else:
+                                            self.coll_users.update_one(
+                                                {'_id': message.guild.id}, {"$set": {"user": message.author.id}}
+                                            )
+                                    else:
+                                        self.coll_users.insert_one({'_id': message.guild.id, 'user': message.author.id})
                                 else:
                                     await message.add_reaction("❌")
                             else:
@@ -237,8 +252,9 @@ class counting(commands.Cog):
         embed = discord.Embed(
             title='Count Leaderboard',
             # https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
-            description="".join([str(await self.catch(self.bot.get_guild(i["_id"]))) + ": " + str(i["count"]) + "\n" for i in
-                                 sorted(servers, key=lambda d: d["count"], reverse=True)[:min(len(servers), 10)]]),
+            description="".join(
+                [str(await self.catch(self.bot.get_guild(i["_id"]))) + ": " + str(i["count"]) + "\n" for i in
+                 sorted(servers, key=lambda d: d["count"], reverse=True)[:min(len(servers), 10)]]),
             # sort by count then get top 10 servers then format into proper string (also uses catch function to check if object doesn't return error)
 
             color=discord.Color.random()
