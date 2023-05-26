@@ -192,8 +192,23 @@ class counting(commands.Cog):
                             count_dict = self.coll.find_one(
                                 {'_id': message.guild.id})  # return value for column for counting database
                             if count_dict is not None:
-                                if int(message.content) == count_dict['count'] + 1:
-                                    if (count_dict['count'] + 1) % 100 == 0:
+                                user_count_dict = self.coll_users.find_one(
+                                    {'_id': message.guild.id}
+                                )  # check if user has counted before. If they have, reply with the following message:
+                                if user_count_dict is not None:
+                                    print(int(user_count_dict['user']), ' ', int(message.author.id))
+                                    if int(user_count_dict['user']) == int(message.author.id):
+                                        return await message.reply("You can't count twice!")
+                                    else:
+                                        self.coll_users.update_one(
+                                            {'_id': message.guild.id}, {"$set": {"user": message.author.id}}
+                                        )
+                                else:
+                                    self.coll_users.insert_one({'_id': message.guild.id, 'user': message.author.id})
+
+                                if int(message.content) == count_dict['count'] + 1:  # check if count is correct
+                                    if (count_dict[
+                                            'count'] + 1) % 100 == 0:  # add epic emojis for each counting milestone
                                         await message.add_reaction("<:100count:1107161672210206720>")
                                     elif (count_dict['count'] + 1) % 1000 == 0:
                                         await message.add_reaction("💫")
@@ -203,19 +218,6 @@ class counting(commands.Cog):
                                     self.coll.update_one({'_id': message.guild.id},
                                                          {'$inc': {'count': 1}})  # update count
 
-                                    user_count_dict = self.coll_users.find_one(
-                                        {'_id': message.guild.id}
-                                    )  # check if user has counted before. If they have, reply with the following message:
-                                    if user_count_dict is not None:
-                                        print(int(user_count_dict['user']), ' ', int(message.author.id))
-                                        if int(user_count_dict['user']) == int(message.author.id):
-                                            return await message.reply("You can't count twice!")
-                                        else:
-                                            self.coll_users.update_one(
-                                                {'_id': message.guild.id}, {"$set": {"user": message.author.id}}
-                                            )
-                                    else:
-                                        self.coll_users.insert_one({'_id': message.guild.id, 'user': message.author.id})
                                 else:
                                     await message.add_reaction("❌")
                             else:
