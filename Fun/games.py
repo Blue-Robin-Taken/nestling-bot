@@ -223,8 +223,7 @@ class counting(commands.Cog):
                                 self.coll.insert_one({'_id': message.guild.id, 'count': 1})
 
             except (TypeError, pymongo.errors.InvalidDocument, AttributeError) as e:
-                await message.channel.send(f"Error: `{e}`. Please make sure the bot has the proper permissions. If you believe this is a mistake, join our server in /botinfo.")
-
+                pass
     @commands.slash_command(description="Get the current count for the server")
     async def count(self, ctx):
         count_dict = self.coll.find_one({'_id': ctx.guild.id})  # return value for column for counting database

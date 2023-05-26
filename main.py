@@ -58,6 +58,7 @@ async def on_connect():
         json.dump(data, f, indent=4)
         f.close()
     print('Dumped data')
+    # await bot.sync_commands()
 
 
 @bot.slash_command(name="channel_type", description="Get a channel type")
