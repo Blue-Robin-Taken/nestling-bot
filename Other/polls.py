@@ -33,8 +33,8 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                 guild = await self.bot.fetch_channel(payload.channel_id)
                 message = await guild.fetch_message(message_id)
                 embed = message.embeds[0]
-                value1 = discord.utils.get(message.reactions, emoji="🔽").count
-                value2 = discord.utils.get(message.reactions, emoji="🔼").count
+                value1 = discord.utils.get(message.reactions, emoji="🔽").count - 1
+                value2 = discord.utils.get(message.reactions, emoji="🔼").count - 1
                 percent1 = (value1 / (value1 + value2)) * 10
                 percent2 = (value2 / (value1 + value2)) * 10
                 bar = "Upvotes " + ("⬛" * int(percent2)) + (
