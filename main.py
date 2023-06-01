@@ -22,6 +22,7 @@ from Other import encrypt
 from Other import imaging
 from Other import polls
 import re
+import datetime
 from enum import Enum
 
 bot = discord.Bot(intents=discord.Intents.all())
@@ -71,10 +72,20 @@ async def channel_type(ctx, channel):
         await ctx.respond(e)
 
 
+def clean_message_database():  # cleans the database of old polls
+    coll = client.polls.messages
+    for guild in coll.find({}):
+        if guild[
+            'RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
+            coll.delete_one(guild)
+
+
 @bot.event
 async def on_ready():
     bot.add_view(SuggestView())
     bot.add_view(reaction_roles.ReactionRoles.ReactionView([]))
+    clean_message_database()
+    print('cleaned database')
     print('ready')
 
 

@@ -224,6 +224,7 @@ class counting(commands.Cog):
 
             except (TypeError, pymongo.errors.InvalidDocument, AttributeError) as e:
                 pass
+
     @commands.slash_command(description="Get the current count for the server")
     async def count(self, ctx):
         count_dict = self.coll.find_one({'_id': ctx.guild.id})  # return value for column for counting database
