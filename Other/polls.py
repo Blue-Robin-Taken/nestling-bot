@@ -35,10 +35,13 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                 embed = message.embeds[0]
                 value1 = discord.utils.get(message.reactions, emoji="🔽").count - 1
                 value2 = discord.utils.get(message.reactions, emoji="🔼").count - 1
-                percent1 = (value1 / (value1 + value2)) * 10
-                percent2 = (value2 / (value1 + value2)) * 10
-                bar = "Upvotes " + ("⬛" * int(percent2)) + (
-                        int(percent1) * "⬜") + " Downvotes" # https://chat.openai.com/share/7684565a-1f29-4c54-9d2f-502e051aef19
+                try:
+                    percent1 = (value1 / (value1 + value2)) * 10
+                    percent2 = (value2 / (value1 + value2)) * 10
+                    bar = "Upvotes " + ("⬛" * int(percent2)) + (
+                            int(percent1) * "⬜") + " Downvotes" # https://chat.openai.com/share/7684565a-1f29-4c54-9d2f-502e051aef19
+                except ZeroDivisionError:
+                    pass
                 embed.set_footer(text=bar)
                 await message.edit(embed=embed)
 
@@ -52,7 +55,7 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                                                                              discord.ChannelType.text,
                                                                              discord.ChannelType.news,
                                                                              discord.ChannelType.public_thread]),
-                          minutes: int, description: discord.Option(str, required=False),
+                          minutes: discord.Option(int, required=True, min_value=0, max_value=99999), description: discord.Option(str, required=False),
                           img: discord.Option(discord.Attachment, required=False),
                           r: discord.Option(int, max_value=250, min_value=0, required=False),
                           g: discord.Option(int, max_value=250, min_value=0, required=False),
