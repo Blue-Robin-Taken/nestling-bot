@@ -51,15 +51,15 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
         return ImageColor.getcolor(h, "RGB")
 
     @commands.slash_command(name="simple_poll", description="Create a simple poll with two buttons")
-    async def simple_poll(self, ctx, title: str, channel: discord.Option(discord.TextChannel,
-                                                                         channel_types=[discord.ChannelType.text,
-                                                                                        discord.ChannelType.news,
-                                                                                        discord.ChannelType.news_thread,
-                                                                                        discord.ChannelType.public_thread,
-                                                                                        discord.ChannelType.private_thread,
-                                                                                        discord.ChannelType.group,
-                                                                                        discord.ChannelType.forum]),
-                          minutes: discord.Option(int, required=True, min_value=0, max_value=99999), description: discord.Option(str, required=False),
+    @discord.option('title', type=str)
+    @discord.option('channel', type=discord.TextChannel, channel_types=[discord.ChannelType.text,
+                                                                        discord.ChannelType.news,
+                                                                        discord.ChannelType.news_thread,
+                                                                        discord.ChannelType.public_thread,
+                                                                        discord.ChannelType.private_thread])
+    async def simple_poll(self, ctx, title, channel,
+                          minutes: discord.Option(int, required=True, min_value=0, max_value=99999),
+                          description: discord.Option(str, required=False),
                           img: discord.Option(discord.Attachment, required=False),
                           r: discord.Option(int, max_value=250, min_value=0, required=False),
                           g: discord.Option(int, max_value=250, min_value=0, required=False),
@@ -79,7 +79,8 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
             expiry_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=minutes)
             embed = discord.Embed(
                 title=title,
-                description=description + f"\n \n Poll Expires: {'<t:' + str(calendar.timegm(expiry_time.timetuple())) + '>'}",  # https://www.geeksforgeeks.org/convert-python-datetime-to-epoch/
+                description=description + f"\n \n Poll Expires: {'<t:' + str(calendar.timegm(expiry_time.timetuple())) + '>'}",
+                # https://www.geeksforgeeks.org/convert-python-datetime-to-epoch/
                 color=color
             )
             embed.set_footer(text="Upvotes 0% ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ Downvotes 0%")
