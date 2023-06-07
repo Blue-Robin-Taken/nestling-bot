@@ -82,13 +82,16 @@ class raid_protection(commands.Cog):
     @commands.slash_command(name='role-all')
     async def role_all(self, ctx, role: discord.Option(discord.Role, required=True, )) -> None:
         await ctx.defer()
-        if ctx.author.guild_permissions.administrator:
-            for member in ctx.guild.members:
-                await asyncio.sleep(.25)  # four members per second
-                await member.add_roles(role)
-            await ctx.respond(f'Roles added successfully by {ctx.author.mention}')
-        else:
-            await ctx.respond("You do not have administrator permissions", ephemeral=True)
+        try:
+            if ctx.author.guild_permissions.administrator:
+                for member in ctx.guild.members:
+                    await asyncio.sleep(.25)  # four members per second
+                    await member.add_roles(role)
+                await ctx.respond(f'Roles added successfully by {ctx.author.mention}')
+            else:
+                await ctx.respond("You do not have administrator permissions", ephemeral=True)
+        except discord.errors.Forbidden as e:
+            await ctx.respond('Missing permissions')
 
 
 class vote(commands.Cog):
