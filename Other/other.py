@@ -4,7 +4,7 @@ import random
 import json
 import os
 import math
-
+import asyncio
 
 class botinfo(commands.Cog):
     def __init__(self, bot):
@@ -53,13 +53,13 @@ class reset_server(commands.Cog):
             role = await ctx.guild.create_role(name='Member', color=discord.Color.green())
             for member in ctx.guild.members:  # give members a role
                 await member.add_roles(role)  # add role
-
+                await asyncio.sleep(.2)
             print(ctx.guild.channels)
             for channel in ctx.guild.channels:
                 try:
                     await channel.delete()  # delete channel
                 except discord.errors.HTTPException as e:
-                    pass # ignore
+                    pass  # ignore
 
             for channel_group in guild_temp.keys():
                 group = await ctx.guild.create_category(name=channel_group, position=0)
@@ -67,6 +67,7 @@ class reset_server(commands.Cog):
                                             send_messages=False)  # https://docs.pycord.dev/en/stable/api/models.html#discord.CategoryChannel.set_permissions
                 for channel in guild_temp[channel_group]:
                     channel_ = await group.create_text_channel(name=channel)
+                    await asyncio.sleep(.2)
                     if channel == "announce":
                         await channel_.edit(type=discord.ChannelType.news)
 
