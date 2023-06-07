@@ -33,6 +33,51 @@ class botinfo(commands.Cog):
         await ctx.respond(embed=embed)
 
 
+class reset_server(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.cooldown(1, 300, commands.BucketType.guild)
+    @commands.slash_command(name="reset-server",
+                            description="Only usable by the server owner, this resets the server after a raid")
+    async def reset_server(self, ctx):
+        guild_temp = {"announce": ['Announcements'], "general": ['general']}
+        if ctx.author == ctx.guild.owner:
+            for role in ctx.guild.roles:  # remove roles
+                try:
+                    await role.delete()
+                except discord.errors.HTTPException as e:
+                    pass
+            owner_role = await ctx.guild.create_role(name="Owner", color=discord.Color.red())
+            await ctx.guild.owner.add_roles(owner_role)
+            role = await ctx.guild.create_role(name='Member', color=discord.Color.green())
+            for member in ctx.guild.members:  # give members a role
+                await member.add_roles(role)  # add role
+
+            print(ctx.guild.channels)
+            for channel in ctx.guild.channels:
+                try:
+                    await channel.delete()  # delete channel
+                except discord.errors.HTTPException as e:
+                    pass # ignore
+
+            for channel_group in guild_temp.keys():
+                group = await ctx.guild.create_category(name=channel_group, position=0)
+                await group.set_permissions(role, read_messages=True,
+                                            send_messages=False)  # https://docs.pycord.dev/en/stable/api/models.html#discord.CategoryChannel.set_permissions
+                for channel in guild_temp[channel_group]:
+                    channel_ = await group.create_text_channel(name=channel)
+                    if channel == "announce":
+                        await channel_.edit(type=discord.ChannelType.news)
+
+        else:
+            await ctx.respond("You are not the owner of this server", ephemeral=True)
+
+    @reset_server.error
+    async def error(self, e):
+        print(await e.channel.send('command on cooldown'))
+
+
 class vote(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -94,4 +139,3 @@ class redbook(commands.Cog):
         )
 
         await ctx.respond(embed=embed)
-

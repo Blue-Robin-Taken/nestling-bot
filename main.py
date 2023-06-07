@@ -35,7 +35,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
         reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
-        polls.Polls)
+        polls.Polls, other.reset_server)
 
 client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -94,7 +94,7 @@ async def on_member_join(member):
     label = "Auto Role"
     coll = getattr(db, f"{label}")
     if coll.find_one({"_id": member.guild.id}) is not None:
-        role = member.guild.get_role(coll.find_one({"_id": member.guild.id})['role'])
+        role = await member.guild.fetch_roles(coll.find_one({"_id": member.guild.id})['role'])
         await member.add_roles(role)
         print(str(role) + " joined")
 
