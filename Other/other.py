@@ -6,6 +6,7 @@ import os
 import math
 import asyncio
 
+
 class botinfo(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -33,7 +34,7 @@ class botinfo(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-class reset_server(commands.Cog):
+class raid_protection(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -53,7 +54,7 @@ class reset_server(commands.Cog):
             role = await ctx.guild.create_role(name='Member', color=discord.Color.green())
             for member in ctx.guild.members:  # give members a role
                 await member.add_roles(role)  # add role
-                await asyncio.sleep(.2)
+                await asyncio.sleep(.1)
             print(ctx.guild.channels)
             for channel in ctx.guild.channels:
                 try:
@@ -67,7 +68,7 @@ class reset_server(commands.Cog):
                                             send_messages=False)  # https://docs.pycord.dev/en/stable/api/models.html#discord.CategoryChannel.set_permissions
                 for channel in guild_temp[channel_group]:
                     channel_ = await group.create_text_channel(name=channel)
-                    await asyncio.sleep(.2)
+                    await asyncio.sleep(.1)
                     if channel == "announce":
                         await channel_.edit(type=discord.ChannelType.news)
 
@@ -77,6 +78,17 @@ class reset_server(commands.Cog):
     @reset_server.error
     async def error(self, e):
         print(await e.channel.send('command on cooldown'))
+
+    @commands.slash_command(name='role-all')
+    async def role_all(self, ctx, role: discord.Option(discord.Role, required=True, )) -> None:
+        await ctx.defer()
+        if ctx.author.guild_permissions.administrator:
+            for member in ctx.guild.members:
+                await asyncio.sleep(.25)  # four members per second
+                await member.add_roles(role)
+            await ctx.respond(f'Roles added successfully by {ctx.author.mention}')
+        else:
+            await ctx.respond("You do not have administrator permissions", ephemeral=True)
 
 
 class vote(commands.Cog):
