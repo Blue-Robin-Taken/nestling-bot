@@ -93,8 +93,17 @@ async def on_ready():
 async def on_member_join(member):
     label = "Auto Role"
     coll = getattr(db, f"{label}")
+
     if coll.find_one({"_id": member.guild.id}) is not None:
-        role = discord.utils.get(await member.guild.fetch_roles(), id=int(coll.find_one({"_id": member.guild.id})['role']))
+        # try to get from the cache first
+        role = member.guild.get_role(int(coll.find_one({"_id": member.guild.id})['role']))
+        if role is not None:
+            await member.add_roles(role)
+            return
+
+        # if it's not found in cache, make an API request
+        role = discord.utils.get(await member.guild.fetch_roles(),
+                                 id=int(coll.find_one({"_id": member.guild.id})['role']))
         await member.add_roles(role)
         print(str(role) + " joined")
 
