@@ -132,12 +132,15 @@ class bans(commands.Cog):
         index = 0
         optionsList = []
         banList2 = []
-        async for i in ctx.guild.bans():
-            index += 1
-            bansList += f"{index}: {i.user.name}"
-            bansList += "\n"
-            banList2.append(i.user)
-            optionsList.append(discord.SelectOption(label=i.user.name, description="Unban this user.", emoji="🔨"))
+        try:
+            async for i in ctx.guild.bans():
+                index += 1
+                bansList += f"{index}: {i.user.name}"
+                bansList += "\n"
+                banList2.append(i.user)
+                optionsList.append(discord.SelectOption(label=i.user.name, description="Unban this user.", emoji="🔨"))
+        except discord.errors.Forbidden:
+            await ctx.respond('I am not allowed to see bans', ephemeral=True)
 
         async def callback(interaction):
             if interaction.user.guild_permissions.ban_members:

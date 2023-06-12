@@ -94,7 +94,7 @@ async def on_member_join(member):
     label = "Auto Role"
     coll = getattr(db, f"{label}")
     if coll.find_one({"_id": member.guild.id}) is not None:
-        role = await member.guild.fetch_roles(coll.find_one({"_id": member.guild.id})['role'])
+        role = discord.utils.get(await member.guild.fetch_roles(), id=int(coll.find_one({"_id": member.guild.id})['role']))
         await member.add_roles(role)
         print(str(role) + " joined")
 
