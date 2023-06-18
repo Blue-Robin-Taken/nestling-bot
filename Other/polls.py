@@ -29,9 +29,14 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                 if guild[
                     'RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
                     db.messages.delete_one(guild)
+                    print('deleted one')
                     return
-                guild = await self.bot.fetch_channel(payload.channel_id)
-                message = await guild.fetch_message(message_id)
+                channel = self.bot.get_guild(payload.channel_id)
+                if channel is None:
+                    channel = await self.bot.fetch_channel(payload.channel_id)
+                message = bot.get_message(message_id)
+                if message is None:
+                    message = await channel.fetch_message(message_id)
                 embed = message.embeds[0]
                 value1 = discord.utils.get(message.reactions, emoji="🔽").count - 1
                 value2 = discord.utils.get(message.reactions, emoji="🔼").count - 1
@@ -42,7 +47,9 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                     bar = f"Upvotes {percent2 * 10}%" + ("🟩" * int(percent2)) + (
                             int(percent1) * "🟥") + f" Downvotes {percent1 * 10}%"  # https://chat.openai.com/share/7684565a-1f29-4c54-9d2f-502e051aef19
                 except ZeroDivisionError:
+                    print('ZeroDivision')
                     pass
+                print('updated poll')
                 embed.set_footer(text=bar)
                 await message.edit(embed=embed)
 
