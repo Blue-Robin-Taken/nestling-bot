@@ -44,8 +44,8 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                 try:
                     percent1 = (value1 / (value1 + value2)) * 10
                     percent2 = (value2 / (value1 + value2)) * 10
-                    bar = f"Upvotes {percent2 * 10}%" + ("🟩" * int(percent2)) + (
-                            int(percent1) * "🟥") + f" Downvotes {percent1 * 10}%"  # https://chat.openai.com/share/7684565a-1f29-4c54-9d2f-502e051aef19
+                    bar = f"Upvotes {int(percent2 * 10)}%" + ("🟩" * int(percent2)) + (
+                            int(percent1) * "🟥") + f" Downvotes {int(percent1 * 10)}%"  # https://chat.openai.com/share/7684565a-1f29-4c54-9d2f-502e051aef19
                 except ZeroDivisionError:
                     print('ZeroDivision')
                     pass
