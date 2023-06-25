@@ -65,7 +65,9 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                                                                         discord.ChannelType.public_thread,
                                                                         discord.ChannelType.private_thread])
     async def simple_poll(self, ctx, title, channel,
-                          minutes: discord.Option(int, required=True, min_value=0, max_value=99999),
+                          minutes: discord.Option(int, required=True, min_value=0, max_value=60),
+                          hours: discord.Option(int, required=False, min_value=0, max_value=12),
+                          days: discord.Option(int, required=False, min_value=0, max_value=120),
                           description: discord.Option(str, required=False),
                           img: discord.Option(discord.Attachment, required=False),
                           r: discord.Option(int, max_value=250, min_value=0, required=False),
@@ -83,7 +85,7 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
             elif (r is not None) and (g is not None) and (b is not None):
                 color = discord.Colour.from_rgb(r, g, b)
 
-            expiry_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=minutes)
+            expiry_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=minutes, hours=hours, days=days)
             embed = discord.Embed(
                 title=title,
                 description=description + f"\n \n Poll Expires: {'<t:' + str(calendar.timegm(expiry_time.timetuple())) + '>'}",

@@ -24,6 +24,7 @@ from Other import polls
 import re
 import datetime
 from enum import Enum
+import os
 
 bot = discord.Bot(intents=discord.Intents.all())
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -41,6 +42,8 @@ client = pymongo.MongoClient(
     "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.settings
 
+
+# https://stackoverflow.com/questions/12201928/open-gives-filenotfounderror-ioerror-errno-2-no-such-file-or-directory
 
 def load_cogs():
     for cog in cogs:
@@ -75,8 +78,7 @@ async def channel_type(ctx, channel):
 def clean_message_database():  # cleans the database of old polls
     coll = client.polls.messages
     for guild in coll.find({}):
-        if guild[
-            'RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
+        if guild['RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
             coll.delete_one(guild)
 
 
@@ -88,6 +90,9 @@ async def on_ready():
     print('cleaned database')
     print('ready')
 
+# @bot.listen()
+# async def on_message(m):
+#     if m.guild.id ==
 
 @bot.event
 async def on_member_join(member):
@@ -113,19 +118,34 @@ async def ping(ctx):
     await ctx.respond('Pong! (Run /botinfo for ping)')
 
 
-@bot.slash_command(name='server_member_amount', description='Get the amount of members in this server')
-async def server_member_amount(ctx):
-    bot = 0
+@bot.slash_command(name="serverinfo", description="Get information about this server")
+async def serverinfo(ctx):
+    bot_count = 0
     members = 0
     for member in ctx.guild.members:
         if member.bot:
-            bot += 1
+            bot_count += 1
         else:
             members += 1
     embed = discord.Embed(
-        title=f"Server Member Amount for {ctx.guild.name}",
-        description=f"Bots: {bot} \n Members: {members}",
-        color=discord.Color.random()
+        title=ctx.guild.name,
+        color=discord.Color.random(),
+    )
+    embed.set_image(url=ctx.guild.icon.url)
+    embed.add_field(  # server member amount
+        name="Server Member Amount",
+        value=f"Bots: {bot_count} \n Members: {members} \n",
+        inline=False
+    )
+    embed.add_field(  # server channels amount
+        name="Server Channels Count",
+        value=f"Text Channels: {len(ctx.guild.text_channels)} \n Voice Channels: {len(ctx.guild.voice_channels)} \n Forum Channels: {len(ctx.guild.forum_channels)} \n Stage Channels: {len(ctx.guild.stage_channels)} \n Threads: {len(ctx.guild.threads)}",
+        inline=False
+    )
+    embed.add_field(
+        name="Server Role Count",
+        value=f"Roles: {len(ctx.guild.roles)}",
+        inline=False
     )
     await ctx.respond(embed=embed)
 
@@ -193,7 +213,7 @@ class SuggestView(discord.ui.View):
 
 @bot.slash_command(name="suggest",
                    description="Suggest something in the set suggestion channel!")
-async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!")):
+async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!"), image: discord.Option(discord.Attachment, required=False, description="Most image types supported")):
     label = "Suggestion Channel"
     coll = getattr(db, f"{label}")
     if coll.find_one({"_id": ctx.guild.id}) is not None:
@@ -203,8 +223,15 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
             title=f"Suggestion by {ctx.author.name}",
             description=f"{suggestion}",
         )
+
+        if image is not None:
+            embed.set_image(url=image.url)
+
         await ctx.respond("Sending message!", ephemeral=True)
-        message = await channel.send(embed=embed)
+        try:
+            message = await channel.send(embed=embed)
+        except discord.errors.Forbidden:
+            return ctx.channel.send("I am not authorized to create a suggestion. Please contact a server moderator.")
         await message.add_reaction("⬆")
         await message.add_reaction("⬇")
         view = SuggestView()
@@ -232,7 +259,10 @@ class AnnounceButton(Button):
                     title=f"Sending announcement!",
                     description=f"Sending..."
                 )
-                await self.channel.send(embed=self.message)
+                try:
+                    await self.channel.send(embed=self.message)
+                except discord.errors.Forbidden:
+                    return await interaction.response.send_message("I don't have permission to send.")
             elif self.emoji.name == "❌":
                 embed = discord.Embed(
                     color=discord.Color.red(),
