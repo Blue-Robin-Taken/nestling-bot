@@ -9,6 +9,7 @@ import re
 import random
 from enum import Enum
 import colorsys
+import math
 
 
 class imaging(commands.Cog):
@@ -32,7 +33,82 @@ class imaging(commands.Cog):
             else:
                 return True
 
+    @staticmethod
+    def hex_to_rgb(h):  # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+        return ImageColor.getcolor(h, "RGB")
+
     command_group = discord.SlashCommandGroup(name="imaging")
+
+    class emojis(Enum):
+        blue = "🟦"
+        green = "🟩"
+        orange = "🟧"
+        purple = "🟪"
+        yellow = "🟨"
+        red = "🟥"
+        white = "⬜"
+        black = "⬛"
+        brown = "🟫"
+
+    @staticmethod
+    def closest_color(rgb,
+                      COLORS):  # https://stackoverflow.com/questions/54242194/python-find-the-closest-color-to-a-color-from-giving-list-of-colors
+        print(rgb)
+        r, g, b = rgb
+        color_diffs = []
+        for color in COLORS:
+            cr, cg, cb = color
+            color_diff = math.sqrt((r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2)
+            color_diffs.append((color_diff, color))
+        return min(color_diffs)[1]
+
+    @command_group.command(name='ascii-art', description="Create ascii art from image")
+    async def emoji_art(self, ctx,
+                        attachment: discord.Option(discord.Attachment, required=True, description="Image to use")):
+        await ctx.defer()
+        try:
+            if not self.check_image_size(attachment):
+                return await ctx.respond(
+                    "Image too big. If you want image compression added, make a suggestion in the main server `/botinfo`",
+                    ephemeral=True)
+
+            temp = io.BytesIO()
+            await attachment.save(temp)
+            resize = 20
+            img = Image.open(
+                temp).convert(
+                'RGBA')  # https://stackoverflow.com/questions/24996518/what-size-to-specify-to-pil-image-frombytes
+            img.thumbnail((resize, resize), Image.Resampling.LANCZOS)
+            imgdata = img.getdata()
+
+            colors_list = {
+                self.hex_to_rgb("#55acee"): "🟦",
+                self.hex_to_rgb("#78b159"): "🟩",
+                self.hex_to_rgb("#f4900c"): "🟧",
+                self.hex_to_rgb("#aa8ed6"): "🟪",
+                self.hex_to_rgb("#fdcb58"): "🟨",
+                self.hex_to_rgb("#dd2e44"): "🟥",
+                self.hex_to_rgb("#e6e7e8"): "⬜",
+                self.hex_to_rgb("#31373d"): "⬛",
+                self.hex_to_rgb("#c1694f"): "🟫",
+            }
+
+            # https://stackoverflow.com/questions/1847092/given-an-rgb-value-what-would-be-the-best-way-to-find-the-closest-match-in-the-d
+            closest_colors = []
+            closest_color = None
+            for x in imgdata:
+                closest_color = self.closest_color(x[0:3], list(colors_list.keys()))
+                closest_colors.append(closest_color)
+            return_list = [colors_list[x] for x in closest_colors]  # get all emojis from their respective RGB values
+            for i in range(len(return_list)):
+                if i % (resize + 1) == 0:
+                    return_list.insert(i, "\n")
+            await ctx.respond("".join(return_list))
+
+        except PIL.UnidentifiedImageError as err:
+            return await ctx.respond(
+                "Image is not a valid image.",
+                ephemeral=True)
 
     @command_group.command(name="hide", description="Hides image in certain color")
     async def hide(self, ctx,
@@ -62,7 +138,7 @@ class imaging(commands.Cog):
                 Y = int(x[0] * 0.299) + int(x[1] * 0.587) + int(x[
                                                                     2] * 0.114)  # Helpful website: https://www.dynamsoft.com/blog/insights/image-processing/image-processing-101-color-space-conversion/
                 Y = 255 - Y  # create inverse
-                grayscale.append((Y, Y, Y))
+                grayscale.append((Y, Y, Y))  # append to list
 
             imgReturn = []
             for x in range(len(imgdata)):
@@ -80,7 +156,8 @@ class imaging(commands.Cog):
             with io.BytesIO() as output:
                 img.save(output, format="PNG")
                 output.seek(0)
-                await ctx.respond(file=discord.File(output, filename="darkmode.png"))
+                await ctx.respond(
+                    file=discord.File(output, filename="darkmode.png"))  # Send the final product into discord
 
             # https://stackoverflow.com/questions/33101935/convert-pil-image-to-byte-array
             # https://www.youtube.com/watch?v=3PJE4PKdpxY
@@ -173,8 +250,9 @@ class imaging(commands.Cog):
                                       max(color[2] / 100, round(min_brightness / 100)))
             print(HSV, color, round(min_brightness / 100))
             print(rotate_value, colorsys.hsv_to_rgb(HSV[0], HSV[1], HSV[2]))
-            colors = [colorsys.hsv_to_rgb(abs(HSV[0] * ((rotate_value / 100) * i) * 10), abs(HSV[1] * 10), abs(HSV[2] * 10))
-                      for i in range(amount)]
+            colors = [
+                colorsys.hsv_to_rgb(abs(HSV[0] * ((rotate_value / 100) * i) * 10), abs(HSV[1] * 10), abs(HSV[2] * 10))
+                for i in range(amount)]
             print(colors)
         # elif palette_type == imaging.palette_types.Analogous_Complementary:  # https://stackoverflow.com/questions/14095849/calculating-the-analogous-color-with-python
         #     other_colors = [
@@ -191,11 +269,12 @@ class imaging(commands.Cog):
         with io.BytesIO() as output:
             image.save(output, format="PNG")
             print(colors)
-            print('#%02x%02x%02x' % (abs(min(int(round(colors[i][0])), 255)), abs(min(int(round(colors[i][1])), 255)),abs(min(int(round(colors[i][2])), 255) )) for i in range(len(colors)))
+            print('#%02x%02x%02x' % (abs(min(int(round(colors[i][0])), 255)), abs(min(int(round(colors[i][1])), 255)),
+                                     abs(min(int(round(colors[i][2])), 255))) for i in range(len(colors)))
             embed = discord.Embed(
                 title="Color Palette Generator",
                 color=discord.Color.random(),
-                description=f"Here is your color palette:\n\n{''.join(['#%02x%02x%02x' % (abs(min(int(round(colors[i][0])), 255)), abs(min(int(round(colors[i][1])), 255)),abs(min(int(round(colors[i][2])), 255))) + 'newline' for i in range(len(colors))])}".replace(
+                description=f"Here is your color palette:\n\n{''.join(['#%02x%02x%02x' % (abs(min(int(round(colors[i][0])), 255)), abs(min(int(round(colors[i][1])), 255)), abs(min(int(round(colors[i][2])), 255))) + 'newline' for i in range(len(colors))])}".replace(
                     'newline', '\n'),
             )
             output.seek(0)
