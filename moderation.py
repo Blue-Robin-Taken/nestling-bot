@@ -8,7 +8,7 @@ import os
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
 client = pymongo.MongoClient(
-     f"mongodb+srv://BlueRobin:{os.getenv('MongoPass')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.moderation
 
 

@@ -9,7 +9,7 @@ import calendar
 import os
 
 client = pymongo.MongoClient(
-     f"mongodb+srv://BlueRobin:{os.getenv('MongoPass')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.polls
 
 

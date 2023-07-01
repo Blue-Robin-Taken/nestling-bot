@@ -12,7 +12,7 @@ import os
 class testYoutube(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.key = os.getenv('YTToken')
+        self.key = os.getenv('YTTOKEN')
 
     @staticmethod
     async def randomvideoerr(ctx):

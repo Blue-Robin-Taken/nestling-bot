@@ -8,7 +8,7 @@ import base64
 import requests
 import os
 
-pastebin_key = os.getenv('PastebinKey')
+pastebin_key = os.getenv('PASTEBINKEY')
 
 
 class encryption(commands.Cog):
