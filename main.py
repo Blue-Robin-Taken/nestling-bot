@@ -443,5 +443,4 @@ async def invite(ctx):
 
 
 load_cogs()  # Load all cogs into the bot
-bot.run(
-    "MTA0NDMyMDUwNjk0MzM3NzQzOQ.GKrhD8.P2ggiWUov9lY9DHv6Gxc4scuyUtC6UeAIH09q8")  # Run the bot and connect to discord
+bot.run(str(os.getenv('bot_token')))  # Run the bot and connect to discord
