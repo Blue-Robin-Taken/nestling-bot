@@ -6,8 +6,9 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.fernet import Fernet
 import base64
 import requests
+import os
 
-pastebin_key = "G71h0ycVCp0LDtxH011w8i7oqKQa1ki5"
+pastebin_key = os.getenv('PastebinKey')
 
 
 class encryption(commands.Cog):

@@ -5,9 +5,10 @@ import twentyfortyeight
 import random
 import snake
 import pymongo
+import os
 
 client = pymongo.MongoClient(
-    "mongodb+srv://BlueRobin:ZaJleEpNhBUxqMDK@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+    f"mongodb+srv://BlueRobin:{os.getenv('MongoPass')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 
 
 class TwentyFortyEightButton(Button):

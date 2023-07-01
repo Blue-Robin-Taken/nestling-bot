@@ -6,12 +6,13 @@ import requests
 import random
 import math
 import json
+import os
 
 
 class testYoutube(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.key = "AIzaSyC0QBEb_cSWCqOO8rbPG6t7edN-sFugslQ"
+        self.key = os.getenv('YTToken')
 
     @staticmethod
     async def randomvideoerr(ctx):
