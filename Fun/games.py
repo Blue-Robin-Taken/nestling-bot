@@ -3,8 +3,7 @@ from discord.ui import View, Button
 from discord.ext import commands
 import twentyfortyeight
 import random
-import pymongo
-
+import snake
 import pymongo
 
 client = pymongo.MongoClient(
@@ -261,3 +260,93 @@ class counting(commands.Cog):
             color=discord.Color.random()
         )
         await ctx.respond(embed=embed)
+
+
+class SnakeGame(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    class SnakeView(discord.ui.View):
+        def __init__(self, c):
+            super().__init__(disable_on_timeout=True, timeout=300)
+            self.snake_class = c
+
+        @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="🔼")
+        async def callback_up(self, button, interaction):
+            await interaction.response.defer()
+            embed = self.message.embeds[0]
+
+            if self.snake_class.move_up():
+                self.disable_all_items()
+                embed.title = 'You died!'
+                embed.description = embed.description + f'\n Final Score: {self.snake_class.apples * 10}'
+                await interaction.message.edit(view=self, embed=embed)
+                return
+            self.snake_class.tail_handle()
+
+            embed.description = self.snake_class.return_grid()
+            embed.description = embed.description + f'\n Score: {self.snake_class.apples * 10}'
+            await interaction.message.edit(embed=self.message.embeds[0])
+
+        @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="🔽")
+        async def callback_down(self, button, interaction):
+            await interaction.response.defer()
+            embed = self.message.embeds[0]
+
+            if self.snake_class.move_down():
+                self.disable_all_items()
+                embed.title = 'You died!'
+                embed.description = embed.description + f'\n Final Score: {self.snake_class.apples * 10}'
+                await interaction.message.edit(view=self, embed=embed)
+                return
+            self.snake_class.tail_handle()
+
+            embed.description = self.snake_class.return_grid()
+            embed.description = embed.description + f'\n Score: {self.snake_class.apples * 10}'
+            await interaction.message.edit(embed=self.message.embeds[0])
+
+        @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="◀")
+        async def callback_left(self, button, interaction):
+            await interaction.response.defer()
+            embed = self.message.embeds[0]
+
+            if self.snake_class.move_left():
+                self.disable_all_items()
+                embed.title = 'You died!'
+                embed.description = embed.description + f'\n Final Score: {self.snake_class.apples * 10}'
+                await interaction.message.edit(view=self, embed=embed)
+                return
+            self.snake_class.tail_handle()
+
+            embed.description = self.snake_class.return_grid()
+            embed.description = embed.description + f'\n Score: {self.snake_class.apples * 10}'
+            await interaction.message.edit(embed=self.message.embeds[0])
+
+        @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="▶")
+        async def callback_right(self, button, interaction):
+            await interaction.response.defer()
+            embed = self.message.embeds[0]
+
+            if self.snake_class.move_right():
+                self.disable_all_items()
+                embed.title = 'You died!'
+                embed.description = embed.description + f'\n Final Score: {self.snake_class.apples * 10}'
+                await interaction.message.edit(view=self, embed=embed)
+                return
+            self.snake_class.tail_handle()
+
+            embed.description = self.snake_class.return_grid()
+            embed.description = embed.description + f'\n Score: {self.snake_class.apples * 10}'
+            await interaction.message.edit(embed=self.message.embeds[0])
+
+    @commands.slash_command(description="Snake in discord!")
+    async def snake(self, ctx):
+        snake_class = snake.Snake(5)
+        snake_class.start()
+        embed = discord.Embed(
+            title='Snake',
+            description=snake_class.return_grid(),
+            color=discord.Color.random()
+        )
+        snake_class.spawn_apple()
+        await ctx.respond(embed=embed, view=self.SnakeView(snake_class))
