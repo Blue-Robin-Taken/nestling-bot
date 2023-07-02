@@ -9,7 +9,7 @@ import calendar
 import os
 
 client = pymongo.MongoClient(
-     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+    f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.polls
 
 
@@ -67,14 +67,14 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
                                                                         discord.ChannelType.private_thread])
     async def simple_poll(self, ctx, title, channel,
                           minutes: discord.Option(int, required=True, min_value=0, max_value=60),
-                          hours: discord.Option(int, required=False, min_value=0, max_value=12),
-                          days: discord.Option(int, required=False, min_value=0, max_value=120),
-                          description: discord.Option(str, required=False),
-                          img: discord.Option(discord.Attachment, required=False),
-                          r: discord.Option(int, max_value=250, min_value=0, required=False),
-                          g: discord.Option(int, max_value=250, min_value=0, required=False),
-                          b: discord.Option(int, max_value=250, min_value=0, required=False),
-                          hex_color: discord.Option(str, required=False)):
+                          hours: discord.Option(int, required=False, min_value=0, max_value=12) = 0,
+                          days: discord.Option(int, required=False, min_value=0, max_value=120) = 0,
+                          description: discord.Option(str, required=False) = "",
+                          img: discord.Option(discord.Attachment, required=False) = None,
+                          r: discord.Option(int, max_value=250, min_value=0, required=False) = None,
+                          g: discord.Option(int, max_value=250, min_value=0, required=False) = None,
+                          b: discord.Option(int, max_value=250, min_value=0, required=False) = None,
+                          hex_color: discord.Option(str, required=False) = None):
         if ctx.user.guild_permissions.manage_guild:
             if description is None:
                 description = ""
