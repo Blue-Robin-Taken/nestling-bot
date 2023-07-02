@@ -2,7 +2,7 @@ import random
 
 
 class Snake:
-    def __init__(self, grid_size, empty_char='⬜', snake_char='😀', tail_char='😎'):
+    def __init__(self, grid_size, empty_char='⬛', snake_char='<:polymars:1124864385190461450> ', tail_char='🟧'):
         self.running = None  # for console running
         self.grid = [[empty_char for y in range(grid_size)] for i in range(grid_size)]  # snake grid
         self.grid_size = grid_size
@@ -35,7 +35,7 @@ class Snake:
             row_list = []
             for y in x:
                 row_list.append(y)
-            end_return.append("".join(row_list))
+            end_return.append(" ".join(row_list))
         return "\n".join(end_return)
 
     def start(self):

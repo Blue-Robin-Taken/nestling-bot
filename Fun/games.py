@@ -355,9 +355,9 @@ class SnakeGame(commands.Cog):
 
     @commands.slash_command(description="Snake in discord!")
     async def snake(self, ctx, size: discord.Option(int, min_value=1, max_value=14, required=True),
-                    empty_char: discord.Option(str, required=False) = '⬜',
-                    snake_char: discord.Option(str, required=False) = '😀',
-                    tail_char: discord.Option(str, required=False) = '😎'):
+                    empty_char: discord.Option(str, required=False) = '⬛',
+                    snake_char: discord.Option(str, required=False) = '<:polymars:1124864385190461450>',
+                    tail_char: discord.Option(str, required=False) = '🟧'):
         snake_class = snake.Snake(size, empty_char=empty_char, snake_char=snake_char, tail_char=tail_char)
         snake_class.start()
         embed = discord.Embed(
