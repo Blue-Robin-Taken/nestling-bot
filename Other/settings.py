@@ -92,7 +92,7 @@ class Settings(commands.Cog):
     async def settings(self, ctx):
         if ctx.user.guild_permissions.administrator:
             settings = [{'Suggestion Channel': 'text_channel'},
-                        {'Auto Role': 'roles'}, {'Counting Channel': 'text_channel'}, {''}]
+                        {'Auto Role': 'roles'}, {'Counting Channel': 'text_channel'}]
             embedString = "".join([f'\n **{i + 1}**: {list(settings[i].keys())[0]}' for i in range(len(settings))])
             embed = discord.Embed(
                 title="Settings",
