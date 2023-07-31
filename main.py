@@ -36,7 +36,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
         reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
-        polls.Polls, other.raid_protection, games.SnakeGame)
+        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch)
 
 client = pymongo.MongoClient(
     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -68,7 +68,6 @@ async def on_connect():
 @bot.slash_command(name="channel_type", description="Get a channel type")
 async def channel_type(ctx, channel):
     try:
-
         channel = await bot.fetch_channel(int(channel))
         await ctx.respond(channel.type)
     except (AttributeError, discord.errors.NotFound, ValueError, discord.errors.HTTPException) as e:

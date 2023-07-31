@@ -2,6 +2,7 @@ import discord
 from discord.ui import View, Button
 from discord.ext import commands
 import twentyfortyeight
+import fightinggamelib
 import random
 import snake
 import pymongo
@@ -173,6 +174,7 @@ class rockpaperscissors(commands.Cog):
         await ctx.respond(embed=embed, view=view)
 
 
+# noinspection PyUnresolvedReferences
 class counting(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -236,8 +238,9 @@ class counting(commands.Cog):
             )
             await ctx.respond(embed=embed)
 
-    async def catch(self,
-                    val):  # the catch function makes sure that a server isn't None (for list comprehensions) see here: https://stackoverflow.com/questions/1528237/how-to-handle-exceptions-in-a-list-comprehensions
+    @staticmethod
+    async def catch(
+            val):  # the catch function makes sure that a server isn't None (for list comprehensions) see here: https://stackoverflow.com/questions/1528237/how-to-handle-exceptions-in-a-list-comprehensions
         try:
             if val is not None:
                 return val.name
@@ -367,3 +370,87 @@ class SnakeGame(commands.Cog):
         )
         snake_class.spawn_apple()
         await ctx.respond(embed=embed, view=self.SnakeView(snake_class, user=ctx.author))
+
+
+class DodgeKickBlockPunch(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    class MainView(View):
+        class BasicButton(Button):
+            def __init__(self, parent, label):
+                super().__init__(label=label)
+                if self.label == 'dodge' or self.label == 'block':
+                    self.style = discord.ButtonStyle.blurple
+                else:
+                    self.style = discord.ButtonStyle.danger
+                self.parent = parent
+
+            async def callback(self, interaction):
+                if self.parent.game.current_player.name == interaction.user.name:
+                    await interaction.response.defer()
+                    self.parent.game.play_move(self.label)
+                    self.parent.game.moves += 1
+                    self.parent.game.exchange_players()
+                    self.parent.base_embed = discord.Embed(
+                        title='DodgeKickBlockPunch',
+                        description=f"It's player {self.parent.game.current_player}'s move. \n"
+                                    f"{self.parent.game.player_one.name} health: {round(self.parent.game.player_one_hp)}\n"
+                                    f"{self.parent.game.player_two.name} health: {round(self.parent.game.player_two_hp)}\n"
+                                    f"Pick a button to play a move",
+                        color=discord.Color.random()
+                    )
+
+                    dead = self.parent.game.check_dead()
+
+                    if dead:
+                        self.view.disable_all_items()
+                        embed = discord.Embed(color=discord.Color.green())
+                        if dead == "Player_One_Dead":
+                            embed.title = f'{self.parent.game.player_one.name} died!'
+                            embed.description = f'{self.parent.game.player_two.name} is the champion!'
+                        else:
+                            embed.title = f'{self.parent.game.player_two.name} died!'
+                            embed.description = f'{self.parent.game.player_one.name} is the champion!'
+
+                        await interaction.channel.send(embed=embed)
+
+                    await interaction.edit_original_response(embed=self.parent.base_embed, view=self.parent)
+                else:
+                    await interaction.response.send_message('It\'s not your turn!', ephemeral=True)
+
+        def __init__(self, p1, p2):
+            super().__init__(timeout=None)
+            self.game = fightinggamelib.FightingGame(p1, p2, 100)
+            for move in self.game.move_list:
+                button = self.BasicButton(label=move, parent=self)
+                self.add_item(button)
+
+            self.base_embed = discord.Embed(
+                color=discord.Color.random(),
+                title='DodgeKickBlockPunch',
+                description=f"It's player {self.game.current_player}'s move. \n"
+                            f"{self.game.player_one.name} health: {self.game.player_one_hp}\n"
+                            f"{self.game.player_two.name} health: {self.game.player_two_hp}\n"
+                            f"Pick a button to play a move"
+            )
+
+    @commands.slash_command()
+    async def fighting_game(self, ctx, opponent: discord.User):
+        view = View(timeout=None)
+        button = Button(label='Accept Battle', style=discord.ButtonStyle.success)
+
+        async def start_button_callback(interaction):
+            if interaction.user == opponent:
+                view.disable_all_items()
+                await view.message.edit(view=view)
+
+                view_ = self.MainView(ctx.user, opponent)
+                await interaction.response.send_message(embed=view_.base_embed, view=view_)
+            else:
+                await interaction.response.send_message("You aren't the opponent!", ephemeral=True)
+
+        button.callback = start_button_callback
+        view.add_item(button)
+
+        await ctx.respond(f'Do you accept your battle request {opponent.mention}?', view=view)
