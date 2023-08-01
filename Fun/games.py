@@ -377,6 +377,21 @@ class DodgeKickBlockPunch(commands.Cog):
         self.bot = bot
 
     class MainView(View):
+        class RulesButton(Button):
+            def __init__(self):
+                super().__init__(label='Rules', emoji='📒', )
+
+            async def callback(self, interaction):
+                embed = discord.Embed(
+                    title='Game Rules',
+                    description='The move that is left to another move will be vulnerable to that move. It will deal more damage. \n'
+                                'The vulnerable move will deal 20% damage if the last move played was to the right of the current move. \n'
+                                'It is unknown what the last move of the opponent was. \n'
+                                'A defense multiplier is added if the last move of the opponent was vulnerable to the current move AND if the move is defensive.',
+                    color=discord.Color.random()
+                )
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+
         class BasicButton(Button):
             def __init__(self, parent, label):
                 super().__init__(label=label)
@@ -400,6 +415,8 @@ class DodgeKickBlockPunch(commands.Cog):
                                     f"Pick a button to play a move",
                         color=discord.Color.random()
                     )
+                    if self.parent.game.player_one == self.parent.game.player_two:
+                        self.parent.base_embed.title = "Clone Wars"
 
                     dead = self.parent.game.check_dead()
 
@@ -425,6 +442,7 @@ class DodgeKickBlockPunch(commands.Cog):
             for move in self.game.move_list:
                 button = self.BasicButton(label=move, parent=self)
                 self.add_item(button)
+            self.add_item(self.RulesButton())
 
             self.base_embed = discord.Embed(
                 color=discord.Color.random(),
