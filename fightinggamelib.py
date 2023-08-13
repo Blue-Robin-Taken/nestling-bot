@@ -69,8 +69,8 @@ class FightingGame:
         if self.current_player == self.player_one:
             if self.player_two_last_move == list(self.move_list.keys())[index - 1]:
                 self.player_two_hp -= self.move_list[move][0] * 1.5 * bonus_random * self.player_one_defense_multiplier
-                if self.move_list[move][1]:
-                    self.player_one_defense_multiplier += .2
+                if not self.move_list[move][1]:
+                    self.player_two_defense_multiplier += .2
                 print('test')
             elif self.player_two_last_move == list(self.move_list.keys())[index + 1]:
                 self.player_two_hp -= self.move_list[move][0] * .2
@@ -83,8 +83,8 @@ class FightingGame:
         if self.current_player == self.player_two:
             if self.player_one_last_move == list(self.move_list.keys())[index - 1]:
                 self.player_one_hp -= self.move_list[move][0] * 1.5 * bonus_random * self.player_two_defense_multiplier
-                if self.move_list[move][1]:
-                    self.player_two_defense_multiplier += .2
+                if not self.move_list[move][1]:
+                    self.player_one_defense_multiplier += .2
             elif self.player_one_last_move == list(self.move_list.keys())[index + 1]:
                 self.player_one_hp -= self.move_list[move][0] * .2
             else:
