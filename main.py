@@ -323,7 +323,9 @@ async def announce(ctx, channel: discord.Option(discord.TextChannel,
         description=newText,
     )
     if attachment is not None:
-        embed_check.set_image(url=attachment.url)
+        url = uploader.upload(attachment.url)['url']
+        embed_check.set_image(url=url)
+        # embed_check.set_image(url=attachment.url)  <- doesn't work cuz discord bald
     if author is not None:
         embed_check.set_author(name=author)
     await ctx.respond(embed=embed_check)
