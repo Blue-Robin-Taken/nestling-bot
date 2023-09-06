@@ -28,7 +28,11 @@ import os
 import cloudinary  # image storage
 from cloudinary import uploader
 
-bot = discord.Bot(intents=discord.Intents(message_content=True, reactions=True, messages=True, emojis=True))
+intents = discord.Intents.default()
+intents.messages = True
+intents.message_content = True
+intents.members = True
+bot = discord.Bot(intents=intents)
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
 # testing_servers = [1044711937956651089]
