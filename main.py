@@ -25,8 +25,10 @@ import re
 import datetime
 from enum import Enum
 import os
+import cloudinary  # image storage
+from cloudinary import uploader
 
-bot = discord.Bot(intents=discord.Intents.all())
+bot = discord.Bot(intents=discord.Intents(message_content=True, reactions=True, messages=True, emojis=True))
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
 # testing_servers = [1044711937956651089]
@@ -42,8 +44,14 @@ client = pymongo.MongoClient(
     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.settings
 
-
 # https://stackoverflow.com/questions/12201928/open-gives-filenotfounderror-ioerror-errno-2-no-such-file-or-directory
+
+cloudinary.config(
+    cloud_name="dxopzyxoi",
+    api_key="594498119421517",
+    api_secret=f"{os.getenv('CLOUD_IMAGE_STORAGE')}"
+)
+
 
 def load_cogs():
     for cog in cogs:
@@ -77,7 +85,8 @@ async def channel_type(ctx, channel):
 def clean_message_database():  # cleans the database of old polls
     coll = client.polls.messages
     for guild in coll.find({}):
-        if guild['RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
+        if guild[
+            'RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
             coll.delete_one(guild)
 
 
@@ -88,6 +97,7 @@ async def on_ready():
     clean_message_database()
     print('cleaned database')
     print('ready')
+
 
 # @bot.listen()
 # async def on_message(m):
@@ -212,7 +222,8 @@ class SuggestView(discord.ui.View):
 
 @bot.slash_command(name="suggest",
                    description="Suggest something in the set suggestion channel!")
-async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!"), image: discord.Option(discord.Attachment, required=False, description="Most image types supported")):
+async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anything!"),
+                  image: discord.Option(discord.Attachment, required=False, description="Most image types supported")):
     label = "Suggestion Channel"
     coll = getattr(db, f"{label}")
     if coll.find_one({"_id": ctx.guild.id}) is not None:
@@ -224,7 +235,9 @@ async def suggest(ctx, suggestion: discord.Option(str, description="Suggest anyt
         )
 
         if image is not None:
-            embed.set_image(url=image.url)
+            url = uploader.upload(image.url)['url']
+            embed.set_image(url=url)
+            # embed.set_image(url=image.url)  <-- removed because discord deletes after a while
 
         await ctx.respond("Sending message!", ephemeral=True)
         try:
