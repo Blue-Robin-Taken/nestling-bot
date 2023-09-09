@@ -93,9 +93,9 @@ class FightingGame:
             self.player_two_last_move = move
 
     def check_dead(self):
-        if self.player_one_hp <= 0:
+        if self.player_one_hp <= .4:
             return 'Player_One_Dead'
-        elif self.player_two_hp <= 0:
+        elif self.player_two_hp <= .4:
             return 'Player_Two_Dead'
         else:
             return False

@@ -384,10 +384,11 @@ class DodgeKickBlockPunch(commands.Cog):
             async def callback(self, interaction):
                 embed = discord.Embed(
                     title='Game Rules',
-                    description='The move that is left to another move will be vulnerable to that move. It will deal more damage. \n'
-                                'The vulnerable move will deal 20% damage if the last move played was to the right of the current move. \n'
-                                'It is unknown what the last move of the opponent was. \n'
-                                'A defense multiplier is added if the last move of the opponent was vulnerable to the current move AND if the move is defensive.',
+                    description='- The move that is left to another move will be "vulnerable" to that move. \n'
+                                '- The non-vulnerable move will deal more damage after a vulnerable move has been played. \n'
+                                '- The vulnerable move will deal 20% damage if the last move played was to the right of the current move. \n'
+                                '- It is unknown what the last move of the opponent was. \n'
+                                '- A defense multiplier is added if the last move of the opponent was vulnerable to the current move AND if the move is defensive.',
                     color=discord.Color.random()
                 )
                 await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -409,9 +410,11 @@ class DodgeKickBlockPunch(commands.Cog):
                     self.parent.game.exchange_players()
                     self.parent.base_embed = discord.Embed(
                         title='DodgeKickBlockPunch',
-                        description=f"It's player {self.parent.game.current_player}'s move. \n"
-                                    f"{self.parent.game.player_one.name} health: {round(self.parent.game.player_one_hp)}\n"
-                                    f"{self.parent.game.player_two.name} health: {round(self.parent.game.player_two_hp)}\n"
+                        description=f"It's player `{self.parent.game.current_player}`'s move. \n"
+                                    f"`{self.parent.game.player_one.name}` 's health: {round(self.parent.game.player_one_hp)}\n"
+                                    f"`{self.parent.game.player_two.name}` 's health: {round(self.parent.game.player_two_hp)}\n"
+                                    f"`{self.parent.game.player_one.name}` 's defense bonus: {self.parent.game.player_one_defense_multiplier}\n"
+                                    f"`{self.parent.game.player_two.name}` 's defense bonus: {self.parent.game.player_two_defense_multiplier}\n"
                                     f"Pick a button to play a move",
                         color=discord.Color.random()
                     )
@@ -447,9 +450,11 @@ class DodgeKickBlockPunch(commands.Cog):
             self.base_embed = discord.Embed(
                 color=discord.Color.random(),
                 title='DodgeKickBlockPunch',
-                description=f"It's player {self.game.current_player}'s move. \n"
-                            f"{self.game.player_one.name} health: {self.game.player_one_hp}\n"
-                            f"{self.game.player_two.name} health: {self.game.player_two_hp}\n"
+                description=f"It's player `{self.game.current_player}`'s move. \n"
+                            f"`{self.game.player_one.name}` 's health: {round(self.game.player_one_hp)}\n"
+                            f"`{self.game.player_two.name}` 's health: {round(self.game.player_two_hp)}\n"
+                            f"`{self.game.player_one.name}` 's defense bonus: {self.game.player_one_defense_multiplier}\n"
+                            f"`{self.game.player_two.name}` 's defense bonus: {self.game.player_two_defense_multiplier}\n"
                             f"Pick a button to play a move"
             )
 
@@ -465,6 +470,7 @@ class DodgeKickBlockPunch(commands.Cog):
 
                 view_ = self.MainView(ctx.user, opponent)
                 await interaction.response.send_message(embed=view_.base_embed, view=view_)
+                await interaction.channel.send(ctx.user.mention)
             else:
                 await interaction.response.send_message("You aren't the opponent!", ephemeral=True)
 
