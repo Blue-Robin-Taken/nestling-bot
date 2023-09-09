@@ -21,6 +21,7 @@ from Other import reaction_roles
 from Other import encrypt
 from Other import imaging
 from Other import polls
+from Other import reddit
 import re
 import datetime
 from enum import Enum
@@ -29,8 +30,11 @@ import cloudinary  # image storage
 from cloudinary import uploader
 
 intents = discord.Intents.default()
+# noinspection PyDunderSlots,PyUnresolvedReferences
 intents.messages = True
+# noinspection PyDunderSlots,PyUnresolvedReferences
 intents.message_content = True
+# noinspection PyDunderSlots,PyUnresolvedReferences
 intents.members = True
 bot = discord.Bot(intents=intents)
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
@@ -42,7 +46,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
         reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
-        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch)
+        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch, reddit.Memes)
 
 client = pymongo.MongoClient(
     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
