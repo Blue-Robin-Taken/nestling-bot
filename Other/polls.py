@@ -89,7 +89,7 @@ class Polls(commands.Cog):  # Polls is the class for creating polls
             expiry_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=minutes, hours=hours, days=days)
             embed = discord.Embed(
                 title=title,
-                description=description + f"\n \n Poll Expires: {'<t:' + str(calendar.timegm(expiry_time.timetuple())) + '>'}",
+                description=description.replace("\\n", "\n") + f"\n \n Poll Expires: {'<t:' + str(calendar.timegm(expiry_time.timetuple())) + '>'}",
                 # https://www.geeksforgeeks.org/convert-python-datetime-to-epoch/
                 color=color
             )
