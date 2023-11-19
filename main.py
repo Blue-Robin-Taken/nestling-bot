@@ -414,7 +414,7 @@ async def dog(ctx, breed: breeds):
         description=f"[Cool dog image!]({image})",
     )
     embed.set_image(url=image)
-    await ctx.channel.respond(embed=embed)
+    await ctx.respond(embed=embed)
 
 
 @bot.slash_command(name="bible", description="Put in a bible verse!")
