@@ -397,17 +397,22 @@ for breed_ in breed_general_types:  # loop through all breed types to see if the
             breed_types.append(f"{breed_}/{breed__}")  # add sub breed to end with / because of formatting
     else:  # else, append the general type
         breed_types.append(breed_)
-breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types))  # create options using autocomplete util
+breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types), required=False)  # create options using autocomplete util
 
 
 @bot.slash_command(name="dog", description="Random dog picture", )
 async def dog(ctx, breed: breeds):
-    if breed not in breed_types:
-        return await ctx.respond('Breed does not exist', ephemeral=True)
-    await ctx.defer()
-    request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breed/{breed}/images/random")
-    image = request.json()['message']
-    print(request, image)
+    if breed is not None:
+        if breed not in breed_types:
+            return await ctx.respond('Breed does not exist', ephemeral=True)
+        await ctx.defer()
+        request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breed/{breed}/images/random")
+        image = request.json()['message']
+        print(request, image)
+    else:
+        request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breeds/image/random")
+        image = request.json()['message']
+
     embed = discord.Embed(
         title="Random dog picture",
         colour=discord.Colour.random(),
