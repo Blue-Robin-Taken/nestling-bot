@@ -3,7 +3,6 @@ import requests
 from discord.ui import Button, View, Select
 import json
 import random
-from asgiref.sync import sync_to_async
 import pymongo
 import enum
 
@@ -387,39 +386,35 @@ async def largetest(ctx):
     else:
         await ctx.respond("Sorry, but only the owner of this bot can use this command (That's me!)")
 
+# bellow variables generate list of breed options for dog command
+all_breeds = requests.get('https://dog.ceo/api/breeds/list/all').json()  # request json
+breed_general_types = list(all_breeds['message'].keys())  # general breed types
+breed_types = []  # initiate list
+for breed_ in breed_general_types:  # loop through all breed types to see if there are subtypes & add either general or subtype
+    if len(all_breeds['message'][breed_]) > 0:  # if it has subtype then add it
+        print(breed_, str(all_breeds['message'][breed_]), str(all_breeds['message'][breed_])+breed_)
+        for breed__ in all_breeds['message'][breed_]:  # breed_ is every sub breed
+            breed_types.append(f"{breed_}/{breed__}")  # add sub breed to end with / because of formatting
+    else:  # else, append the general type
+        breed_types.append(breed_)
+breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types))  # create options using autocomplete util
 
-@bot.slash_command(name="dog", description="Random dog picture")
-async def dog(ctx):
+
+@bot.slash_command(name="dog", description="Random dog picture", )
+async def dog(ctx, breed: breeds):
+    if breed not in breed_types:
+        return await ctx.respond('Breed does not exist', ephemeral=True)
     await ctx.defer()
-    dogList = []
-    breedList = None
-    breedTypeList = ["samoyed", "rottweiler", "pug", "schnauzer", "husky", "hound", "terrier", "mountain"]
-    notWorkingList = [")", "a", "b", "c", "d", "e", "f", "g", "h", "i",
-                      "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "x", "y", "z"]
-    for breed in breedTypeList:
-        request = await sync_to_async(requests.get, False)(f"https://dog.ceo/api/breed/{breed}/images")
-        dogList.append(request.json()["message"])
-    try:
-        breedList = dogList[random.randint(0, len(dogList) - 1)]
-        image = breedList[random.randint(0, len(breedList) - 1)]
-    except ValueError:
-        await ctx.channel.send(f"ERROR")
-        print(dogList)
-    while (image in notWorkingList) or (not image.startswith("htt")):
-        image = breedList[random.randint(0, len(breedList) - 1)]
-        print(image, breedList)
-    print(image)
-    for item in image.split("/"):
-        if item in breedTypeList:
-            breed = item
+    request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breed/{breed}/images/random")
+    image = request.json()['message']
+    print(request, image)
     embed = discord.Embed(
         title="Random dog picture",
         colour=discord.Colour.random(),
-        description=f"[Cool dog image!]({image}) \n The dog is of the {image.split('/')[4]} breed.",
+        description=f"[Cool dog image!]({image})",
     )
     embed.set_image(url=image)
-    await ctx.channel.send(embed=embed)
-    await ctx.respond("Sent!")
+    await ctx.channel.respond(embed=embed)
 
 
 @bot.slash_command(name="bible", description="Put in a bible verse!")

@@ -44,7 +44,6 @@ class other(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-
 # --- Algebra ---
 class algebra(commands.Cog):
     algebra = SlashCommandGroup("algebra", "Algebra Commands")
@@ -58,7 +57,8 @@ class algebra(commands.Cog):
                        description="simplifies a fraction")
     async def simplify(self, ctx, numerator: int, denominator: int):
         if denominator == 0:
-            return await ctx.respond("You cannot simplify a fraction with a denominator of 0! What are you trying to do? Break the bot?")
+            return await ctx.respond(
+                "You cannot simplify a fraction with a denominator of 0! What are you trying to do? Break the bot?")
         primes = [2, 3, 5, 7, 11, 13]
         checks = 0
         while checks < 6:

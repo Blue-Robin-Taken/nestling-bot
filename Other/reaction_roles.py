@@ -42,7 +42,7 @@ class ReactionRoles(commands.Cog):
                             else:
                                 await interaction.user.add_roles(discord.utils.get(interaction.guild.roles, name=i))
                         elif i != "Remove Selected Roles":
-                            return await interaction.response.send_message(f"Role {i} does not exist.",)
+                            return await interaction.response.send_message(f"Role {i} does not exist.", )
                     except discord.errors.Forbidden:
                         await interaction.response.send_message("I don't have the proper permissions.", ephemeral=True)
                 if not remove:
@@ -89,12 +89,14 @@ class ReactionRoles(commands.Cog):
                             color_r: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                             color_g: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
                             color_b: discord.Option(int, required=False, max_value=255, min_value=0) = 0,
-                            color_hex: discord.Option(str, required=False, description="If RGB is inputted and this is as well, this will be the output") = "#000000",):
+                            color_hex: discord.Option(str, required=False,
+                                                      description="If RGB is inputted and this is as well, this will be the output") = "#000000", ):
         if ctx.author.guild_permissions.administrator:
             if not color_hex == "#000000":
                 match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color_hex)
                 if match:
-                    rgb = tuple(int(color_hex.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))  # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
+                    rgb = tuple(int(color_hex.lstrip('#')[i:i + 2], 16) for i in (
+                        0, 2, 4))  # https://stackoverflow.com/questions/29643352/converting-hex-to-rgb-value-in-python
                     color_r = rgb[0]
                     color_g = rgb[1]
                     color_b = rgb[2]
