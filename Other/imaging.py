@@ -51,9 +51,8 @@ class imaging(commands.Cog):
         brown = "🟫"
 
     @staticmethod
-    def closest_color(rgb,
+    async def closest_color(rgb,
                       COLORS):  # https://stackoverflow.com/questions/54242194/python-find-the-closest-color-to-a-color-from-giving-list-of-colors
-        print(rgb)
         r, g, b = rgb
         color_diffs = []
         for color in COLORS:
@@ -62,9 +61,12 @@ class imaging(commands.Cog):
             color_diffs.append((color_diff, color))
         return min(color_diffs)[1]
 
-    @command_group.command(name='ascii-art', description="Create ascii art from image")
+    @command_group.command(name='emoji-art', description="Create ascii art from image")
     async def emoji_art(self, ctx,
-                        attachment: discord.Option(discord.Attachment, required=True, description="Image to use")):
+                        attachment: discord.Option(discord.Attachment, required=True, description="Image to use"),
+                        size: discord.Option(int, required=True, description="Choose the output size! (keeps ratio)", max_value=600, min_value=1),
+                        spaces: discord.Option(bool, required=False, description="If you want spaces between each character") = False,
+                        ascii_true: discord.Option(bool, required=False, description="No color. Just ascii characters") = False):
         await ctx.defer()
         try:
             if not self.check_image_size(attachment):
@@ -74,13 +76,19 @@ class imaging(commands.Cog):
 
             temp = io.BytesIO()
             await attachment.save(temp)
-            resize = 20
+
             img = Image.open(
                 temp).convert(
                 'RGBA')  # https://stackoverflow.com/questions/24996518/what-size-to-specify-to-pil-image-frombytes
-            img.thumbnail((resize, resize), Image.Resampling.LANCZOS)
-            imgdata = img.getdata()
+            r = size
+            size_ = r, r
+            if img.width > img.height:
+                size_ = int(r), int((img.height / img.width) * r)
+            if img.width > img.width:
+                size_ = int((img.width / img.height) * r), int(r),
 
+            img.thumbnail(size_, Image.Resampling.LANCZOS)
+            imgdata = img.getdata()
             colors_list = {
                 self.hex_to_rgb("#55acee"): "🟦",
                 self.hex_to_rgb("#78b159"): "🟩",
@@ -92,18 +100,74 @@ class imaging(commands.Cog):
                 self.hex_to_rgb("#31373d"): "⬛",
                 self.hex_to_rgb("#c1694f"): "🟫",
             }
+            # colors_list = {
+            #     self.hex_to_rgb("#55acee"): ":blue_square:",
+            #     self.hex_to_rgb("#78b159"): ":green_square:",
+            #     self.hex_to_rgb("#f4900c"): ":orange_square:",
+            #     self.hex_to_rgb("#aa8ed6"): ":purple_square:",
+            #     self.hex_to_rgb("#fdcb58"): ":yellow_square:",
+            #     self.hex_to_rgb("#dd2e44"): ":red_square:",
+            #     self.hex_to_rgb("#e6e7e8"): ":white_large_square:",
+            #     self.hex_to_rgb("#31373d"): ":black_large_square:",
+            #     self.hex_to_rgb("#c1694f"): ":brown_square:",
+            # }
+            if ascii_true:
+                colors_list = {
+                    self.hex_to_rgb("#55acee"): "/",
+                    self.hex_to_rgb("#78b159"): "%",
+                    self.hex_to_rgb("#f4900c"): "@",
+                    self.hex_to_rgb("#aa8ed6"): "$",
+                    self.hex_to_rgb("#fdcb58"): ">",
+                    self.hex_to_rgb("#dd2e44"): "<",
+                    self.hex_to_rgb("#e6e7e8"): "*",
+                    self.hex_to_rgb("#31373d"): " ",
+                    self.hex_to_rgb("#c1694f"): "#",
+                }
 
             # https://stackoverflow.com/questions/1847092/given-an-rgb-value-what-would-be-the-best-way-to-find-the-closest-match-in-the-d
             closest_colors = []
             closest_color = None
             for x in imgdata:
-                closest_color = self.closest_color(x[0:3], list(colors_list.keys()))
+                closest_color = await self.closest_color(x[0:3], list(colors_list.keys()))
                 closest_colors.append(closest_color)
             return_list = [colors_list[x] for x in closest_colors]  # get all emojis from their respective RGB values
-            for i in range(len(return_list)):
-                if i % (resize + 1) == 0:
-                    return_list.insert(i, "\n")
-            await ctx.respond("".join(return_list))
+            t = 0
+            for x in range(len(return_list)):  # add newlines
+                if spaces:
+                    return_list.append('  ')
+                if x % int(img.width) == 0:
+                    return_list.insert(x + t, '\n')
+                    t += 1
+
+            with open('test.txt', 'w', encoding='utf-8', errors='replace') as f:
+                f.write(''.join(return_list).strip())
+
+            # end_list = []
+            # return_list_sub = []
+            # return_list_sub_sub = []
+            # for i in return_list:
+            #     if i == 'A':
+            #         if return_list_sub:
+            #             return_list_sub.append(return_list_sub_sub)
+            #         return_list_sub_sub = []
+            #     return_list_sub.append(i)
+            # return_list_sub.append(return_list_sub_sub)
+            # for line in return_list_sub:
+            #     for x in range(len(line)):
+            #         if x % step == 0:
+            #             end_list.append(line[x])
+            #     end_list.append('\n')
+            # print("".join(end_list))
+            # embed = discord.Embed(
+            #     title='image',
+            #     description="".join(return_list)
+            # )
+            with io.StringIO() as output:
+                output.write(''.join(return_list))
+                output.seek(0)
+                await ctx.respond(
+                    file=discord.File(output, filename="lol.txt"))  # Send the final product into discord
+            # await ctx.respond(embed="".join(return_list))
 
         except PIL.UnidentifiedImageError as err:
             return await ctx.respond(

@@ -24,6 +24,7 @@ from Other import reddit
 import re
 import datetime
 from enum import Enum
+import functools  # https://stackoverflow.com/questions/53368203/passing-args-kwargs-to-run-in-executor
 import os
 import cloudinary  # image storage
 from cloudinary import uploader
@@ -386,29 +387,29 @@ async def largetest(ctx):
     else:
         await ctx.respond("Sorry, but only the owner of this bot can use this command (That's me!)")
 
+
 # bellow variables generate list of breed options for dog command
-all_breeds = requests.get('https://dog.ceo/api/breeds/list/all').json()  # request json
-breed_general_types = list(all_breeds['message'].keys())  # general breed types
+dog_all_breeds = requests.get('https://dog.ceo/api/breeds/list/all').json()  # request json
+dog_breed_general_types = list(dog_all_breeds['message'].keys())  # general breed types
 breed_types = []  # initiate list
-for breed_ in breed_general_types:  # loop through all breed types to see if there are subtypes & add either general or subtype
-    if len(all_breeds['message'][breed_]) > 0:  # if it has subtype then add it
-        print(breed_, str(all_breeds['message'][breed_]), str(all_breeds['message'][breed_])+breed_)
-        for breed__ in all_breeds['message'][breed_]:  # breed_ is every sub breed
-            breed_types.append(f"{breed_}/{breed__}")  # add sub breed to end with / because of formatting
+for dog_breed_ in dog_breed_general_types:  # loop through all breed types to see if there are subtypes & add either general or subtype
+    if len(dog_all_breeds['message'][dog_breed_]) > 0:  # if it has subtype then add it
+        for breed__ in dog_all_breeds['message'][dog_breed_]:  # breed_ is every sub breed
+            breed_types.append(f"{dog_breed_}/{breed__}")  # add sub breed to end with / because of formatting
     else:  # else, append the general type
-        breed_types.append(breed_)
-breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types), required=False)  # create options using autocomplete util
+        breed_types.append(dog_breed_)
+dog_breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types),
+                            required=False)  # create options using autocomplete util
 
 
 @bot.slash_command(name="dog", description="Random dog picture", )
-async def dog(ctx, breed: breeds):
+async def dog(ctx, breed: dog_breeds):
     if breed is not None:
         if breed not in breed_types:
             return await ctx.respond('Breed does not exist', ephemeral=True)
         await ctx.defer()
         request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breed/{breed}/images/random")
         image = request.json()['message']
-        print(request, image)
     else:
         request = await bot.loop.run_in_executor(None, requests.get, f"https://dog.ceo/api/breeds/image/random")
         image = request.json()['message']
@@ -418,6 +419,43 @@ async def dog(ctx, breed: breeds):
         colour=discord.Colour.random(),
         description=f"[Cool dog image!]({image})",
     )
+    embed.set_image(url=image)
+    await ctx.respond(embed=embed)
+
+cat_all_breeds = requests.get('https://api.thecatapi.com/v1/breeds').json()  # request json
+print(cat_all_breeds)
+# cat_breed_general_types = [cat_breed for cat_breed in cat_all_breeds.keys()]  # general breed types
+
+
+@bot.slash_command(name="cat", description="Random cat picture", )
+async def cat(ctx, ):
+    request = await bot.loop.run_in_executor(None, functools.partial(requests.get,
+                                                                     f"https://api.thecatapi.com/v1/images/search",
+                                                                     headers={'x-api-key': os.getenv('CATAPIKEY')}))
+    image = request.json()[0]['url']
+    print(image)
+    embed = discord.Embed(
+        title="Random cat picture",
+        colour=discord.Colour.random(),
+        description=f"[Cool cat image!]({image})",
+    )
+    embed.set_image(url=image)
+    await ctx.respond(embed=embed)
+
+
+@bot.slash_command(name="penguin", description="Random penguin picture", )
+async def penguin(ctx, ):
+    request = await bot.loop.run_in_executor(None, functools.partial(requests.get,
+                                                                     f"https://penguin.sjsharivker.workers.dev/api"))
+    image = request.json()['img']
+    species = request.json()['species']
+    embed = discord.Embed(
+        title="Random penguin picture",
+        colour=discord.Colour.random(),
+        description=f"[Cool penguin image!]({image})",
+    )
+    embed.add_field(name="species", value=str(species))
+    embed.add_field(name="API", value="[Github](https://github.com/code2cube/PenguinImageAPI)")
     embed.set_image(url=image)
     await ctx.respond(embed=embed)
 
