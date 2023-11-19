@@ -156,9 +156,6 @@ class imaging(commands.Cog):
                     return_list.insert(x + t, '\n')
                     t += 1
 
-            with open('test.txt', 'w', encoding='utf-8', errors='replace') as f:
-                f.write(''.join(return_list))
-
             # end_list = []
             # return_list_sub = []
             # return_list_sub_sub = []
@@ -360,3 +357,5 @@ class imaging(commands.Cog):
             )
             output.seek(0)
             await ctx.respond(embed=embed, file=discord.File(output, filename="color_palette.png"))
+
+
