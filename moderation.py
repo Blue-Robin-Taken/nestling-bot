@@ -8,7 +8,7 @@ import os
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
 client = pymongo.MongoClient(
-     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
+    f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
 db = client.moderation
 
 
@@ -183,3 +183,31 @@ class bans(commands.Cog):
     @bans.error
     async def on_application_command_error(self, ctx: discord.ApplicationContext, error):
         await ctx.respond(f"There are no bans, or I don't have permission. \n > ||ERROR: {error} ||", ephemeral=True)
+
+
+class helper_functions(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.slash_command(name="find_message_by_id", description="Find a message by it's id")
+    async def find_message_by_id(self, ctx, message_id: discord.Option(name='id', type=int, required=True)):
+        await ctx.defer()
+        m = None
+        for channel in ctx.guild.text_channels:
+            try:
+                m = await channel.fetch_message(message_id)
+            except discord.NotFound:
+                pass
+            if m is not None:
+                break
+        if m is None:
+            m = 'Message not found!'
+            await ctx.respond(m, ephemeral=True)
+        else:
+            embed = discord.Embed(
+                title='Message by ID',
+                color=discord.Color.random(),
+                description=m.content,
+            )
+            embed.add_field(name='Jump to message!', value=f'[here]({m.jump_url})')
+            await ctx.respond(embed=embed)

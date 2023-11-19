@@ -52,7 +52,7 @@ class imaging(commands.Cog):
 
     @staticmethod
     async def closest_color(rgb,
-                      COLORS):  # https://stackoverflow.com/questions/54242194/python-find-the-closest-color-to-a-color-from-giving-list-of-colors
+                            COLORS):  # https://stackoverflow.com/questions/54242194/python-find-the-closest-color-to-a-color-from-giving-list-of-colors
         r, g, b = rgb
         color_diffs = []
         for color in COLORS:
@@ -64,9 +64,14 @@ class imaging(commands.Cog):
     @command_group.command(name='emoji-art', description="Create ascii art from image")
     async def emoji_art(self, ctx,
                         attachment: discord.Option(discord.Attachment, required=True, description="Image to use"),
-                        size: discord.Option(int, required=True, description="Choose the output size! (keeps ratio)", max_value=600, min_value=1),
-                        spaces: discord.Option(bool, required=False, description="If you want spaces between each character") = False,
-                        ascii_true: discord.Option(bool, required=False, description="No color. Just ascii characters") = False):
+                        size: discord.Option(int, required=True, description="Choose the output size! (keeps ratio)",
+                                             max_value=600, min_value=1),
+                        spaces: discord.Option(bool, required=False,
+                                               description="If you want spaces between each character") = False,
+                        unicode_colors: discord.Option(bool, required=False,
+                                                       description="If you want the unicode colors to be calculated") = False,
+                        ascii_true: discord.Option(bool, required=False,
+                                                   description="No color. Just ascii characters") = False):
         await ctx.defer()
         try:
             if not self.check_image_size(attachment):
@@ -100,6 +105,18 @@ class imaging(commands.Cog):
                 self.hex_to_rgb("#31373d"): "⬛",
                 self.hex_to_rgb("#c1694f"): "🟫",
             }
+            if unicode_colors:
+                colors_list = {
+                    self.hex_to_rgb("#0178D7"): "🟦",
+                    self.hex_to_rgb("#17C70B"): "🟩",
+                    self.hex_to_rgb("#F7630C"): "🟧",
+                    self.hex_to_rgb("#896DE4"): "🟪",
+                    self.hex_to_rgb("#FEF000"): "🟨",
+                    self.hex_to_rgb("#E81224"): "🟥",
+                    self.hex_to_rgb("#F3F2F3"): "⬜",
+                    self.hex_to_rgb("#383939"): "⬛",
+                    self.hex_to_rgb("#8F572E"): "🟫",
+                }
             # colors_list = {
             #     self.hex_to_rgb("#55acee"): ":blue_square:",
             #     self.hex_to_rgb("#78b159"): ":green_square:",
@@ -140,7 +157,7 @@ class imaging(commands.Cog):
                     t += 1
 
             with open('test.txt', 'w', encoding='utf-8', errors='replace') as f:
-                f.write(''.join(return_list).strip())
+                f.write(''.join(return_list))
 
             # end_list = []
             # return_list_sub = []

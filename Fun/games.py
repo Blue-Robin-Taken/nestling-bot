@@ -87,14 +87,14 @@ class eightball(commands.Cog):
 
     @commands.slash_command(name="eightball", description="Fun 8ball command!")
     async def eightball(self, ctx, question: discord.Option(str, description="Ask me anything!")):
-        random.seed(str(ctx.user.id) + question)
+        random.seed(str(ctx.user.id) + question.lower().replace(' ', '').replace('.', '').replace('!', ''))
         responses = ["Maybe.", "I have no idea.", "I think so.", "Yes.", "Why would you ask that?", "No.", "Yes.",
                      "Probably.", "Funny.", "Who are you again?", "When is lunch?", "Yes 1+1 is two. So, yes.",
                      "Maybe go see a therapist.", "Lol.", "I wish.", "Imagine."]
         random_self = random.randint(0, len(responses) - 1)
 
         embed = discord.Embed(
-            color=discord.Color.red(),
+            color=discord.Color.random(),
             title="Eightball",
             description=f"""
         **My answer**:
