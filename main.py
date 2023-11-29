@@ -46,7 +46,8 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
         reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
-        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch, reddit.Memes, moderation.helper_functions)
+        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch, reddit.Memes,
+        moderation.helper_functions)
 
 client = pymongo.MongoClient(
     f"mongodb+srv://BlueRobin:{os.getenv('MONGOPASS')}@nestling-bot-settings.8n1wpmw.mongodb.net/?retryWrites=true&w=majority")
@@ -133,6 +134,12 @@ async def on_member_join(member):
 @bot.slash_command(name='ping', description='Test if the bot is online!')
 async def ping(ctx):
     await ctx.respond('Pong! (Run /botinfo for ping)')
+
+
+@bot.slash_command(name="privatebotstats", description="Only bluerobin_ can access this because I'm so cool")
+async def privatebotstats(ctx):
+    if ctx.author.id == 497930397985013781:
+        await ctx.respond()
 
 
 @bot.slash_command(name="serverinfo", description="Get information about this server")
@@ -422,8 +429,11 @@ async def dog(ctx, breed: dog_breeds):
     embed.set_image(url=image)
     await ctx.respond(embed=embed)
 
+
 cat_all_breeds = requests.get('https://api.thecatapi.com/v1/breeds').json()  # request json
 print(cat_all_breeds)
+
+
 # cat_breed_general_types = [cat_breed for cat_breed in cat_all_breeds.keys()]  # general breed types
 
 

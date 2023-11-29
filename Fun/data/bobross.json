@@ -1,6 +1,6 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "Ay0NmMQqzRC5Of7nohYEVY3MlEg",
+    "etag": "wJxiTEIsdemmJpW2h7OkGvtW438",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
@@ -8,6 +8,74 @@
         "resultsPerPage": 50
     },
     "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "ca6bPC3X0KucTCMrYk5wfsvLEMw",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "eVahtVKRvYA"
+            },
+            "snippet": {
+                "publishedAt": "2023-11-27T22:30:07Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;Your artist&#39;s license comes with your first tube of paint and it says you&#39;re a painter&quot;",
+                "description": "\"Painters are expected to be a little different, so use your artist's license. Your artist's license comes with your first tube of paint and ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/eVahtVKRvYA/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/eVahtVKRvYA/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/eVahtVKRvYA/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-11-27T22:30:07Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "vw3VWTgonyFjnas4rXe6q7ogecA",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "G4s9gYbUydk"
+            },
+            "snippet": {
+                "publishedAt": "2023-11-20T22:30:02Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;With practice, comes confidence&quot;",
+                "description": "\"But like anything else, the more you do it, the better you're going to get at it, because with practice, comes confidence.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/G4s9gYbUydk/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/G4s9gYbUydk/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/G4s9gYbUydk/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-11-20T22:30:02Z"
+            }
+        },
         {
             "kind": "youtube#searchResult",
             "etag": "-b_yUpeK_Rfxg5USNgumMcVQyy0",
@@ -44,41 +112,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "eSD4xJeylQl5N6cmgsewwZseW3k",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "prE0ufKsgyw"
-            },
-            "snippet": {
-                "publishedAt": "2023-11-17T17:07:47Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Weekend Marathon! - - - The Joy of Painting with Bob Ross",
-                "description": "bob !cabin !ripdevil !paintlikebobross Bob Ross weekend marathons begin every Friday at 12pm ET. Streaming this weekend: ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/prE0ufKsgyw/default_live.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/prE0ufKsgyw/mqdefault_live.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/prE0ufKsgyw/hqdefault_live.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "live",
-                "publishTime": "2023-11-17T17:07:47Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "XPAD3BvXX5k6Hd3akuIMG2GbvWc",
+            "etag": "pYCnlyuOSvUdhflaRuY-IqtvgxI",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "IaxWR3ApuVw"
@@ -180,40 +214,6 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "b0876TwlhBXUr7EyPlAhQP13krc",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "JAD0zqMW-qM"
-            },
-            "snippet": {
-                "publishedAt": "2023-11-03T15:00:21Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Painting Gives Your Freedom | Episode 26 | The Joy of Bob Ross - A Happy Little Podcast\u2122",
-                "description": "art #painting #podcast Tech Sergeant Robert Kingery conquers depression learning to paint Bob Ross landscapes, and helps ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/JAD0zqMW-qM/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/JAD0zqMW-qM/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/JAD0zqMW-qM/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-11-03T15:00:21Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
             "etag": "lAODUZ-SgVyK76OoQc5tpfgeVNY",
             "id": {
                 "kind": "youtube#video",
@@ -282,7 +282,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "xRvf53fhuXelV9mn-Mqygp1J_2I",
+            "etag": "6Z57QgOjto9da_CJydinNoajr_A",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "V2MdJf3JY5o"
@@ -316,7 +316,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "LvwbBrguuWACEpupc49t9c1lEHk",
+            "etag": "hXLXHk-denEGY8iSEFKlNy6Xj5Q",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "q2lOAPyj6xA"
@@ -384,7 +384,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "m4oOxFUfuM2p_8lNc5IcTCln1bY",
+            "etag": "s1hs4ZfgN0jLUI--S5tAZEb5NSw",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "PjisPFPJvbw"
@@ -418,7 +418,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "SFgmJdpwD0rNW8DkT-wxUoyUFb0",
+            "etag": "SfyBJGWvRmVyj_XP5lXbeiSRnLg",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "nBdy5hJdCNI"
@@ -452,7 +452,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "avfwl1ohYLuUsgLaZ4ROo2DGi9I",
+            "etag": "fnomBJEFpkV_l46L9f0I228vu9U",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "K_Hl9ZEQwEw"
@@ -622,7 +622,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "H4yDwidjlOxIyvSet0cjdO6COwM",
+            "etag": "gbmDWTWzmMJWN0EZa0wicRaqDIE",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "VHg_O_JmOT8"
@@ -656,7 +656,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "V7xs2os4MYLtjWe_NXUihBYrFxg",
+            "etag": "-DX4bDsNxRVNzi36QR9ZiCB2AAE",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "3Rcq5ihtiMg"
@@ -826,7 +826,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "K7KnCZUUCdU-IMhI8SaVOxHTFpQ",
+            "etag": "SwljxfqYa3NHc3GEX51-AfvaInU",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "4Si52FWSj68"
@@ -860,7 +860,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "FM6jFL56itghlPmpP9MqYnATk7I",
+            "etag": "E9UVhKTBXWQOe7MJY26Ed_QebNA",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "T7oujA7Mz-c"
@@ -894,7 +894,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "LKAp49jGb3LZkfrPTHqoXaLCx-8",
+            "etag": "jFymserg1RCi4ltQ-SYgwtyDjqw",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "-_axREoJ5WA"
@@ -928,7 +928,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "W_JxQz9QC5PR86Z5gTX2zcln6TM",
+            "etag": "14PhezE-2mN8Xxev4WCJCFW2Axo",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "dg3lRLMZDew"
@@ -1064,7 +1064,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "G3z11ub2PMgxMtJPRTLAKD4fn30",
+            "etag": "yw3IlPZfwHdJbaQMZpr_UUTo22A",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "6K0Hk2zb8rM"
@@ -1336,7 +1336,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "KvFs5BX4FmldoA4PiaLbqbRSlag",
+            "etag": "4czAAmBRro8U7_jCDzxL4CnEpxY",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "ClUsnXbpzlY"
@@ -1472,7 +1472,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "UNUc54gaO1yfB29xbR0bvE7VRxA",
+            "etag": "Iwct0HuytDePAm9MF9BrHhCSgd4",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "dP2x8PBgrF8"
@@ -1540,7 +1540,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "V0o7bPtbcV55n8w-HnyxrHnRM9Q",
+            "etag": "KZbLn3-XgHdZGAa3WCERrc33fxg",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "k-H285yw9Tw"
@@ -1642,7 +1642,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "AQRv9uViqyRbEDtTuLC7b3uxbGY",
+            "etag": "sEq_y9hV3fHcQ_ksvyuDSuvjCmE",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "oSajOZguiR0"
@@ -1676,7 +1676,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "C-APXkLw_iJpPDXe1xr1mVUo4s4",
+            "etag": "gFHiYDANuKHPcdBvGd-0DCiobpY",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "5u81Q3RgWxU"

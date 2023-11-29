@@ -10,6 +10,10 @@ import random
 from enum import Enum
 import colorsys
 import math
+import numpy as np
+import matplotlib as mpl
+import pylab as plt
+from matplotlib import colormaps
 
 
 class imaging(commands.Cog):
@@ -358,4 +362,65 @@ class imaging(commands.Cog):
             output.seek(0)
             await ctx.respond(embed=embed, file=discord.File(output, filename="color_palette.png"))
 
+    async def zprime(self, x, y, n, power):
+        t1 = await self.bot.loop.run_in_executor(None, np.linspace, -x, x, 1000)
+        t2 = await self.bot.loop.run_in_executor(None, np.linspace, -y, y, 1000)
+        result = await self.bot.loop.run_in_executor(None, np.zeros, (len(t1), len(t2)),
+                                                     int)  # make a result array that matches the x,y grid, since you want an image of the x,y grid
+        for i, u0 in enumerate(t1):
+            for j, v0 in enumerate(t2):
+                z0 = u0 + 1j * v0  # initial value for iteration
+                zp = 1. * z0  # just a copy, ie, the value of the first iteration
+                for k in range(1,
+                               n):  # starting from 1, since the first was a copy (I'm not saying this detail is important, just how I think of it)
+                    zp = zp ** power + z0  # the defining calculation
+                    if abs(zp) > 2.:  # >2 means unbounded, so not in the M-set
+                        result[i, j] = k  # set the result to k just to give some color
+                        break
+                else:  # never hit a break, so this point is in the M-set
+                    result[i, j] = 0
+        return result
 
+    colormap_list = ['magma', 'inferno', 'plasma', 'viridis', 'cividis', 'twilight', 'twilight_shifted', 'turbo',
+                     'Blues', 'BrBG', 'BuGn', 'BuPu', 'CMRmap', 'GnBu', 'Greens', 'Greys', 'OrRd', 'Oranges', 'PRGn',
+                     'PiYG', 'PuBu', 'PuBuGn', 'PuOr', 'PuRd', 'Purples', 'RdBu', 'RdGy', 'RdPu', 'RdYlBu', 'RdYlGn',
+                     'Reds', 'Spectral', 'Wistia', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd', 'afmhot', 'autumn', 'binary',
+                     'bone', 'brg', 'bwr', 'cool', 'coolwarm', 'copper', 'cubehelix', 'flag', 'gist_earth', 'gist_gray',
+                     'gist_heat', 'gist_ncar', 'gist_rainbow', 'gist_stern', 'gist_yarg', 'gnuplot', 'gnuplot2', 'gray',
+                     'hot', 'hsv', 'jet', 'nipy_spectral', 'ocean', 'pink', 'prism', 'rainbow', 'seismic', 'spring',
+                     'summer', 'terrain', 'winter', 'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2',
+                     'Set3', 'tab10', 'tab20', 'tab20b', 'tab20c', 'grey', 'gist_grey', 'gist_yerg', 'Grays', 'magma_r',
+                     'inferno_r', 'plasma_r', 'viridis_r', 'cividis_r', 'twilight_r', 'twilight_shifted_r', 'turbo_r',
+                     'Blues_r', 'BrBG_r', 'BuGn_r', 'BuPu_r', 'CMRmap_r', 'GnBu_r', 'Greens_r', 'Greys_r', 'OrRd_r',
+                     'Oranges_r', 'PRGn_r', 'PiYG_r', 'PuBu_r', 'PuBuGn_r', 'PuOr_r', 'PuRd_r', 'Purples_r', 'RdBu_r',
+                     'RdGy_r', 'RdPu_r', 'RdYlBu_r', 'RdYlGn_r', 'Reds_r', 'Spectral_r', 'Wistia_r', 'YlGn_r',
+                     'YlGnBu_r', 'YlOrBr_r', 'YlOrRd_r', 'afmhot_r', 'autumn_r', 'binary_r', 'bone_r', 'brg_r', 'bwr_r',
+                     'cool_r', 'coolwarm_r', 'copper_r', 'cubehelix_r', 'flag_r', 'gist_earth_r', 'gist_gray_r',
+                     'gist_heat_r', 'gist_ncar_r', 'gist_rainbow_r', 'gist_stern_r', 'gist_yarg_r', 'gnuplot_r',
+                     'gnuplot2_r', 'gray_r', 'hot_r', 'hsv_r', 'jet_r', 'nipy_spectral_r', 'ocean_r', 'pink_r',
+                     'prism_r', 'rainbow_r', 'seismic_r', 'spring_r', 'summer_r', 'terrain_r', 'winter_r', 'Accent_r',
+                     'Dark2_r', 'Paired_r', 'Pastel1_r', 'Pastel2_r', 'Set1_r', 'Set2_r', 'Set3_r', 'tab10_r',
+                     'tab20_r', 'tab20b_r', 'tab20c_r']
+    colormap_options = discord.Option(autocomplete=discord.utils.basic_autocomplete(colormap_list), required=False,
+                                      default='hot')
+
+    @command_group.command(
+        name='mandelbrotset'
+    )
+    async def mandelbrotset(self, ctx, zoom_x: float = 2, zoom_y: float = 2,
+                            iterations: discord.Option(int, max_value=20, min_value=1) = 10,
+                            colormap_options: colormap_options = 'hot',
+                            power_of: discord.Option(int, required=False, min_value=-100, max_value=100) = 2):
+        await ctx.defer()
+        mset = await self.zprime(zoom_x, zoom_y, iterations, power_of)
+        plt.imshow(mset, cmap=colormap_options)
+        
+        with io.BytesIO() as output:
+            plt.savefig(output)
+            output.seek(0)
+            embed = discord.Embed(
+                title='Mandelbrot set',
+                description="Partly made by [747prod A.K.A Stylo](https://github.com/stylo-codes-stuff) (he's really cool)",
+                color=discord.Color.random()
+            )
+            await ctx.respond(embed=embed, file=discord.File(output, filename="test.png"))
