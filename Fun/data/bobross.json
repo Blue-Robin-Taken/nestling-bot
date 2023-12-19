@@ -1,16 +1,152 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "wJxiTEIsdemmJpW2h7OkGvtW438",
+    "etag": "FyW9Z2UVlq-LwMmoVuIVpwue-KU",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
-        "totalResults": 656,
+        "totalResults": 661,
         "resultsPerPage": 50
     },
     "items": [
         {
             "kind": "youtube#searchResult",
-            "etag": "ca6bPC3X0KucTCMrYk5wfsvLEMw",
+            "etag": "5igIt2zYXqIh5Ek8LmiuHThTSwk",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "2YdpviYuEQ4"
+            },
+            "snippet": {
+                "publishedAt": "2023-12-18T22:30:00Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;We have to take care of God&#39;s little creatures.&quot;",
+                "description": "\"This is where the little mountain goat lives, right up in here. He needs a little place to call home too, just like the rest of us.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/2YdpviYuEQ4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/2YdpviYuEQ4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/2YdpviYuEQ4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-12-18T22:30:00Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "wbvTNcRW37RGKC5J6U5yyAVKhqs",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "4OeK_FKiHJc"
+            },
+            "snippet": {
+                "publishedAt": "2023-12-11T22:30:00Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;You can do anything that you believe you can do.&quot;",
+                "description": "\"And you can do this. You can do anything that you believe you can do.\" - Bob Ross \"Lone Mountain\" 1990 (Season 21 | Episode ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/4OeK_FKiHJc/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/4OeK_FKiHJc/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/4OeK_FKiHJc/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-12-11T22:30:00Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "tqVA3xokGCj_rW0oS4PXkGWv0Js",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "AWX-ylM1Hs4"
+            },
+            "snippet": {
+                "publishedAt": "2023-12-08T16:00:06Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "The Treasure Hunter | Episode 28 | The Joy of Bob Ross - A Happy Little Podcast\u00ae",
+                "description": "paint #art #podcast A man discovers a painting in a bin at a Florida thrift shop with a familiar signature in red at the bottom.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/AWX-ylM1Hs4/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/AWX-ylM1Hs4/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/AWX-ylM1Hs4/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-12-08T16:00:06Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "xwou5NgKuLaziE9S9XFFuvqbD4o",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "IXBAunj1aEI"
+            },
+            "snippet": {
+                "publishedAt": "2023-12-04T22:30:03Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "&quot;Be happy when you paint.&quot;",
+                "description": "\"Be happy when you paint.\" - Bob Ross \"Quiet Mountain Lake\" 1990 (Season 19 | Episode 2)",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/IXBAunj1aEI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/IXBAunj1aEI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/IXBAunj1aEI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "none",
+                "publishTime": "2023-12-04T22:30:03Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "ndW92L5y-5x-glgq2zf88FM2O_g",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "eVahtVKRvYA"
@@ -112,41 +248,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "pYCnlyuOSvUdhflaRuY-IqtvgxI",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "IaxWR3ApuVw"
-            },
-            "snippet": {
-                "publishedAt": "2023-11-17T16:00:09Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "The Bob Ross Afterschool Special | Episode 27 | The Joy of Bob Ross - A Happy Little Podcast\u00ae",
-                "description": "paint #art #podcast Middle school kids from an afterschool songwriting camp record an indie rock song called \"The Joy of Bob ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/IaxWR3ApuVw/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/IaxWR3ApuVw/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/IaxWR3ApuVw/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-11-17T16:00:09Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "Sh9g0xmJcRDsGlcDOLfuxusc5cA",
+            "etag": "zzffbTc8-WokzCOPcz65KSANvmI",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "UTd8mY1WJD4"
@@ -452,7 +554,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "fnomBJEFpkV_l46L9f0I228vu9U",
+            "etag": "FmAsmysMz3mivmP7yyWtE903Vyg",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "K_Hl9ZEQwEw"
@@ -486,7 +588,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "1OHh0GtlWc1HeugzCa-X9Y4YaxU",
+            "etag": "wDsc3wfLZFqkY3G8wu35YJ_NSnY",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "CQSTCX2WWjI"
@@ -554,7 +656,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "0uT_KhSaLChHhHqF1xdj66Z8FNo",
+            "etag": "8u_e9Ma69FMjxfhTZNurCv7QN5A",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "Kyn3f_8x24Q"
@@ -690,7 +792,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "s4l2eXIBTzGcPaQCkTBy0IqtZDk",
+            "etag": "LchvKRE1-I9Dc4OTN1i03pCzqxA",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "Zhh2fEh-pSU"
@@ -758,7 +860,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "6YxpnQ9BztWcqS5HGsPhIjvTvkA",
+            "etag": "wP_rMGgCAlArTLf9amRHHqw0zKI",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "ku5SHLUTGk4"
@@ -996,7 +1098,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "t-KxdO6--TQZ_n5WaHxMzC73ToU",
+            "etag": "U6EBd6U8prnBxmtj5149_r9KK-c",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "vLPYZR32lII"
@@ -1030,7 +1132,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "2fEDw06j37-7xacYa1DyuM-i_B8",
+            "etag": "CyKwgcp0wPNS96af4XcKzEof7k4",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "d_r8G06Pegg"
@@ -1200,7 +1302,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "geJfED2QhpfrdhTqfxjFFzSSG4Y",
+            "etag": "bK82oXz4xN16WKBC1Ug9GYExy5U",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "FeJvTbJZSpo"
@@ -1302,7 +1404,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "q0v3I6xqM5NAG-MLjV2-M9PwE4w",
+            "etag": "w1WflCVjrmqOb8rHb7M9EWQmoMM",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "sD6XX9i-cMU"
@@ -1438,7 +1540,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "BHsjQQS48JoBppePNPJh9zmyFHo",
+            "etag": "xGJuMKtYnp6Gg9LGEeQZBUZGGbA",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "gQeXGVd50Po"
@@ -1506,7 +1608,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "YK7oDJs-s71NerHp5L6v-UNjSoQ",
+            "etag": "S74E7qaC_-EOyTntoH584X9SL1A",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "XCLgcKqZC14"
@@ -1540,41 +1642,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "KZbLn3-XgHdZGAa3WCERrc33fxg",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "k-H285yw9Tw"
-            },
-            "snippet": {
-                "publishedAt": "2023-04-24T13:00:33Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;You&#39;ll always find room for improvement.&quot;",
-                "description": "bobross #paintlikebobross #shorts \"Each painting that you do brings you new insight into painting, you learn from it. And that's ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/k-H285yw9Tw/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/k-H285yw9Tw/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/k-H285yw9Tw/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-04-24T13:00:33Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "cPgXoeXzr9qbf2aC2xeS6NQyTmE",
+            "etag": "BoCzjAcorHgLKGZEPttRJ1KEGKk",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "npHh0-5u4f0"
@@ -1638,74 +1706,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2023-04-19T14:48:51Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "sEq_y9hV3fHcQ_ksvyuDSuvjCmE",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "oSajOZguiR0"
-            },
-            "snippet": {
-                "publishedAt": "2023-04-19T14:47:03Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Celebrate Earth Day with Bob Ross!",
-                "description": "shorts #bobross #paintlikebobross #paintings #asmr You're invited to a Bob Ross Earth Day celebration!",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/oSajOZguiR0/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/oSajOZguiR0/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/oSajOZguiR0/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-04-19T14:47:03Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "gFHiYDANuKHPcdBvGd-0DCiobpY",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "5u81Q3RgWxU"
-            },
-            "snippet": {
-                "publishedAt": "2023-04-15T16:00:03Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "&quot;We&#39;ve got to keep this old planet together&quot;",
-                "description": "boy, because it's all we've got, at this point. Maybe one day we'll have something else. - Bob Ross \"Waterfall Wonder\" 1989 ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/5u81Q3RgWxU/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/5u81Q3RgWxU/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/5u81Q3RgWxU/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-04-15T16:00:03Z"
             }
         }
     ]

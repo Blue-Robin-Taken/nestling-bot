@@ -1,0 +1,14 @@
+py-cord
+requests
+pymongo
+feedparser
+beautifulsoup4
+asgiref
+plotly
+kaleido==0.0.1
+pandas
+cryptography
+pillow
+chardet
+cloudinary
+matplotlib

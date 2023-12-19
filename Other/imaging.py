@@ -1,4 +1,5 @@
 import discord
+import matplotlib
 from discord.ext import commands
 import PIL
 from PIL import Image
@@ -410,13 +411,18 @@ class imaging(commands.Cog):
     async def mandelbrotset(self, ctx, zoom_x: float = 2, zoom_y: float = 2,
                             iterations: discord.Option(int, max_value=20, min_value=1) = 10,
                             colormap_options: colormap_options = 'hot',
-                            power_of: discord.Option(int, required=False, min_value=-100, max_value=100) = 2):
+                            power_of: discord.Option(int, required=False, min_value=-100, max_value=100) = 2,):
         await ctx.defer()
         mset = await self.zprime(zoom_x, zoom_y, iterations, power_of)
+        # https://stackoverflow.com/questions/32428193/saving-matplotlib-graphs-to-image-as-full-screen
+        figure = plt.gcf()
         plt.imshow(mset, cmap=colormap_options)
-        
+
+        plt.xticks([], [])
+        plt.yticks([], [])
+
         with io.BytesIO() as output:
-            plt.savefig(output)
+            plt.savefig(output, bbox_inches='tight')
             output.seek(0)
             embed = discord.Embed(
                 title='Mandelbrot set',
