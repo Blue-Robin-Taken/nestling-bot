@@ -16,6 +16,7 @@ class Memes(commands.Cog):
 
         request = requests.get(subreddit + "random.json?client_id=or3mi8qffVqnQgQ2u9ZTeQ", headers={
             'User-agent': self.reddit_token})  # https://www.reddit.com/r/redditdev/comments/3qbll8/429_too_many_requests/
+        print(request.text)
         data = request.json()[0]['data']['children'][0]['data']
         title = data['title']
         url = 'https://www.reddit.com' + data['permalink']
