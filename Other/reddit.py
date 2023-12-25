@@ -8,7 +8,7 @@ class Memes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    reddit_token = str("NestlingBot 1.0 by /u/Blue_Robin_Gaming")
+    reddit_token = str("SparkedHost:NestlingBot 1.0 (by /u/Blue_Robin_Gaming)")
     command_group = discord.SlashCommandGroup(name="reddit")
 
     def get_embed(self, subreddit):
