@@ -8,7 +8,7 @@ class Memes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    reddit_token = str(os.getenv('reddit_token'))
+    reddit_token = str(os.getenv('REDDIT_TOKEN'))
     command_group = discord.SlashCommandGroup(name="reddit")
 
     def get_embed(self, subreddit):
@@ -37,12 +37,13 @@ class Memes(commands.Cog):
 
     @command_group.command(name="programmermemes")
     async def programmerMemes(self, ctx):
-
+        await ctx.defer()
         embed = self.get_embed("ProgrammerHumor")
         await ctx.respond(embed=embed)
 
     @command_group.command(name='random')
     async def random(self, ctx, name: str):
+        await ctx.defer()
         try:
             embed = self.get_embed(name)
             await ctx.respond(embed=embed)

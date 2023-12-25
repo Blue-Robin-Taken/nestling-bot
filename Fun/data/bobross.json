@@ -1,13 +1,47 @@
 {
     "kind": "youtube#searchListResponse",
-    "etag": "FyW9Z2UVlq-LwMmoVuIVpwue-KU",
+    "etag": "DN8KeARTSm7Ei0oRWKPgskf1GII",
     "nextPageToken": "CDIQAA",
     "regionCode": "US",
     "pageInfo": {
-        "totalResults": 661,
+        "totalResults": 664,
         "resultsPerPage": 50
     },
     "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "wfwedObQBlaNcm82QJBiQLl-7Os",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "rERncyN-Igc"
+            },
+            "snippet": {
+                "publishedAt": "2023-12-22T16:19:59Z",
+                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
+                "title": "A Happy Little Holiday Weekend Marathon!",
+                "description": "bob !cabin !ripdevil !paintlikebobross The Bob Ross Holiday Weekend Marathon begins Friday at 12pm ET. Streaming this ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/rERncyN-Igc/default_live.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/rERncyN-Igc/mqdefault_live.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/rERncyN-Igc/hqdefault_live.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bob Ross",
+                "liveBroadcastContent": "live",
+                "publishTime": "2023-12-22T16:19:59Z"
+            }
+        },
         {
             "kind": "youtube#searchResult",
             "etag": "5igIt2zYXqIh5Ek8LmiuHThTSwk",
@@ -78,7 +112,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "tqVA3xokGCj_rW0oS4PXkGWv0Js",
+            "etag": "bN913GMwAeay38tGb_b8_j1OPUk",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "AWX-ylM1Hs4"
@@ -656,7 +690,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "8u_e9Ma69FMjxfhTZNurCv7QN5A",
+            "etag": "lLVX7SMOEFlgjTWYqga6DbP423U",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "Kyn3f_8x24Q"
@@ -826,7 +860,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "l3NMK0hfBfkRt-BqHj24qyG29Ts",
+            "etag": "EcVHaF86KTmooZzXbyXASox1Mqg",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "vr9bL2cGJw4"
@@ -1234,7 +1268,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "Gg-11izPqxXKw7Zd9Y90U2NZylg",
+            "etag": "o0cxp6yb5b28RegV_dLpkAx2J0A",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "yMPZjmnFjpE"
@@ -1438,7 +1472,7 @@
         },
         {
             "kind": "youtube#searchResult",
-            "etag": "4czAAmBRro8U7_jCDzxL4CnEpxY",
+            "etag": "oNQz9t4Hn4GRwsZ6scVpyYSPMhM",
             "id": {
                 "kind": "youtube#video",
                 "videoId": "ClUsnXbpzlY"
@@ -1672,40 +1706,6 @@
                 "channelTitle": "Bob Ross",
                 "liveBroadcastContent": "none",
                 "publishTime": "2023-04-20T16:00:35Z"
-            }
-        },
-        {
-            "kind": "youtube#searchResult",
-            "etag": "krI_Oe-T22zVp5av9g3vm-cfGZ4",
-            "id": {
-                "kind": "youtube#video",
-                "videoId": "lmaEcIQCTGI"
-            },
-            "snippet": {
-                "publishedAt": "2023-04-19T14:48:51Z",
-                "channelId": "UCxcnsr1R5Ge_fbTu5ajt8DQ",
-                "title": "Celebrate Earth Day with Bob Ross!",
-                "description": "You're invited to a Bob Ross Earth Day celebration! https://experience.bobross.com/earth-day/ Join in and follow along as Bob ...",
-                "thumbnails": {
-                    "default": {
-                        "url": "https://i.ytimg.com/vi/lmaEcIQCTGI/default.jpg",
-                        "width": 120,
-                        "height": 90
-                    },
-                    "medium": {
-                        "url": "https://i.ytimg.com/vi/lmaEcIQCTGI/mqdefault.jpg",
-                        "width": 320,
-                        "height": 180
-                    },
-                    "high": {
-                        "url": "https://i.ytimg.com/vi/lmaEcIQCTGI/hqdefault.jpg",
-                        "width": 480,
-                        "height": 360
-                    }
-                },
-                "channelTitle": "Bob Ross",
-                "liveBroadcastContent": "none",
-                "publishTime": "2023-04-19T14:48:51Z"
             }
         }
     ]
