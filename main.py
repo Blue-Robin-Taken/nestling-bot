@@ -31,11 +31,11 @@ from cloudinary import uploader
 
 intents = discord.Intents.default()
 # noinspection PyDunderSlots,PyUnresolvedReferences
-intents.messages = True
+# intents.messages = True
 # noinspection PyDunderSlots,PyUnresolvedReferences
-intents.message_content = True
+# intents.message_content = True
 # noinspection PyDunderSlots,PyUnresolvedReferences
-intents.members = True
+# intents.members = True
 bot = discord.Bot(intents=intents)
 testing_servers = [1038227549198753862, 1044711937956651089, 821083375728853043]
 
