@@ -31,9 +31,9 @@ from cloudinary import uploader
 
 intents = discord.Intents.default()
 # noinspection PyDunderSlots,PyUnresolvedReferences
-# intents.messages = True
+intents.messages = True
 # noinspection PyDunderSlots,PyUnresolvedReferences
-# intents.message_content = True
+intents.message_content = True
 # noinspection PyDunderSlots,PyUnresolvedReferences
 # intents.members = True
 bot = discord.Bot(intents=intents)
