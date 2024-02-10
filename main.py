@@ -56,9 +56,10 @@ db = client.settings
 
 cloudinary.config(
     cloud_name="dxopzyxoi",
-    api_key="594498119421517",
-    api_secret=f"{os.getenv('CLOUD_IMAGE_STORAGE')}"
+    api_key=f"{os.getenv('CLOUDIMAGESTORAGEKEY')}",
+    api_secret=f"{os.getenv('CLOUDIMAGESTORAGE')}"
 )
+print(os.getenv('CLOUDIMAGESTORAGE'))
 
 
 def load_cogs():
