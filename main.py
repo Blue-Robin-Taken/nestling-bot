@@ -59,8 +59,6 @@ cloudinary.config(
     api_key=f"{os.getenv('CLOUDIMAGESTORAGEKEY')}",
     api_secret=f"{os.getenv('CLOUDIMAGESTORAGE')}"
 )
-print(os.getenv('CLOUDIMAGESTORAGE'))
-
 
 def load_cogs():
     for cog in cogs:
