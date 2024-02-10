@@ -20,7 +20,6 @@ from Other import reaction_roles
 from Other import encrypt
 from Other import imaging
 from Other import polls
-from Other import reddit
 import re
 import datetime
 from enum import Enum
@@ -46,7 +45,7 @@ cogs = (moderation.warning, moderation.ban, moderation.bans,
         maths.algebra, other.random_hymn_redbook, other.redbook, settings.Settings,
         maths.geometry, maths.other, requestsfun.testYoutube, randomgames.emoji, mc.mc, starsystem.Stars,
         reaction_roles.ReactionRoles, games.rockpaperscissors, encrypt.encryption, imaging.imaging, games.counting,
-        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch, reddit.Memes,
+        polls.Polls, other.raid_protection, games.SnakeGame, games.DodgeKickBlockPunch,
         moderation.helper_functions)
 
 client = pymongo.MongoClient(
@@ -79,6 +78,9 @@ async def on_connect():
         json.dump(data, f, indent=4)
         f.close()
     print('Dumped data')
+    req = requests.request("GET", f"""https://www.reddit.com/api/v1/authorize?client_id=or3mi8qffVqnQgQ2u9ZTeQ&response_type=code&
+state=RANDOM_STRING&redirect_uri=URI&duration=DURATION&scope=SCOPE_STRING""")
+    print(req.text)
     # await bot.sync_commands()
 
 
@@ -94,8 +96,8 @@ async def channel_type(ctx, channel):
 def clean_message_database():  # cleans the database of old polls
     coll = client.polls.messages
     for guild in coll.find({}):
-        if guild[
-            'RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():  # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
+        if guild['RemovalDate'].isoformat() < datetime.datetime.now().utcnow().isoformat():
+            # https://stackoverflow.com/questions/9433851/converting-utc-time-string-to-datetime-object
             coll.delete_one(guild)
 
 
@@ -128,7 +130,6 @@ async def on_member_join(member):
         role = discord.utils.get(await member.guild.fetch_roles(),
                                  id=int(coll.find_one({"_id": member.guild.id})['role']))
         await member.add_roles(role)
-        print(str(role) + " joined")
 
 
 @bot.slash_command(name='ping', description='Test if the bot is online!')
@@ -405,7 +406,14 @@ for dog_breed_ in dog_breed_general_types:  # loop through all breed types to se
             breed_types.append(f"{dog_breed_}/{breed__}")  # add sub breed to end with / because of formatting
     else:  # else, append the general type
         breed_types.append(dog_breed_)
-dog_breeds = discord.Option(str, autocomplete=discord.utils.basic_autocomplete(breed_types),
+
+
+def boing(i):
+    print(i)
+    return breed_types
+
+
+dog_breeds = discord.Option(str, autocomplete=boing,
                             required=False)  # create options using autocomplete util
 
 
@@ -431,7 +439,6 @@ async def dog(ctx, breed: dog_breeds):
 
 
 cat_all_breeds = requests.get('https://api.thecatapi.com/v1/breeds').json()  # request json
-print(cat_all_breeds)
 
 
 # cat_breed_general_types = [cat_breed for cat_breed in cat_all_breeds.keys()]  # general breed types

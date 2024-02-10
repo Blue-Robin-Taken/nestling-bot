@@ -1,21 +1,46 @@
 import discord
 from discord.ext import commands
 import requests
+from requests import auth
 import os
+import time
+import hashlib
 
 
 class Memes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        #  https://www.youtube.com/watch?v=FdjVoOf9HN4
+        self.authentication = auth.HTTPBasicAuth(
+            os.getenv("REDDIT_ID"),
+            os.getenv("REDDIT_PASS")
+        )
+        print(self.authentication)
+        self.user_tokens = {}
+        self.hashing_obj = hashlib.md5()
 
-    reddit_token = str("SparkedHost:NestlingBot 1.0 (by /u/Blue_Robin_Gaming)")
     command_group = discord.SlashCommandGroup(name="reddit")
 
-    def get_embed(self, subreddit):
-        subreddit = f"https://www.reddit.com/r/{subreddit}/"  # https://github.com/Krystian93/CreepyJson/blob/master/index.js
+    # def refresh_token(self, user_id):
+    #
+    #     special_id = self.hashing_obj.
+    #     res = requests.post("https://reddit.com/api/v1/access_token", headers={
+    #         'User-Agent': "SparkedHost:NestlingBot 1.0 (by /u/Blue_Robin_Gaming)"}, auth=self.authentication,
+    #                         data={
+    #
+    #                         })
+    #     print(res.text)
+    #     TOKEN = res.json()['access_token']
+    #     self.user_tokens[f"{user_id}"] = {TOKEN, time.time()}
 
-        request = requests.get(subreddit + "random.json?client_id=or3mi8qffVqnQgQ2u9ZTeQ", headers={
-            'User-agent': self.reddit_token})  # https://www.reddit.com/r/redditdev/comments/3qbll8/429_too_many_requests/
+    def get_embed(self, subreddit):
+
+        subreddit = f"https://www.reddit.com/r/{subreddit}/"  # https://github.com/Krystian93/CreepyJson/blob/master/index.js
+        if self.time_passed > 300:  # if 5 mins passed, refresh the token
+            self.refresh_token()
+        request = requests.get(subreddit + "random.json", headers={
+            'User-Agent': "Nestling Bot 1.0 (u/BlueRobinTaken)", "Authorization": f"bearer {self.TOKEN}"},
+                               auth=auth)  # https://www.reddit.com/r/redditdev/comments/3qbll8/429_too_many_requests/
         print(request.text)
         data = request.json()[0]['data']['children'][0]['data']
         title = data['title']
