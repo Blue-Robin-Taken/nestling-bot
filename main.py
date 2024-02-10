@@ -60,6 +60,7 @@ cloudinary.config(
     api_secret=f"{os.getenv('CLOUDIMAGESTORAGE')}"
 )
 
+
 def load_cogs():
     for cog in cogs:
         bot.add_cog(cog(bot))
@@ -77,9 +78,6 @@ async def on_connect():
         json.dump(data, f, indent=4)
         f.close()
     print('Dumped data')
-    req = requests.request("GET", f"""https://www.reddit.com/api/v1/authorize?client_id=or3mi8qffVqnQgQ2u9ZTeQ&response_type=code&
-state=RANDOM_STRING&redirect_uri=URI&duration=DURATION&scope=SCOPE_STRING""")
-    print(req.text)
     # await bot.sync_commands()
 
 
