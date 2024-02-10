@@ -75,7 +75,7 @@ async def on_connect():
     print("Connected!")
     url = f"https://www.googleapis.com/youtube/v3/search?key={str(os.getenv('YTTOKEN'))}&channelId=UCxcnsr1R5Ge_fbTu5ajt8DQ&part=snippet,id&order=date&maxResults=100&type=video"
     data = requests.get(url).json()
-    with open("Fun/data/bobross.json", "w") as f:
+    with open("Fun/data/bobross.json", "w+") as f:
         json.dump(data, f, indent=4)
         f.close()
     print('Dumped data')
