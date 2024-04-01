@@ -477,30 +477,30 @@ async def penguin(ctx, ):
 @bot.slash_command(name="bible", description="Put in a bible verse!")
 async def bible(ctx, passage: discord.Option(str, description="Choose a passage or verse!")):
     api = requests.get(f"https://bible-api.com/{passage}?translation=kjv&verse_numbers=true").json()
-    end_text = ""
     SUP = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
-    embed = None
     try:
-        for verse in api["verses"]:
-            end_text += str(verse["verse"]).translate(SUP) + verse["text"]
-        reference = api["reference"]
-        embed = discord.Embed(
-            title=f"Bible verse: {reference} KJV",
-            colour=discord.Colour.random(),
-            description=end_text
-        )
-        embed.set_author(name="Sent by: " + ctx.author.name)
-    except KeyError:
-        await ctx.respond(
-            "Invalid request. If you think this is a mistake, please contact us in the bot's discord server.",
-            ephemeral=True)
-    try:
-        if embed is not None:
+        verses = api["verses"]
+        num_embeds = len(verses) // 5 + 1 if len(verses) % 5 != 0 else len(verses) // 5
+        if num_embeds > 5:
+            await ctx.respond("Sorry, this passage is too long to print.", ephemeral=True)
+            return
+        for i in range(num_embeds):
+            start = i * 5
+            end = min((i + 1) * 5, len(verses))
+            end_text = ""
+            embed = discord.Embed(
+                title=f"Bible verse: {api['reference']} KJV",
+                colour=discord.Colour.random(),
+            )
+            embed.set_author(name="Sent by: " + ctx.author.name)
+            for verse in verses[start:end]:
+                end_text += str(verse["verse"]).translate(SUP) + verse["text"]
+            embed.description = end_text
             await ctx.respond(embed=embed)
+    except KeyError:
+        await ctx.respond("Invalid request. If you think this is a mistake, please contact us in the bot's discord server.", ephemeral=True)
     except discord.errors.HTTPException:
-        await ctx.respond(
-            "Sorry, this passage is too long to print. The max length is 4096 characters. OR, there is an unknown error. If you think this is a mistake, please contact us in the bot's discord server.",
-            ephemeral=True)
+        await ctx.respond("Sorry, this passage is too long to print.", ephemeral=True)
 
 
 @bot.slash_command(name="invite",
