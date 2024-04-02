@@ -475,32 +475,40 @@ async def penguin(ctx, ):
 
 
 @bot.slash_command(name="bible", description="Put in a bible verse!")
-async def bible(ctx, passage: discord.Option(str, description="Choose a passage or verse!")):
+async def bible(ctx, passage: discord.Option(str, description="Choose a passage or verse!"), characters_per_embed:discord.Option(int, required=False, max_value=4096, min_value=10) = 2000):
     api = requests.get(f"https://bible-api.com/{passage}?translation=kjv&verse_numbers=true").json()
     SUP = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
     try:
         verses = api["verses"]
-        num_embeds = len(verses) // 5 + 1 if len(verses) % 5 != 0 else len(verses) // 5
+        end_text = ""
+        for verse in verses:
+            end_text += str(verse["verse"]).translate(SUP) + verse["text"]
+        num_embeds = math.ceil(len(end_text) / characters_per_embed)
+
         if num_embeds > 5:
-            await ctx.respond("Sorry, this passage is too long to print.", ephemeral=True)
+            await ctx.respond("Sorry, this passage is too long to print. Try changing the characters per embed amount.", ephemeral=True)
             return
-        for i in range(num_embeds):
-            start = i * 5
-            end = min((i + 1) * 5, len(verses))
-            end_text = ""
+        for i in range(0, num_embeds):
+            start = i * characters_per_embed
+            end = min((i+1) * characters_per_embed, len(end_text))
             embed = discord.Embed(
                 title=f"Bible verse: {api['reference']} KJV",
                 colour=discord.Colour.random(),
             )
-            embed.set_author(name="Sent by: " + ctx.author.name)
-            for verse in verses[start:end]:
-                end_text += str(verse["verse"]).translate(SUP) + verse["text"]
-            embed.description = end_text
-            await ctx.respond(embed=embed)
+            
+
+            embed.description = end_text[start:end]
+            if i == 0:
+                embed.set_author(name="Sent by: " + ctx.author.name)
+                await ctx.respond(embed=embed)
+            else:
+                embed.title=""
+                await ctx.channel.send(embed=embed)
     except KeyError:
         await ctx.respond("Invalid request. If you think this is a mistake, please contact us in the bot's discord server.", ephemeral=True)
     except discord.errors.HTTPException:
-        await ctx.respond("Sorry, this passage is too long to print.", ephemeral=True)
+        print("HTTP")
+        await ctx.respond("Sorry, this passage is too long to print. Try changing the characters per embed amount.", ephemeral=True)
 
 
 @bot.slash_command(name="invite",
