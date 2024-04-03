@@ -1,3 +1,9 @@
+# Important links
+- [TopGG](https://top.gg/bot/1044320506943377439)
+- [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=1044320506943377439)
+- [DISCORD SERVER!](https://discord.gg/dhgShb5M9Z)
+
+
 # About
 Nestling bot was my passion project from the beginning of high school to the middle of Sophomore year. I still work on this bot occassionally, but development has mostly stopped for now. 
 Working on this bot taught me how to use Pycord (fork of discord.py) very well. I learned how to:
