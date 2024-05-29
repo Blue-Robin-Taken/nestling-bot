@@ -1,3 +1,9 @@
+Note,
+
+I'm currently rewriting the entire discord bot here: https://github.com/BlueRobinTeam/nestling-bot-rewrite
+
+It's still in the works but hopefully I'll be able to finish most of it by the end of the summer.
+
 # Important links
 - [TopGG](https://top.gg/bot/1044320506943377439)
 - [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=1044320506943377439)
