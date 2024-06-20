@@ -53,7 +53,7 @@ class Stars(commands.Cog):
     @commands.slash_command(name="unstar", description="Unstar a user.")
     async def unstar(self, ctx, user: discord.Option(discord.Member),
                      amount: discord.Option(int, min_value=1, default=1, max_value=10)):
-        if user.guild_permissions.administrator:
+        if ctx.author.guild_permissions.administrator:
             coll = db.Starcount
             try:
                 coll.update_one({"_id": {"guild": user.guild.id, "user": user.id}}, {"$inc": {"amount": -amount}})
