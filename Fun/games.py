@@ -5,6 +5,7 @@ import twentyfortyeight
 import fightinggamelib
 import random
 import snake
+import math
 import pymongo
 import os
 
@@ -215,6 +216,8 @@ class counting(commands.Cog):
                                         await message.add_reaction("💫")
                                     elif (count_dict['count'] + 1) % 10000 == 0:
                                         await message.add_reaction("😀")
+                                    elif (count_dict['count'] + 1) == int(math.tan(1.5559)):
+                                        await message.add_reaction("👀")
                                     await message.add_reaction("✅")
                                     self.coll.update_one({'_id': message.guild.id},
                                                          {'$inc': {'count': 1}})  # update count
